@@ -18,6 +18,7 @@
       font-family: verdana;
       font-size: 120%;
     }
+
     .button {
       background-color: black;
       color: red;
@@ -27,12 +28,15 @@
       padding: 2% 2%;
       text-align: left;
     }
+
     .group7 {
       width: 12.5%;
     }
+
     .group8 {
       width: 10.5%;
     }
+
     .pressed {
       background-color: #880000;
     }
@@ -42,23 +46,30 @@
 
 
 
-  
+
 
 
 </head>
 
 <body>
+  <div id="maori">Maori</div>
+  <div id="english">English</div>
+  <script>
+    $ = (id) => document.getElementById(id)
+    sentences = []
+    sentence = (topic, maori, english) => sentences.push({
+      topic,
+      maori,
+      english
+    })
 
-   <script>     
-sentences=[]
-sentence=(topic,maori,english)=>sentences.push({topic,maori,english})
-sentence("whakapapa","Tokohia āu tamariki","How many children do you have?")
-sentence("whakapapa","Tokowhitu āku tamariki","I have 7 children")
-      document.getElementById("buttonTrainLeftFast").addEventListener("click", () => {
-        for (e of document.getElementsByName("speed")) {
-          e.classList.remove("pressed")
-        }
-          </script>
+    sentence("whakapapa", "Tokohia āu tamariki", "How many children do you have?")
+    sentence("whakapapa", "Tokowhitu āku tamariki", "I have 7 children")
+          $("maori").innerHTML=sentences[0].maori
+    $("maori").addEventListener("click", () => {
+
+    })
+  </script>
 </body>
 
 </html>
