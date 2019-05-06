@@ -53,34 +53,46 @@
   <div id="buttons"></div>
   <script>
     $ = (id) => document.getElementById(id)
-    Array.prototype.unique = function() {
-      return this.filter(function(value, index, self) {
-        return self.indexOf(value) === index;
-      });
-    }
-
+    shuffle = (a, b) => Math.random() - 0.5
     sentences = []
+    indexSentences = 0
     sentence = (topic, maori, english) => sentences.push({
       topic,
       maori,
       english
     })
-    adjectives = []
-    adjective = (topic, maori, english) => adjectives.push({
-      topic,
+    feelings = []
+    feeling = (maori, english) => feelings.push({
       maori,
       english
     })
-    adjective("feelings", "hari", "happy")
+    names = []
+    named = (maori, english) => names.push({
+      maori,
+      english
+    })
+    named("Mere", "Mere")
+    named("Pita", "Pita")
+    named("Sue", "Sue")
+    feeling("hari", "happy")
+    feeling("hōhā", "bored")
+    feeling("māuiui", "sick")
+    feeling("pukuriri", "angry")
+    feeling("hiamoe", "sleepy")
+    feeling("ohorere", "surprised")
+    feeling("harikoa", "overjoyed")
+    feeling("rangirua", "confused")
+    feeling("wera", "hot")
+    feeling("makariri", "cold")
     sentence("aotearoa", "Ko wai tōu ingoa?", "What is your name?")
     sentence("aotearoa", "Ko [my name] tōku ingoa", "My name is [my name] ")
     sentence("aotearoa", "Ko wai tōna ingoa", "What is their name")
     sentence("aotearoa", "Nō hea koe?", "Where do you come from?")
     sentence("aotearoa", "Nō Oranga ahau", "I come from Oranga")
     sentence("aotearoa", "Kei te pēhea koe?", "How are you?")
-    sentence("aotearoa", "Kei te [adjective] ahau", "I am [adjective]")
+    sentence("aotearoa", "Kei te [feeling] ahau", "I am [feeling]")
     sentence("aotearoa", "E pēhea ana koe?", "How are you?")
-    sentence("aotearoa", "E [adjective] ana ahau", "I am [adjective]")
+    sentence("aotearoa", "E [feeling] ana ahau", "I am [feeling]")
     sentence("aotearoa", "Ki te taha o tōku matua", "On my Dad's side")
     sentence("aotearoa", "Ko [name] tōku koro", "My grandfather is [name]")
     sentence("aotearoa", "Ko wai ō tuakāna?", "Who are your older siblings of same gender?")
@@ -98,7 +110,12 @@
     maoriWords = ([...maoriWords, ...sentences.map(showMaoriWords)]) //
     m = []
     maoriWords.forEach(v => m = [...m, ...v])
-    $("buttons").appendChild(document.createElement("button")).innerHTML = [...new Set(m)]
+    m = [...new Set(m)]
+    wordsCurrent = sentences[indexSentences].maori.split(" ")
+    numberWordsCurrent = wordsCurrent.length
+    m = m.filter(v => !wordsCurrent.includes(v)).sort(shuffle).slice(0, 8 - numberWordsCurrent)
+    m = [...m, ...wordsCurrent].map(v=>v.toLowerCase()).sort()
+    m.forEach(v => $("buttons").appendChild(document.createElement("button")).innerHTML = v.replace("?",""))
     $("maori").innerHTML = sentences[0].maori
     $("maori").addEventListener("click", () => {
 
