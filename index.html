@@ -19,7 +19,7 @@
       font-size: 120%;
     }
 
-    .button {
+    button {
       background-color: black;
       color: red;
       font-family: verdana;
@@ -44,28 +44,62 @@
   </style>
 
 
-
-
-
-
-
 </head>
 
 <body>
+  <h2 id="topic"></h2>
   <div id="maori">Maori</div>
   <div id="english">English</div>
+  <div id="buttons"></div>
   <script>
     $ = (id) => document.getElementById(id)
+    Array.prototype.unique = function() {
+      return this.filter(function(value, index, self) {
+        return self.indexOf(value) === index;
+      });
+    }
+
     sentences = []
     sentence = (topic, maori, english) => sentences.push({
       topic,
       maori,
       english
     })
-
+    adjectives = []
+    adjective = (topic, maori, english) => adjectives.push({
+      topic,
+      maori,
+      english
+    })
+    adjective("feelings", "hari", "happy")
+    sentence("aotearoa", "Ko wai tōu ingoa?", "What is your name?")
+    sentence("aotearoa", "Ko [my name] tōku ingoa", "My name is [my name] ")
+    sentence("aotearoa", "Ko wai tōna ingoa", "What is their name")
+    sentence("aotearoa", "Nō hea koe?", "Where do you come from?")
+    sentence("aotearoa", "Nō Oranga ahau", "I come from Oranga")
+    sentence("aotearoa", "Kei te pēhea koe?", "How are you?")
+    sentence("aotearoa", "Kei te [adjective] ahau", "I am [adjective]")
+    sentence("aotearoa", "E pēhea ana koe?", "How are you?")
+    sentence("aotearoa", "E [adjective] ana ahau", "I am [adjective]")
+    sentence("aotearoa", "Ki te taha o tōku matua", "On my Dad's side")
+    sentence("aotearoa", "Ko [name] tōku koro", "My grandfather is [name]")
+    sentence("aotearoa", "Ko wai ō tuakāna?", "Who are your older siblings of same gender?")
+    sentence("aotearoa", "Ko wai hoa rangitira?", "Who is your spouse?")
+    sentence("aotearoa", "Ko [name] rāua ko [name] ōku tuakāna?", "[Name] and [name] are my older siblings of same gender?")
+    sentence("aotearoa", "Kaore ōku teina", "I have no younger siblings of same gender?")
+    sentence("aotearoa", "Kotahi tōku teina", "I have one younger siblings of same gender?")
     sentence("whakapapa", "Tokohia āu tamariki", "How many children do you have?")
-    sentence("whakapapa", "Tokowhitu āku tamariki", "I have 7 children")
-          $("maori").innerHTML=sentences[0].maori
+    sentence("whakapapa", "Tokowhitu āku tamariki Tokohia", "I have 7 children")
+    sentence("whakapapa", "Tokohia ngā tamariki o Kuini?", "How many children does the queen have?")
+    sentence("whakapapa", "Tokohia āu tuakana", "How many older siblings of your gender do you have")
+
+    showMaoriWords = (v) => v.maori.split(" ")
+    maoriWords = []
+    maoriWords = ([...maoriWords, ...sentences.map(showMaoriWords)]) //
+    m = []
+    maoriWords.forEach(v => m = [...m, ...v])
+    $("buttons").appendChild(document.createElement("button")).innerHTML = [...new Set(m)]
+    $("maori").innerHTML = sentences[0].maori
     $("maori").addEventListener("click", () => {
 
     })
