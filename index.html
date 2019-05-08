@@ -106,20 +106,35 @@
     sentence("whakapapa", "Tokohia āu tuakana", "How many older siblings of your gender do you have")
 
     showMaoriWords = (v) => v.maori.split(" ")
-    maoriWords = []
-    maoriWords = ([...maoriWords, ...sentences.map(showMaoriWords)]) //
-    m = []
-    maoriWords.forEach(v => m = [...m, ...v])
-    m = [...new Set(m)]
-    wordsCurrent = sentences[indexSentences].maori.split(" ")
-    numberWordsCurrent = wordsCurrent.length
-    m = m.filter(v => !wordsCurrent.includes(v)).sort(shuffle).slice(0, 8 - numberWordsCurrent)
-    m = [...m, ...wordsCurrent].map(v=>v.toLowerCase()).sort()
-    m.forEach(v => $("buttons").appendChild(document.createElement("button")).innerHTML = v.replace("?",""))
-    $("maori").innerHTML = sentences[0].maori
-    $("maori").addEventListener("click", () => {
+    makeWordButtons = () => {
 
-    })
+      maoriWords = []
+      maoriWords = ([...maoriWords, ...sentences.map(showMaoriWords)]) //
+      m = []
+      maoriWords.forEach(v => m = [...m, ...v])
+      m = [...new Set(m)]
+      wordsCurrent = sentences[indexSentences].maori.split(" ")
+      numberWordsCurrent = wordsCurrent.length
+      m = m.filter(v => !wordsCurrent.includes(v)).sort(shuffle).slice(0, 8 - numberWordsCurrent)
+      m = [...m, ...wordsCurrent].map(v => v.toLowerCase()).sort()
+      m.forEach(v => $("buttons").appendChild(document.createElement("button")).innerHTML = v.replace("?", ""))
+
+    }
+    selectMaoriSentence = () => {
+      makeWordButtons()
+      $("maori").innerHTML = sentences[indexSentences].maori
+      indexSentences++
+    }
+    englishClickAction = () => {
+      $("english").innerHTML = sentences[indexSentences].english
+      console.log($("maori").innerHTML + "   " + sentences[indexSentences].maori)
+      if (!$("maori").innerHTML == sentences[indexSentences].maori) $("maori").innerHTML = ""
+      indexSentences++
+      makeWordButtons()
+    }
+
+    $("maori").addEventListener("click", selectMaoriSentence)
+    $("english").addEventListener("click", englishClickAction)
   </script>
 </body>
 
