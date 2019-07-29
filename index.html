@@ -52,38 +52,198 @@
   <div id="english">English</div>
   <div id="buttons"></div>
   <script>
-    $ = (id) => document.getElementById(id)
-    shuffle = (a, b) => Math.random() - 0.5
-    sentences = []
-    indexSentences = 0
-    sentence = (topic, maori, english) => sentences.push({
-      topic,
-      maori,
-      english
-    })
-    feelings = []
-    feeling = (maori, english) => feelings.push({
-      maori,
-      english
-    })
-    names = []
-    named = (maori, english) => names.push({
-      maori,
-      english
-    })
-    named("Mere", "Mere")
-    named("Pita", "Pita")
-    named("Sue", "Sue")
-    feeling("hari", "happy")
-    feeling("hōhā", "bored")
-    feeling("māuiui", "sick")
-    feeling("pukuriri", "angry")
-    feeling("hiamoe", "sleepy")
-    feeling("ohorere", "surprised")
-    feeling("harikoa", "overjoyed")
-    feeling("rangirua", "confused")
-    feeling("wera", "hot")
-    feeling("makariri", "cold")
+    addEventListener('load', function(e) {
+
+cl=(arg)=>console.log(arg)
+makeObject=(array,names)=>{
+  o={}
+  names.map((v,i)=>o[v]=array[i])
+  return o
+}
+shuffle = (a, b) => Math.random() - 0.5
+
+
+//MODEL
+
+
+patternIndex=0
+question=true
+message=""
+
+patternsCSV=[
+ "how many [relation] do you have,tokohia āu [relation],I have [cardinal] [relation],[cardinal] (t)ōku [relation]",
+  "how are you feeling?,kei te pehea koe,I am feeling [feeling],kei te [feeling] ahau",
+  "where are you from?,nō hea koe,I am from [place],nō [place] ahau"
+
+   ]
+
+tupuCSV=[
+  "place,Dunedin,Onetāhi",
+  "place,Auckland,Tamaki Makaurau",
+  "place,One Tree Hill,Maungakiekie",
+  "feeling,happy,hari",
+  "feeling,bored,hōhā",
+  "feeling,sick,māuiui",
+  "feeling,angry,pukuriri",
+  "feeling,sleepy,hiamoe",
+  "feeling,surprised,ohorere",
+  "feeling,overjoyed,harikoa",
+  "feeling,confused,rangirua",
+  "feeling,hot,wera",
+  "feeling,cold,makariri",
+  "feeling,good,pai",
+  "cardinal,one,kotahi",
+  "cardinal,two,rua",
+  "cardinal,three,toru",
+  "relation,father,matua",
+  "relation,mother,whaea"
+  ]
+
+patterns=[]
+patternsCSV.forEach(v=>patterns.push(makeObject(v.split(","),["englishQ","maoriQ","englishA","maoriA"])))
+
+tupus=[]
+tupuCSV.forEach(v=>tupus.push(makeObject(v.split(","),["topic","english","maori"])))
+  
+wordsFromMaoriQuestion=()=>{
+  return substituteMaoriVariableWord(patterns[patternIndex].maoriQ).split(" ")
+}
+
+wordsFromMaoriAnswer=()=>{
+  return substituteMaoriVariableWord(patterns[patternIndex].maoriA).split(" ")
+}
+
+maoriWordList=()=>{
+  list=[]
+  patterns.forEach(v=>list=[...list,...v.maoriQ.split(" ")])
+  return list
+}
+
+maoriWords = () => {
+  if (question) {
+    words=wordsFromMaoriQuestion()}
+  else{
+    words=wordsFromMaoriAnswer()}
+  words=[...words,...maoriWordList()]
+  words=[...new Set(words)]
+  words=words.sort()
+  return words
+  //numberWordsCurrent = wordsCurrent.length
+  //m = m.filter(v => !wordsCurrent.includes(v)).
+    //sort(shuffle).slice(0, 8 - numberWordsCurrent)
+}
+
+substituteEnglishVariableWord=(str)=>{
+  variableWord=str.match(/\[(\w+)\]/)
+  if (variableWord!=null) {
+    s=str.replace("["+variableWord[1]+"]",
+      tupus.filter(v=>v.topic==variableWord[1])[0].english)
+    return s
+  }
+  else{
+    return str
+  }
+}
+
+substituteMaoriVariableWord=(str)=>{
+  variableWord=str.match(/\[(\w+)\]/)
+  if (variableWord!=null) {
+    s=str.replace("["+variableWord[1]+"]",
+      tupus.filter(v=>v.topic==variableWord[1])[0].maori)
+    return s
+  }
+  else{
+    return str
+  }
+}
+
+//VIEW
+
+
+addElement=(id,elementType,container,width,text)=>{
+  element=document.createElement(elementType)
+  if (elementType=="button") element.style.cssText= buttonStyle
+    else element.style.cssText=style
+  element.style.width=width+"%"
+  element.id=id
+  element.innerHTML=text
+  container.appendChild(element)  
+  return element
+}
+
+buttonStyle="color:black;border-style:solid;border-width:1px;"+
+  "font-size:5vw;font-family:verdana"
+style="color:black;border-style:none;border-width:1px;"+
+  "font-size:3vw;font-family:verdana"
+
+showEnglishQuestion=()=>{
+  maoriSentenceText=""
+  englishSentenceText=
+    substituteEnglishVariableWord(patterns[patternIndex].englishQ)
+  message=""
+  gridWords=maoriWords()
+  question=!question
+  display()
+}
+
+showEnglishAnswer=()=>{
+  maoriSentenceText=""
+  message=""
+  englishSentenceText=
+    substituteEnglishVariableWord(patterns[patternIndex].englishA)
+  gridWords=maoriWords()
+question=!question
+  display()
+}
+
+display=()=>{
+  document.body.innerHTML=""
+  b=addElement(1,"div",document.body,100,"")
+  b.addEventListener("click",clicked)
+  nextPatternButton=addElement("nextPatternButton","button",b,33,"next")
+  englishSentence=addElement("englishSentence",
+    "div",b,100,englishSentenceText)
+  messageButton=addElement("message","div",b,20,message)
+  maoriSentenceElement=addElement("maoriSentence","div",
+    b,80,maoriSentenceText)
+  wordGrid=addElement("wordGrid","div",b,100,"")
+  gridWords.forEach((v,i)=>addElement("tupu"+i,"button",wordGrid,20,v))
+
+}
+
+//CONTROLLER
+
+
+
+clicked=e=>{ 
+  id=e.target.id
+  if (id=="nextPatternButton") {
+    if (question) {
+      patternIndex++ 
+      showEnglishQuestion()
+    }
+    else {
+      showEnglishAnswer()
+    }
+  }
+ if (id.includes("tupu")) {
+    maoriSentenceText=maoriSentenceText+gridWords[id.match(/\d/g)]+" "
+
+    if (maoriSentenceText.trim()==patterns[patternIndex].maoriQ.toLowerCase()||
+maoriSentenceText.trim()==substituteMaoriVariableWord(patterns[patternIndex].maoriA))  
+      message="c"
+  }
+
+  display()
+}
+
+showEnglishQuestion()
+
+})
+
+/*
+
+    
     sentence("aotearoa", "Ko wai tōu ingoa?", "What is your name?")
     sentence("aotearoa", "Ko [my name] tōku ingoa", "My name is [my name] ")
     sentence("aotearoa", "Ko wai tōna ingoa", "What is their name")
@@ -100,41 +260,27 @@
     sentence("aotearoa", "Ko [name] rāua ko [name] ōku tuakāna?", "[Name] and [name] are my older siblings of same gender?")
     sentence("aotearoa", "Kaore ōku teina", "I have no younger siblings of same gender?")
     sentence("aotearoa", "Kotahi tōku teina", "I have one younger siblings of same gender?")
-    sentence("whakapapa", "Tokohia āu tamariki", "How many children do you have?")
-    sentence("whakapapa", "Tokowhitu āku tamariki Tokohia", "I have 7 children")
+    
     sentence("whakapapa", "Tokohia ngā tamariki o Kuini?", "How many children does the queen have?")
     sentence("whakapapa", "Tokohia āu tuakana", "How many older siblings of your gender do you have")
 
-    showMaoriWords = (v) => v.maori.split(" ")
-    makeWordButtons = () => {
+single user
 
-      maoriWords = []
-      maoriWords = ([...maoriWords, ...sentences.map(showMaoriWords)]) //
-      m = []
-      maoriWords.forEach(v => m = [...m, ...v])
-      m = [...new Set(m)]
-      wordsCurrent = sentences[indexSentences].maori.split(" ")
-      numberWordsCurrent = wordsCurrent.length
-      m = m.filter(v => !wordsCurrent.includes(v)).sort(shuffle).slice(0, 8 - numberWordsCurrent)
-      m = [...m, ...wordsCurrent].map(v => v.toLowerCase()).sort()
-      m.forEach(v => $("buttons").appendChild(document.createElement("button")).innerHTML = v.replace("?", ""))
+where are you from
+grid: ahua hea koe no ...
+no hea koe
+  
+i am from dunedin
+grid: ahau koe no onetahi
+no Onetahi ahau
 
-    }
-    selectMaoriSentence = () => {
-      makeWordButtons()
-      $("maori").innerHTML = sentences[indexSentences].maori
-      indexSentences++
-    }
-    englishClickAction = () => {
-      $("english").innerHTML = sentences[indexSentences].english
-      console.log($("maori").innerHTML + "   " + sentences[indexSentences].maori)
-      if (!$("maori").innerHTML == sentences[indexSentences].maori) $("maori").innerHTML = ""
-      indexSentences++
-      makeWordButtons()
-    }
+Two users
 
-    $("maori").addEventListener("click", selectMaoriSentence)
-    $("english").addEventListener("click", englishClickAction)
+...
+
+
+
+ */
   </script>
 </body>
 
