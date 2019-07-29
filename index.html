@@ -11,39 +11,6 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-  <style>
-    body {
-      background-color: black;
-      color: red;
-      font-family: verdana;
-      font-size: 120%;
-    }
-
-    button {
-      background-color: black;
-      color: red;
-      font-family: verdana;
-      font-size: 3vw;
-      border: 1px solid red;
-      padding: 2% 2%;
-      text-align: left;
-    }
-
-    .group7 {
-      width: 12.5%;
-    }
-
-    .group8 {
-      width: 10.5%;
-    }
-
-    .pressed {
-      background-color: #880000;
-    }
-    }
-  </style>
-
-
 </head>
 
 <body>
@@ -71,9 +38,13 @@ question=true
 message=""
 
 patternsCSV=[
- "how many [relation] do you have,tokohia āu [relation],I have [cardinal] [relation],[cardinal] (t)ōku [relation]",
+  "what is the time,ko te aha te wa,the time is [time],[time] te wa",
+  "how many [relation] do you have,tokohia āu [relation],I have [cardinal] [relation],[cardinal] (t)ōku [relation]",
   "how are you feeling?,kei te pehea koe,I am feeling [feeling],kei te [feeling] ahau",
-  "where are you from?,nō hea koe,I am from [place],nō [place] ahau"
+  "where are you from?,nō hea koe,I am from [place],nō [place] ahau",
+  "Who are your [relation],ko wai [relation],My [relation] name is [name],ko [name] (t)ōku [relation]"
+
+
 
    ]
 
@@ -96,7 +67,12 @@ tupuCSV=[
   "cardinal,two,rua",
   "cardinal,three,toru",
   "relation,father,matua",
-  "relation,mother,whaea"
+  "relation,mother,whaea",
+  "time,2:10,tekau mai i te rua",
+  "time,3:30,haurua mai i te toru",
+  "time,12:45,hauwha ki te tahi",
+  "time,4:50,tekau ki te rima",
+  "time,8:24,rua tekau mai i te waru"
   ]
 
 patterns=[]
@@ -104,7 +80,7 @@ patternsCSV.forEach(v=>patterns.push(makeObject(v.split(","),["englishQ","maoriQ
 
 tupus=[]
 tupuCSV.forEach(v=>tupus.push(makeObject(v.split(","),["topic","english","maori"])))
-  
+
 wordsFromMaoriQuestion=()=>{
   return substituteMaoriVariableWord(patterns[patternIndex].maoriQ).split(" ")
 }
@@ -167,12 +143,12 @@ addElement=(id,elementType,container,width,text)=>{
   element.style.width=width+"%"
   element.id=id
   element.innerHTML=text
-  container.appendChild(element)  
+  container.appendChild(element)
   return element
 }
 
 buttonStyle="color:black;border-style:solid;border-width:1px;"+
-  "font-size:5vw;font-family:verdana"
+  "font-size:3vw;font-family:verdana"
 style="color:black;border-style:none;border-width:1px;"+
   "font-size:3vw;font-family:verdana"
 
@@ -200,12 +176,19 @@ display=()=>{
   document.body.innerHTML=""
   b=addElement(1,"div",document.body,100,"")
   b.addEventListener("click",clicked)
-  nextPatternButton=addElement("nextPatternButton","button",b,33,"next")
-  englishSentence=addElement("englishSentence",
-    "div",b,100,englishSentenceText)
-  messageButton=addElement("message","div",b,20,message)
-  maoriSentenceElement=addElement("maoriSentence","div",
-    b,80,maoriSentenceText)
+  englishDiv=addElement("englishDiv","div",b,100,"")
+    nextPatternButton=addElement("nextPatternButton","button",englishDiv,5,">")
+    englishSentence=addElement("englishSentence",
+    "span",englishDiv,90,englishSentenceText)
+
+  maoriDiv=addElement("maoriDiv","div",b,100,"")
+
+    messageButton=addElement("message","button",maoriDiv,5,message)
+    maoriSentenceElement=addElement("maoriSentence","span",
+      maoriDiv,90,maoriSentenceText)
+
+  deleteButton=addElement("deleteButton","button",maoriDiv,5,"<")
+
   wordGrid=addElement("wordGrid","div",b,100,"")
   gridWords.forEach((v,i)=>addElement("tupu"+i,"button",wordGrid,20,v))
 
@@ -215,11 +198,11 @@ display=()=>{
 
 
 
-clicked=e=>{ 
+clicked=e=>{
   id=e.target.id
   if (id=="nextPatternButton") {
     if (question) {
-      patternIndex++ 
+      patternIndex++
       showEnglishQuestion()
     }
     else {
@@ -227,11 +210,15 @@ clicked=e=>{
     }
   }
  if (id.includes("tupu")) {
-    maoriSentenceText=maoriSentenceText+gridWords[id.match(/\d/g)]+" "
-
-    if (maoriSentenceText.trim()==patterns[patternIndex].maoriQ.toLowerCase()||
-maoriSentenceText.trim()==substituteMaoriVariableWord(patterns[patternIndex].maoriA))  
+    maoriSentenceText=maoriSentenceText+" "+gridWords[id.match(/\d+/g)]
+    console.log(maoriSentenceText);
+    console.log(substituteMaoriVariableWord(patterns[patternIndex].maoriQ))
+    if (maoriSentenceText.trim()==substituteMaoriVariableWord(patterns[patternIndex].maoriQ) ||
+      maoriSentenceText.trim()==substituteMaoriVariableWord(patterns[patternIndex].maoriA))
       message="c"
+  }
+  if (id=="deleteButton") {
+    maoriSentenceText=maoriSentenceText.substring(0,maoriSentenceText.lastIndexOf(" "))
   }
 
   display()
@@ -243,7 +230,7 @@ showEnglishQuestion()
 
 /*
 
-    
+
     sentence("aotearoa", "Ko wai tōu ingoa?", "What is your name?")
     sentence("aotearoa", "Ko [my name] tōku ingoa", "My name is [my name] ")
     sentence("aotearoa", "Ko wai tōna ingoa", "What is their name")
@@ -255,12 +242,11 @@ showEnglishQuestion()
     sentence("aotearoa", "E [feeling] ana ahau", "I am [feeling]")
     sentence("aotearoa", "Ki te taha o tōku matua", "On my Dad's side")
     sentence("aotearoa", "Ko [name] tōku koro", "My grandfather is [name]")
-    sentence("aotearoa", "Ko wai ō tuakāna?", "Who are your older siblings of same gender?")
-    sentence("aotearoa", "Ko wai hoa rangitira?", "Who is your spouse?")
+
     sentence("aotearoa", "Ko [name] rāua ko [name] ōku tuakāna?", "[Name] and [name] are my older siblings of same gender?")
     sentence("aotearoa", "Kaore ōku teina", "I have no younger siblings of same gender?")
     sentence("aotearoa", "Kotahi tōku teina", "I have one younger siblings of same gender?")
-    
+
     sentence("whakapapa", "Tokohia ngā tamariki o Kuini?", "How many children does the queen have?")
     sentence("whakapapa", "Tokohia āu tuakana", "How many older siblings of your gender do you have")
 
@@ -269,7 +255,7 @@ single user
 where are you from
 grid: ahua hea koe no ...
 no hea koe
-  
+
 i am from dunedin
 grid: ahau koe no onetahi
 no Onetahi ahau
