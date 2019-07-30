@@ -36,9 +36,11 @@ shuffle = (a, b) => Math.random() - 0.5
 patternIndex=0
 question=true
 message=""
+variableWordIndex=0
 
 patternsCSV=[
   "what is the time,ko te aha te wa,the time is [time],[time] te wa",
+  "what day is it,ko te aha tēnei rā,the day is [day],ko te [day] tēnei rā",
   "how many [relation] do you have,tokohia āu [relation],I have [cardinal] [relation],[cardinal] (t)ōku [relation]",
   "how are you feeling?,kei te pehea koe,I am feeling [feeling],kei te [feeling] ahau",
   "where are you from?,nō hea koe,I am from [place],nō [place] ahau",
@@ -72,7 +74,15 @@ tupuCSV=[
   "time,3:30,haurua mai i te toru",
   "time,12:45,hauwha ki te tahi",
   "time,4:50,tekau ki te rima",
-  "time,8:24,rua tekau mai i te waru"
+  "time,8:24,rua tekau mai i te waru",
+  "day,monday,Rāhina",
+  "day,tueday,Rātū",
+  "day,wednesday,Rāapa",
+  "day,Thursday,Rāpare",
+  "day,Friday,Rāmere",
+  "day,Saturday,Rāhoroi",
+  "day,Sunday,Rātapu"
+
   ]
 
 patterns=[]
@@ -113,7 +123,8 @@ substituteEnglishVariableWord=(str)=>{
   variableWord=str.match(/\[(\w+)\]/)
   if (variableWord!=null) {
     s=str.replace("["+variableWord[1]+"]",
-      tupus.filter(v=>v.topic==variableWord[1])[0].english)
+      tupus.filter(v=>v.topic==variableWord[1])[variableWordIndex].english)
+      variableWordIndex++
     return s
   }
   else{
@@ -125,7 +136,7 @@ substituteMaoriVariableWord=(str)=>{
   variableWord=str.match(/\[(\w+)\]/)
   if (variableWord!=null) {
     s=str.replace("["+variableWord[1]+"]",
-      tupus.filter(v=>v.topic==variableWord[1])[0].maori)
+      tupus.filter(v=>v.topic==variableWord[1])[variableWordIndex].maori)
     return s
   }
   else{
@@ -158,7 +169,7 @@ showEnglishQuestion=()=>{
     substituteEnglishVariableWord(patterns[patternIndex].englishQ)
   message=""
   gridWords=maoriWords()
-  question=!question
+  //question=!question
   display()
 }
 
@@ -168,8 +179,8 @@ showEnglishAnswer=()=>{
   englishSentenceText=
     substituteEnglishVariableWord(patterns[patternIndex].englishA)
   gridWords=maoriWords()
-question=!question
-  display()
+//question=!question
+ display()
 }
 
 display=()=>{
@@ -178,17 +189,12 @@ display=()=>{
   b.addEventListener("click",clicked)
   englishDiv=addElement("englishDiv","div",b,100,"")
     nextPatternButton=addElement("nextPatternButton","button",englishDiv,5,">")
-    englishSentence=addElement("englishSentence",
-    "span",englishDiv,90,englishSentenceText)
-
+    redoButton=addElement("redoButton","button",englishDiv,5,"@")
+    englishSentence=addElement("englishSentence","span",englishDiv,90,englishSentenceText)
   maoriDiv=addElement("maoriDiv","div",b,100,"")
-
     messageButton=addElement("message","button",maoriDiv,5,message)
-    maoriSentenceElement=addElement("maoriSentence","span",
-      maoriDiv,90,maoriSentenceText)
-
-  deleteButton=addElement("deleteButton","button",maoriDiv,5,"<")
-
+    maoriSentenceElement=addElement("maoriSentence","span",maoriDiv,90,maoriSentenceText)
+    deleteButton=addElement("deleteButton","button",maoriDiv,5,"<")
   wordGrid=addElement("wordGrid","div",b,100,"")
   gridWords.forEach((v,i)=>addElement("tupu"+i,"button",wordGrid,20,v))
 
@@ -196,16 +202,16 @@ display=()=>{
 
 //CONTROLLER
 
-
-
 clicked=e=>{
   id=e.target.id
   if (id=="nextPatternButton") {
     if (question) {
       patternIndex++
+      question=!question
       showEnglishQuestion()
     }
     else {
+      question=!question
       showEnglishAnswer()
     }
   }
@@ -221,6 +227,14 @@ clicked=e=>{
     maoriSentenceText=maoriSentenceText.substring(0,maoriSentenceText.lastIndexOf(" "))
   }
 
+  if (id=="redoButton") {
+    if (question) {
+      showEnglishQuestion()
+    }
+    else {
+      showEnglishAnswer()
+    }
+  }
   display()
 }
 
