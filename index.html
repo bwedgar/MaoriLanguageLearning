@@ -18,7 +18,7 @@
   <script>
     addEventListener('load', function(e) {
 
-      cl = (arg) => console.log(arg)
+      cl = (arg) => console.log(arg.toString() + " " + arg)
       makeObject = (array, names) => {
         o = {}
         names.map((v, i) => o[v] = array[i])
@@ -30,8 +30,7 @@
 
       patternIndex = 0
       question = true
-      message = ""
-      tupusIndex = 0
+      substitutedWordIndex = 0
       englishSentenceText = " "
       maoriSentenceText = " "
       maoriAnswerText = "."
@@ -81,7 +80,18 @@
         "day,Friday,Rāmere",
         "day,Saturday,Rāhoroi",
         "day,Sunday,Rātapu",
-        "month,January,hjhj",
+        "month,January,Kohitātea",
+        "month,February,Hui-tanguru",
+        "month,March,Poutū-te-rangi",
+        "month,April,Paenga-whāwhā",
+        "month,May,Haratua",
+        "month,June,Pipiri",
+        "month,July,Hōngongoi",
+        "month,August,Here-turi-kōkā",
+        "month,September,Mahuru",
+        "month,October,Whiringa-ā-nuku",
+        "month,November,Whiringa-ā-rangi",
+        "month,December,Hakihea",
         "locative,under,raro",
         "locative,on,runga",
         "locative,outside,waho",
@@ -105,8 +115,8 @@
       substituteEnglishVariableWord = (str) => {
         variableWord = str.match(/\[(\w+)\]/)
         if (variableWord != null) {
-          s = str.replace("[" + variableWord[1] + "]", tupus.filter(v => v.topic == variableWord[1])[tupusIndex].english)
-          tupusIndex = (tupusIndex == tupus.filter(v => v.topic == variableWord[1]).length) ? 0 : tupusIndex++
+          s = str.replace("[" + variableWord[1] + "]", tupus.filter(v => v.topic == variableWord[1])[substitutedWordIndex].english)
+          substitutedWordIndex = (substitutedWordIndex == tupus.filter(v => v.topic == variableWord[1]).length) ? 0 : substitutedWordIndex++
           return s
         } else {
           return str
@@ -116,8 +126,8 @@
       substituteMaoriVariableWord = (str) => {
         variableWord = str.match(/\[(\w+)\]/)
         if (variableWord != null) {
-          s = str.replace("[" + variableWord[1] + "]", tupus.filter(v => v.topic == variableWord[1])[tupusIndex].maori)
-          tupusIndex = (tupusIndex == tupus.filter(v => v.topic == variableWord[1]).length) ? 0 : tupusIndex++
+          s = str.replace("[" + variableWord[1] + "]", tupus.filter(v => v.topic == variableWord[1])[substitutedWordIndex].maori)
+          substitutedWordIndex = (substitutedWordIndex == tupus.filter(v => v.topic == variableWord[1]).length) ? 0 : substitutedWordIndex++
           return s
         } else {
           return str
@@ -136,15 +146,28 @@
 
       maoriWordList = () => {
         list = []
-        patterns.forEach(v => list = [...list, ...v.maoriQ.split(" ")])
+        patterns.forEach(v => list = [...list, ...v.maoriQ.replace(/ \[(\w+)\]/,"").split(" ")])
+        return list
+      }
+
+      topicWordList=()=>{
+        list=[]
+        //cl(patterns[patternIndex].englishQ)
+        str=question?patterns[patternIndex].englishQ:patterns[patternIndex].englishA
+        variableWord = str.match(/\[(\w+)\]/)
+        if (variableWord != null) {
+        tupus.filter(v => v.topic == variableWord[1]).forEach(v=>list=[...list,...v.maori.split(" ")])
+      }
+      cl(question)
         return list
       }
 
       makeGridWords = () => {
-        words = maoriSentenceText.split(" ")
-        words = [...words, ...maoriWordList()]
+        words = maoriSentenceText.replace(/\[(\w+)\]/,"").split(" ")
+        words = [...words, ...maoriWordList(),...topicWordList(),...["tōku","rāua","ki","ō","aha","koutou","ona","tōu","haere","māua","i","etahi"]]
         words = [...new Set(words)]
-        words = words.sort()
+        words=words.slice(0,24)
+        words = words.sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase()))
         gridWords = words
         //numberWordsCurrent = wordsCurrent.length
         //m = m.filter(v => !wordsCurrent.includes(v)).
@@ -169,13 +192,13 @@
         return element
       }
 
-      buttonStyle = "color:black;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
+      buttonStyle = "position:relative;color:black;background:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
       buttonLeftStyle = buttonStyle + "position:relative;float:left;"
-      buttonRightStyle = buttonStyle + "position:absolute;right:0;"
-      divStyle = "display:block;background-color:red;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
+      buttonRightStyle = buttonStyle + "position:relative;right:0;"
+      divStyle = "position:relative;display:block;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
 
-      sentenceStyle = "color:black;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
-      correctButtonStyle = "color:lime;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
+      sentenceStyle = "color:black;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
+      correctButtonStyle = "color:limeGreen;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
 
       display = () => {
         updateModel()
@@ -187,14 +210,14 @@
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
         redoButton = addElement("redoButton", "button", englishDiv, 15, buttonLeftStyle, "@")
         englishSentence = addElement("englishSentence", "button", englishDiv, 70, buttonStyle, englishSentenceText)
-        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 16, buttonRightStyle, ">")
+        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 15, buttonRightStyle, ">")
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
         maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 85, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
-        deleteButton = addElement("deleteButton", "button", maoriDiv, 16, buttonRightStyle, "del")
+        deleteButton = addElement("deleteButton", "button", maoriDiv, 15, buttonRightStyle, "del")
 
         wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "")
-        gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 33, buttonStyle, v))
+        gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 33.33, buttonStyle, v))
       }
 
       //CONTROLLER
@@ -203,18 +226,18 @@
         id = e.target.id
 
         if (id == "nextPatternButton") {
-          question=!question
+          question = !question
           if (question) {
             patternIndex++
           }
-          tupusIndex = 0
+          substitutedWordIndex = 0
           maoriAnswerText = "."
           sentenceCorrect = false
         }
 
         if (id.includes("tupu")) {
           maoriAnswerText = maoriAnswerText + " " + gridWords[id.match(/\d+/g)]
-          maoriAnswerText=maoriAnswerText.replace(".","")
+          maoriAnswerText = maoriAnswerText.replace(".", "")
           console.log(maoriSentenceText)
           if (maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriQ) ||
             maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriA))
@@ -223,11 +246,12 @@
 
         if (id == "deleteButton") {
           maoriAnswerText = maoriAnswerText.substring(0, maoriAnswerText.lastIndexOf(" "))
-          sentenceCorrect=false
+          sentenceCorrect = false
         }
 
         if (id == "redoButton") {
           maoriAnswerText = "."
+          substitutedWordIndex++
           sentenceCorrect = false
         }
         display()
