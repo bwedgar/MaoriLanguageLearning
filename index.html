@@ -32,9 +32,11 @@
       question = true
       message = ""
       tupusIndex = 0
-      maoriSentenceText = ""
-      maoriAnswerText = ""
-      gridWords=[]
+      englishSentenceText = "                 "
+      maoriSentenceText = "                "
+      maoriAnswerText = "                  "
+      gridWords = []
+      sentenceCorrect = false
 
       patternsCSV = [
         "what is the time,ko te aha te wa,the time is [time],ko te [time] te wa",
@@ -126,7 +128,7 @@
           englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishQ)
           maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriQ)
         } else {
-          englishSentenceText = substituteEngishVariableWord(patterns[patternIndex].englishA)
+          englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishA)
           maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriA)
         }
       }
@@ -142,23 +144,25 @@
         words = [...words, ...maoriWordList()]
         words = [...new Set(words)]
         words = words.sort()
-        gridWords= words
+        gridWords = words
         //numberWordsCurrent = wordsCurrent.length
         //m = m.filter(v => !wordsCurrent.includes(v)).
         //sort(shuffle).slice(0, 8 - numberWordsCurrent)
       }
 
       updateModel = () => {
+
         makeSentences(patternIndex, question)
         makeGridWords()
       }
 
       //VIEW
 
-      addElement = (id, elementType, container, width, text) => {
+      addElement = (id, elementType, container, width, style, text) => {
         element = document.createElement(elementType)
-        if (elementType == "button") element.style.cssText = buttonStyle
-        else element.style.cssText = style
+        //if (elementType == "button") element.style.cssText = buttonStyle
+        //else
+        element.style.cssText = style
         element.style.width = width + "%"
         element.id = id
         element.innerHTML = text
@@ -166,72 +170,65 @@
         return element
       }
 
-      buttonStyle = "color:black;border-style:solid;border-width:1px;" +
-        "font-size:3vw;font-family:verdana"
-      style = "color:black;border-style:none;border-width:1px;" +
-        "font-size:3vw;font-family:verdana"
+      buttonStyle = "color:black;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
+      buttonLeftStyle = buttonStyle + "float:left"
+      buttonRightStyle = buttonStyle + "float:right"
+      divStyle = "background-color:red;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
+
+      sentenceStyle = "color:black;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
+      correctStyle = "color:lime;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
 
       display = () => {
         updateModel()
         document.body.innerHTML = ""
-        b = addElement(1, "div", document.body, 100, "")
+        b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
-        englishDiv = addElement("englishDiv", "div", b, 100, "")
-        redoButton = addElement("redoButton", "button", englishDiv, 15, "@")
-        englishSentence = addElement("englishSentence", "span", englishDiv, 70, englishSentenceText)
-        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 15, ">")
-        maoriDiv = addElement("maoriDiv", "div", b, 100, "")
-        messageButton = addElement("message", "button", maoriDiv, 5, message)
-        maoriSentenceElement = addElement("maoriSentence", "span", maoriDiv, 90, maoriAnswerText)
-        deleteButton = addElement("deleteButton", "button", maoriDiv, 5, "<")
-        wordGrid = addElement("wordGrid", "div", b, 100, "")
-        //cl(objSentence(patternIndex, question).maori)
-        //makeSentences(patternIndex, question)
-        gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 20, v))
-
+        englishDiv = addElement("englishDiv", "div", b, 100, "", "")
+        redoButton = addElement("redoButton", "button", englishDiv, 15, buttonLeftStyle, "@")
+        englishSentence = addElement("englishSentence", "span", englishDiv, 70, sentenceStyle, englishSentenceText)
+        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 15, buttonRightStyle, ">")
+        maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, " ")
+        maoriSentenceElement = addElement("maoriSentence", "span", maoriDiv, 85, sentenceCorrect ? correctStyle : sentenceStyle, maoriAnswerText)
+        deleteButton = addElement("deleteButton", "button", maoriDiv, 15, buttonRightStyle, "del")
+        wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "     ")
+        gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 20, buttonStyle, v))
       }
 
       //CONTROLLER
 
       clicked = e => {
         id = e.target.id
+
         if (id == "nextPatternButton") {
+          question=!question
           if (question) {
             patternIndex++
-            tupusIndex = 0
-            question = !question
-            showEnglishQuestion()
-          } else {
-            question = !question
-            showEnglishAnswer()
           }
+          tupusIndex = 0
+          maoriAnswerText = ""
+          sentenceCorrect = false
         }
+
         if (id.includes("tupu")) {
-          console.log(gridWords)
           maoriAnswerText = maoriAnswerText + " " + gridWords[id.match(/\d+/g)]
-          //console.log(maoriAnswerText)
           console.log(maoriSentenceText)
           if (maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriQ) ||
             maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriA))
-            message = "c"
+            sentenceCorrect = true
         }
+
         if (id == "deleteButton") {
           maoriAnswerText = maoriAnswerText.substring(0, maoriAnswerText.lastIndexOf(" "))
         }
 
         if (id == "redoButton") {
-          if (question) {
-            showEnglishQuestion()
-          } else {
-            showEnglishAnswer()
-          }
+          maoriAnswerText = ""
+          sentenceCorrect = false
         }
         display()
       }
 
       display()
-
-
     })
   </script>
 </body>
