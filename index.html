@@ -32,9 +32,9 @@
       question = true
       message = ""
       tupusIndex = 0
-      englishSentenceText = "                 "
-      maoriSentenceText = "                "
-      maoriAnswerText = "                  "
+      englishSentenceText = " "
+      maoriSentenceText = " "
+      maoriAnswerText = "."
       gridWords = []
       sentenceCorrect = false
 
@@ -81,6 +81,7 @@
         "day,Friday,Rāmere",
         "day,Saturday,Rāhoroi",
         "day,Sunday,Rātapu",
+        "month,January,hjhj",
         "locative,under,raro",
         "locative,on,runga",
         "locative,outside,waho",
@@ -160,8 +161,6 @@
 
       addElement = (id, elementType, container, width, style, text) => {
         element = document.createElement(elementType)
-        //if (elementType == "button") element.style.cssText = buttonStyle
-        //else
         element.style.cssText = style
         element.style.width = width + "%"
         element.id = id
@@ -171,27 +170,31 @@
       }
 
       buttonStyle = "color:black;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
-      buttonLeftStyle = buttonStyle + "float:left"
-      buttonRightStyle = buttonStyle + "float:right"
-      divStyle = "background-color:red;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
+      buttonLeftStyle = buttonStyle + "position:relative;float:left;"
+      buttonRightStyle = buttonStyle + "position:absolute;right:0;"
+      divStyle = "display:block;background-color:red;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
 
-      sentenceStyle = "color:black;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
-      correctStyle = "color:lime;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
+      sentenceStyle = "color:black;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
+      correctButtonStyle = "color:lime;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
 
       display = () => {
         updateModel()
+        cl(maoriAnswerText)
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
-        englishDiv = addElement("englishDiv", "div", b, 100, "", "")
+
+        englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
         redoButton = addElement("redoButton", "button", englishDiv, 15, buttonLeftStyle, "@")
-        englishSentence = addElement("englishSentence", "span", englishDiv, 70, sentenceStyle, englishSentenceText)
-        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 15, buttonRightStyle, ">")
-        maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, " ")
-        maoriSentenceElement = addElement("maoriSentence", "span", maoriDiv, 85, sentenceCorrect ? correctStyle : sentenceStyle, maoriAnswerText)
-        deleteButton = addElement("deleteButton", "button", maoriDiv, 15, buttonRightStyle, "del")
-        wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "     ")
-        gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 20, buttonStyle, v))
+        englishSentence = addElement("englishSentence", "button", englishDiv, 70, buttonStyle, englishSentenceText)
+        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 16, buttonRightStyle, ">")
+
+        maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
+        maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 85, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
+        deleteButton = addElement("deleteButton", "button", maoriDiv, 16, buttonRightStyle, "del")
+
+        wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "")
+        gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 33, buttonStyle, v))
       }
 
       //CONTROLLER
@@ -205,12 +208,13 @@
             patternIndex++
           }
           tupusIndex = 0
-          maoriAnswerText = ""
+          maoriAnswerText = "."
           sentenceCorrect = false
         }
 
         if (id.includes("tupu")) {
           maoriAnswerText = maoriAnswerText + " " + gridWords[id.match(/\d+/g)]
+          maoriAnswerText=maoriAnswerText.replace(".","")
           console.log(maoriSentenceText)
           if (maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriQ) ||
             maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriA))
@@ -219,10 +223,11 @@
 
         if (id == "deleteButton") {
           maoriAnswerText = maoriAnswerText.substring(0, maoriAnswerText.lastIndexOf(" "))
+          sentenceCorrect=false
         }
 
         if (id == "redoButton") {
-          maoriAnswerText = ""
+          maoriAnswerText = "."
           sentenceCorrect = false
         }
         display()
