@@ -228,7 +228,8 @@
         if (id == "nextPatternButton") {
           question = !question
           if (question) {
-            patternIndex++
+            patternIndex=(patternIndex==patterns.length-1)?0:patternIndex+1
+            cl(patternIndex)
           }
           substitutedWordIndex = 0
           maoriAnswerText = "."
