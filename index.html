@@ -18,13 +18,14 @@
   <script>
     addEventListener('load', function(e) {
 
-      cl = (arg) => console.log(arg.toString() + " " + arg)
+      cl = (arg) => console.log(arg)
       makeObject = (array, names) => {
         o = {}
         names.map((v, i) => o[v] = array[i])
         return o
       }
-      shuffle = (a, b) => Math.random() - 0.5
+      r = 67
+      shuffle = (a, b) => Math.random(r) - 0.5
 
       //MODEL
 
@@ -38,6 +39,7 @@
       sentenceCorrect = false
 
       patternsCSV = [
+        "what is/am/are [pronoun] doing,kei te aha [pronoun], [pronoun] is/am/are [verb],kei te [verb] [pronoun]",
         "what is the time,ko te aha te wa,the time is [time],ko te [time] te wa",
         "what day is it,ko te aha tēnei rā,the day is [day],ko te [day] tēnei rā",
         "what month is this,ko te aha tēnei marama,the month is [month],ko [month] tēnei marama",
@@ -45,7 +47,8 @@
         "how are you feeling?,kei te pehea koe,I am feeling [feeling],kei te [feeling] ahau",
         "where are you from?,nō hea koe,I am from [place],nō [place] ahau",
         "where is Mere,kei hea a Mere,Mere is [locative] the house,kei [locative] a Mere i te whare",
-        "Who is/are your [relation],ko wai [relation],My [relation] is Mere,ko Mere (t)ōku [relation]"
+        "who is/are your [relation],ko wai [relation],My [relation] is Mere,ko Mere (t)ōku [relation]"
+
       ]
 
       tupuCSV = [
@@ -102,7 +105,24 @@
         "locative,konei,by me",
         "locative,konā,by you",
         "locative,kora,by them",
-        "locative,overseas,tāwāhi"
+        "locative,overseas,tāwāhi",
+        "pronoun,I/me,ahau",
+        "pronoun,you,koe",
+        "pronoun,him/her,ia",
+        "pronoun,we (2 including you),tāua",
+        "pronoun,we (3+ including you),tātou",
+        "pronoun,we (2 but not you),māua",
+        "pronoun,we (3+ but not you),mātou",
+        "pronoun,you (2),kōrua",
+        "pronoun,you (3+),koutou",
+        "pronoun,they (2),rāua",
+        "pronoun,they (3+),rātou",
+        "verb,eating,kai",
+        "verb,singing,waiata",
+        "verb,sleeping,moe",
+        "verb,walking,hikoi"
+
+
 
       ]
 
@@ -111,28 +131,37 @@
 
       tupus = []
       tupuCSV.forEach(v => tupus.push(makeObject(v.split(","), ["topic", "english", "maori"])))
+      tupus.sort(shuffle)
+
 
       substituteEnglishVariableWord = (str) => {
-        variableWord = str.match(/\[(\w+)\]/)
+        variableWord = str.match(/\[(\w+)\]/g)
+        s = str
         if (variableWord != null) {
-          s = str.replace("[" + variableWord[1] + "]", tupus.filter(v => v.topic == variableWord[1])[substitutedWordIndex].english)
-          substitutedWordIndex = (substitutedWordIndex == tupus.filter(v => v.topic == variableWord[1]).length) ? 0 : substitutedWordIndex++
-          return s
-        } else {
-          return str
+          variableWord.forEach((item) => {
+            item = item.replace("[", "").replace("]", "")
+            variableWords = tupus.filter(v => (v.topic == item))
+            s = s.replace("[" + item + "]", variableWords[substitutedWordIndex].english)
+          })
         }
+        return s
       }
 
       substituteMaoriVariableWord = (str) => {
-        variableWord = str.match(/\[(\w+)\]/)
+        variableWord = str.match(/\[(\w+)\]/g)
+        s = str
         if (variableWord != null) {
-          s = str.replace("[" + variableWord[1] + "]", tupus.filter(v => v.topic == variableWord[1])[substitutedWordIndex].maori)
-          substitutedWordIndex = (substitutedWordIndex == tupus.filter(v => v.topic == variableWord[1]).length) ? 0 : substitutedWordIndex++
-          return s
-        } else {
-          return str
+          variableWord.forEach((item) => {
+            item = item.replace("[", "").replace("]", "")
+            variableWords = tupus.filter(v => (v.topic == item))
+            s = s.replace("[" + item + "]", variableWords[substitutedWordIndex].maori)
+          })
         }
+        return s
       }
+
+      //  substitutedWordIndex = (substitutedWordIndex == tupus.filter(v => v.topic == variableWord[1]).length) ? 0 : substitutedWordIndex++
+
 
       makeSentences = (patternIndex, question) => {
         if (question) {
@@ -146,36 +175,30 @@
 
       maoriWordList = () => {
         list = []
-        patterns.forEach(v => list = [...list, ...v.maoriQ.replace(/ \[(\w+)\]/,"").split(" ")])
+        patterns.forEach(v => list = [...list, ...v.maoriQ.replace(/ \[(\w+)\]/, "").split(" ")])
         return list
       }
 
-      topicWordList=()=>{
-        list=[]
-        //cl(patterns[patternIndex].englishQ)
-        str=question?patterns[patternIndex].englishQ:patterns[patternIndex].englishA
+      topicWordList = () => {
+        list = []
+        str = question ? patterns[patternIndex].englishQ : patterns[patternIndex].englishA
         variableWord = str.match(/\[(\w+)\]/)
         if (variableWord != null) {
-        tupus.filter(v => v.topic == variableWord[1]).forEach(v=>list=[...list,...v.maori.split(" ")])
-      }
-      cl(question)
+          tupus.filter(v => v.topic == variableWord[1]).forEach(v => list = [...list, ...v.maori.split(" ")])
+        }
         return list
       }
 
       makeGridWords = () => {
-        words = maoriSentenceText.replace(/\[(\w+)\]/,"").split(" ")
-        words = [...words, ...maoriWordList(),...topicWordList(),...["tōku","rāua","ki","ō","aha","koutou","ona","tōu","haere","māua","i","etahi"]]
+        words = maoriSentenceText.replace(/\[(\w+)\]/, "").split(" ")
+        words = [...words, ...maoriWordList(), ...topicWordList()] //, ...["tōku", "rāua", "ki", "ō", "aha", "koutou", "ona", "tōu", "haere", "māua", "i", "etahi"]]
         words = [...new Set(words)]
-        words=words.slice(0,24)
-        words = words.sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase()))
+        words = words.slice(0, 24)
+        words = words.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         gridWords = words
-        //numberWordsCurrent = wordsCurrent.length
-        //m = m.filter(v => !wordsCurrent.includes(v)).
-        //sort(shuffle).slice(0, 8 - numberWordsCurrent)
       }
 
       updateModel = () => {
-
         makeSentences(patternIndex, question)
         makeGridWords()
       }
@@ -197,7 +220,7 @@
       buttonRightStyle = buttonStyle + "position:relative;right:0;"
       divStyle = "position:relative;display:block;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
 
-      sentenceStyle = "color:black;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
+      //sentenceStyle = "color:black;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
       correctButtonStyle = "color:limeGreen;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
 
       display = () => {
@@ -228,18 +251,20 @@
         if (id == "nextPatternButton") {
           question = !question
           if (question) {
-            patternIndex=(patternIndex==patterns.length-1)?0:patternIndex+1
-            cl(patternIndex)
+            patternIndex = (patternIndex == patterns.length - 1) ? 0 : patternIndex + 1
           }
           substitutedWordIndex = 0
           maoriAnswerText = "."
           sentenceCorrect = false
         }
 
+        if (id == "englishSentence") {
+          alert(maoriSentenceText)
+        }
+
         if (id.includes("tupu")) {
           maoriAnswerText = maoriAnswerText + " " + gridWords[id.match(/\d+/g)]
           maoriAnswerText = maoriAnswerText.replace(".", "")
-          console.log(maoriSentenceText)
           if (maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriQ) ||
             maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriA))
             sentenceCorrect = true
