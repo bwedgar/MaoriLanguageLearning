@@ -24,7 +24,7 @@
         names.map((v, i) => o[v] = array[i])
         return o
       }
-      r = 67
+      r = Math.random()
       shuffle = (a, b) => Math.random(r) - 0.5
 
       //MODEL
@@ -39,7 +39,12 @@
       sentenceCorrect = false
 
       patternsCSV = [
-        "what is/am/are [pronoun] doing,kei te aha [pronoun], [pronoun] is/am/are [verb],kei te [verb] [pronoun]",
+        "what will the [noun1] do,ka aha te [noun1],the [noun1] will [verb1],ka [verb1] te [noun1]",
+        "what is the [noun1] doing,kei te aha te [noun1],the [noun1] is [verb2],kei te [verb2] te [noun1]",
+        "what has the [noun1] done,kua aha te [noun1],the [noun1] has [verb3],kua [verb3] te [noun1]",
+        "what did the [noun1] do,i aha te [noun1],the [noun1] [verb4] -ed,i [verb4] te [noun1]",
+        "what was the [noun1] doing,i te aha [noun1],the [noun1] was [verb5] -ing,i te [verb5] te [noun1]",
+        "the [noun1] will be [feeling1],ka [feeling1] te [noun1],the [noun1] is [feeling2],kei te [feeling2] te [noun1]",
         "what is the time,ko te aha te wa,the time is [time],ko te [time] te wa",
         "what day is it,ko te aha tēnei rā,the day is [day],ko te [day] tēnei rā",
         "what month is this,ko te aha tēnei marama,the month is [month],ko [month] tēnei marama",
@@ -47,7 +52,8 @@
         "how are you feeling?,kei te pehea koe,I am feeling [feeling],kei te [feeling] ahau",
         "where are you from?,nō hea koe,I am from [place],nō [place] ahau",
         "where is Mere,kei hea a Mere,Mere is [locative] the house,kei [locative] a Mere i te whare",
-        "who is/are your [relation],ko wai [relation],My [relation] is Mere,ko Mere (t)ōku [relation]"
+        "who is/are your [relation],ko wai [relation],My [relation] is Mere,ko Mere (t)ōku [relation]",
+        "what is/am/are [pronoun] doing,kei te aha [pronoun], [pronoun] is/am/are [verb],kei te [verb] [pronoun]"
 
       ]
 
@@ -55,17 +61,36 @@
         "place,Dunedin,Onetāhi",
         "place,Auckland,Tamaki Makaurau",
         "place,One Tree Hill,Maungakiekie",
-        "feeling,happy,hari",
-        "feeling,bored,hōhā",
-        "feeling,sick,māuiui",
-        "feeling,angry,pukuriri",
-        "feeling,sleepy,hiamoe",
-        "feeling,surprised,ohorere",
-        "feeling,overjoyed,harikoa",
-        "feeling,confused,rangirua",
-        "feeling,hot,wera",
-        "feeling,cold,makariri",
-        "feeling,good,pai",
+        "feeling1,happy,hari",
+        "feeling1,bored,hōhā",
+        "feeling1,sick,māuiui",
+        "feeling1,furious,pukuriri",
+        "feeling1,sleepy,hiamoe",
+        "feeling1,surprised,ohorere",
+        "feeling1,overjoyed,harikoa",
+        "feeling1,confused,rangirua",
+        "feeling1,hot,wera",
+        "feeling1,cold,makariri",
+        "feeling2,good,pai",
+        "feeling2,tired,ngēngē",
+        "feeling2,lost,ngaro",
+        "feeling2,arrogant,whakahīhī",
+        "feeling2,lazy,māngere",
+        "feeling2,thirsty,hiainu",
+        "feeling2,angry,riri",
+        "feeling2,correct,tika",
+        "feeling2,well,ora",
+        "feeling2,worried,āwangawanga",
+        "feeling3,sad,pōuri",
+        "feeling3,bad,kino",
+        "feeling3,scared,mataku",
+        "feeling3,confused,kutekute",
+        "feeling3,hungry,hiakai",
+        "feeling3,sharp,koi",
+        "feeling3,wrong,ku to he",
+        "feeling3,annoyed,whakahohā",
+        "feeling3,pleased,waingohia",
+
         "cardinal,one,kotahi",
         "cardinal,two,rua",
         "cardinal,three,toru",
@@ -117,10 +142,72 @@
         "pronoun,you (3+),koutou",
         "pronoun,they (2),rāua",
         "pronoun,they (3+),rātou",
-        "verb,eating,kai",
-        "verb,singing,waiata",
-        "verb,sleeping,moe",
-        "verb,walking,hikoi"
+        "verb1,eating,kai",
+        "verb1,singing,waiata",
+        "verb1,sleeping,moe",
+        "verb1,walking,hīkoi",
+        "verb1,drink,inu",
+        "verb1,nourish,whāngai",
+        "verb1,run,oma",
+        "verb1,come,haere",
+        "verb1,cry,tangi",
+        "verb1,work,mahi",
+        "verb1,talk,kōrero",
+        "verb1,snore,ngōngoro",
+        "verb2,read,pānui",
+        "verb2,shout,ūmere",
+        "verb2,stand,tū",
+        "verb2,carry,hari",
+        "verb2,come,kuhu",
+        "verb2,come down,heke",
+        "verb2,cook,tunu",
+        "verb2,gather,tiki",
+        "verb2,buy,utu",
+        "verb2,learn,ako",
+        "verb3,return,hoki",
+        "verb3,pray,inoi",
+        "verb3,understand,mārama",
+        "verb3,māharahara",
+        "verb3,cut,tapahi",
+        "verb3,dance,kanikani",
+        "verb3,look,titro",
+        "verb3,see,kite",
+        "verb3,greet,mihi",
+        "verb3,call,karanga",
+        "verb4,write,tuhi",
+        "verb4,argue,tautohetohe",
+        "verb4,listen,whakarongo",
+        "verb4,laugh,katakata",
+        "verb4,sit,noho",
+        "verb4,purchase,hoko",
+        "verb4,exit,puta",
+        "verb4,climb,piki",
+        "verb4,take off,tango",
+        "verb4,wait,taihoa",
+        "verb5,kiss,kihi",
+        "verb5,answer,whakautu",
+        "verb5,teach,akona",
+        "verb5,give back,homai",
+        "verb5,question,patai",
+        "verb5,know,mōhio",
+        "verb5,send,tono",
+
+
+
+
+        "tense,am/are,kei te",
+        "tense,will,ka",
+        "tense,has just,kua",
+        "tense,had,i",
+        "tense,was,i te",
+        "noun1,dog,kurī",
+        "noun1,sheep,hipi",
+        "noun1,man,tane",
+        "noun1,woman,wahine",
+        "noun1,teacher,kaiako",
+        "noun1,student,tauira",
+        "noun1,day,rā"
+
 
 
 
@@ -259,6 +346,14 @@
         }
 
         if (id == "englishSentence") {
+          topics=""
+          list=tupus.filter(v=>(v.topic=="feeling"))
+          str=""
+          list.forEach(v=>str=str+v.english+" "+v.maori+"\n")
+          alert(str)
+        }
+
+        if (id == "maoriSentence") {
           alert(maoriSentenceText)
         }
 
