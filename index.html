@@ -39,12 +39,21 @@
       sentenceCorrect = false
 
       patternsCSV = [
-        "what will the [noun1] do,ka aha te [noun1],the [noun1] will [verb1],ka [verb1] te [noun1]",
-        "what is the [noun1] doing,kei te aha te [noun1],the [noun1] is [verb2],kei te [verb2] te [noun1]",
-        "what has the [noun1] done,kua aha te [noun1],the [noun1] has [verb3],kua [verb3] te [noun1]",
-        "what did the [noun1] do,i aha te [noun1],the [noun1] [verb4] -ed,i [verb4] te [noun1]",
-        "what was the [noun1] doing,i te aha [noun1],the [noun1] was [verb5] -ing,i te [verb5] te [noun1]",
-        "the [noun1] will be [feeling1],ka [feeling1] te [noun1],the [noun1] is [feeling2],kei te [feeling2] te [noun1]",
+        // "what will the [noun1] do,ka aha te [noun1],the [noun1] will [verb1],ka [verb1] te [noun1]",
+        // "what is the [noun1] doing,kei te aha te [noun1],the [noun1] is [verb2],kei te [verb2] te [noun1]",
+        // "what has the [noun1] done,kua aha te [noun1],the [noun1] has [verb3],kua [verb3] te [noun1]",
+        // "what did the [noun1] do,i aha te [noun1],the [noun1] [verb4] -ed,i [verb4] te [noun1]",
+        // "what was the [noun1] doing,i te aha [noun1],the [noun1] was [verb5] -ing,i te [verb5] te [noun1]",
+
+"how much does [noun2] cost,e hia te utu mō te [noun2],3 dollars and 20 cents is the cost of the [noun2],e toru tāra e rua tehau hēneti te utu mō te [noun2]",
+"how much does [noun1] cost,e hia te utu mō te [noun1] ,33 dollars and 15 cents is the cost of the [noun1] ,e toru tāra e rua tehau hēneti te utu mō te [noun1] ",
+
+  "the [noun1] will [verb1],ka [verb1] te [noun1],the [noun1] is [verb1] -ing,kei te [verb1] te [noun1]",
+        "the [noun1] has [verb2] -ed,kua [verb2] te [noun1],the [noun1] [verb2] -ed,i [verb2] te [noun1]",
+        "the [noun1] was [verb3] -ing,i te [verb3] te [noun1],the [noun1] is still [verb3] -ing,e [verb3] ana te [noun1]",
+//"the [noun1] is [verb1] the [noun2],kei te [verb1] te [noun1] i te [noun2],the [noun1] is [verb1] the [noun2],kei te [verb1] te [noun1] ki te [noun2]",
+        "the [noun1] will be [feeling1],ka [feeling1] te [noun1],the [noun1] is [feeling1],kei te [feeling1] te [noun1]",
+        "the [noun1] has been [feeling2],kua [feeling2] te [noun1],the [noun1] was [feeling2],i [feeling2] te [noun1]",
         "what is the time,ko te aha te wa,the time is [time],ko te [time] te wa",
         "what day is it,ko te aha tēnei rā,the day is [day],ko te [day] tēnei rā",
         "what month is this,ko te aha tēnei marama,the month is [month],ko [month] tēnei marama",
@@ -61,6 +70,16 @@
         "place,Dunedin,Onetāhi",
         "place,Auckland,Tamaki Makaurau",
         "place,One Tree Hill,Maungakiekie",
+        "place,New Plymouth,Ngāmotu",
+        "place,Christchurch,Ōtautahi",
+        "place,Taupō,aupō-nui-a Tia",
+        "place,Tauranga,Tauranga-moana",
+        "place,Kaikoura,Te Ahi-kai-kōura-a-Tama-ki-te-rangi",
+        "place,Hokianga,Te Hokianga-a-Kupe",
+        "place,Wellington,Te Whanga-nui-a-Tara",
+        "place,Nelson,Whakatū",
+        "place,Gisborne,Tūranga-nui-a-Kiwa",
+
         "feeling1,happy,hari",
         "feeling1,bored,hōhā",
         "feeling1,sick,māuiui",
@@ -206,7 +225,17 @@
         "noun1,woman,wahine",
         "noun1,teacher,kaiako",
         "noun1,student,tauira",
-        "noun1,day,rā"
+        "noun1,chicken,heihei",
+        "noun2,egg,hēki",
+        "noun2,pen,pene",
+        "noun2,car,motoka",
+        "noun2,apple,āporo",
+        "noun2,milk,miraka",
+        "noun2, bread,paraoa",
+        "noun2,banana,panana",
+        "noun2,lolly,rare",
+        "noun2,T-shirt,Ti hate"
+
 
 
 
@@ -319,7 +348,7 @@
 
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
         redoButton = addElement("redoButton", "button", englishDiv, 15, buttonLeftStyle, "@")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 70, buttonStyle, englishSentenceText)
+        englishSentence = addElement("englishSentence", "button", englishDiv, 70, buttonStyle, patternIndex+". "+englishSentenceText)
         nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 15, buttonRightStyle, ">")
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
@@ -346,11 +375,19 @@
         }
 
         if (id == "englishSentence") {
-          topics=""
-          list=tupus.filter(v=>(v.topic=="feeling"))
-          str=""
-          list.forEach(v=>str=str+v.english+" "+v.maori+"\n")
-          alert(str)
+          variableWord = patterns[patternIndex].englishA.match(/\[(\w+)\]/g)
+          str = ""
+          if (variableWord != null) {
+            variableWord.forEach((item) => {
+              item = item.replace("[", "").replace("]", "")
+              variableWords = tupus.filter(v => (v.topic == item))
+              //s = s.replace("[" + item + "]", variableWords[substitutedWordIndex].maori)
+              list = tupus.filter(v => (v.topic == item))
+
+              list.forEach(v => str = str + v.english + " " + v.maori + "\n")
+            })
+            alert(str)
+          }
         }
 
         if (id == "maoriSentence") {
