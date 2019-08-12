@@ -45,13 +45,13 @@
         // "what did the [noun1] do,i aha te [noun1],the [noun1] [verb4] -ed,i [verb4] te [noun1]",
         // "what was the [noun1] doing,i te aha [noun1],the [noun1] was [verb5] -ing,i te [verb5] te [noun1]",
 
-"how much does [noun2] cost,e hia te utu mō te [noun2],3 dollars and 20 cents is the cost of the [noun2],e toru tāra e rua tehau hēneti te utu mō te [noun2]",
-"how much does [noun1] cost,e hia te utu mō te [noun1] ,33 dollars and 15 cents is the cost of the [noun1] ,e toru tāra e rua tehau hēneti te utu mō te [noun1] ",
+        "how much does a [noun2] cost,e hia te utu mō te [noun2],[cost] is the cost of the [noun2],[cost] te utu mō te [noun2]",
+        "how much does a [noun1] cost,e hia te utu mō te [noun1],[cost] is the cost of the [noun1],[cost] te utu mō te [noun1] ",
 
-  "the [noun1] will [verb1],ka [verb1] te [noun1],the [noun1] is [verb1] -ing,kei te [verb1] te [noun1]",
+        "the [noun1] will [verb1],ka [verb1] te [noun1],the [noun1] is [verb1] -ing,kei te [verb1] te [noun1]",
         "the [noun1] has [verb2] -ed,kua [verb2] te [noun1],the [noun1] [verb2] -ed,i [verb2] te [noun1]",
         "the [noun1] was [verb3] -ing,i te [verb3] te [noun1],the [noun1] is still [verb3] -ing,e [verb3] ana te [noun1]",
-//"the [noun1] is [verb1] the [noun2],kei te [verb1] te [noun1] i te [noun2],the [noun1] is [verb1] the [noun2],kei te [verb1] te [noun1] ki te [noun2]",
+        //"the [noun1] is [verb1] the [noun2],kei te [verb1] te [noun1] i te [noun2],the [noun1] is [verb1] the [noun2],kei te [verb1] te [noun1] ki te [noun2]",
         "the [noun1] will be [feeling1],ka [feeling1] te [noun1],the [noun1] is [feeling1],kei te [feeling1] te [noun1]",
         "the [noun1] has been [feeling2],kua [feeling2] te [noun1],the [noun1] was [feeling2],i [feeling2] te [noun1]",
         "what is the time,ko te aha te wa,the time is [time],ko te [time] te wa",
@@ -61,9 +61,12 @@
         "how are you feeling?,kei te pehea koe,I am feeling [feeling],kei te [feeling] ahau",
         "where are you from?,nō hea koe,I am from [place],nō [place] ahau",
         "where is Mere,kei hea a Mere,Mere is [locative] the house,kei [locative] a Mere i te whare",
+        "where is your [noun2],kei hea tōu [noun2],My [noun2] is [locative] the [noun3],kei [locative] tõku [noun3]",
         "who is/are your [relation],ko wai [relation],My [relation] is Mere,ko Mere (t)ōku [relation]",
-        "what is/am/are [pronoun] doing,kei te aha [pronoun], [pronoun] is/am/are [verb],kei te [verb] [pronoun]"
-
+        "what is/am/are [pronoun] doing,kei te aha [pronoun], [pronoun] is/am/are [verb],kei te [verb] [pronoun]",
+        "what is that,he aha tēnā,this is a [noun4],he [noun4] tēnei",
+        "what is that over there,he aha tērā,this is a [noun4],he [noun4] tērā",
+        "what is this thing by me,he aha tēnei,that thing by you is a [noun4],he [noun4] tēnā"
       ]
 
       tupuCSV = [
@@ -90,8 +93,9 @@
         "feeling1,confused,rangirua",
         "feeling1,hot,wera",
         "feeling1,cold,makariri",
-        "feeling2,good,pai",
-        "feeling2,tired,ngēngē",
+        "feeling1,good,pai",
+        "feeling1,tired,ngēngē",
+
         "feeling2,lost,ngaro",
         "feeling2,arrogant,whakahīhī",
         "feeling2,lazy,māngere",
@@ -113,13 +117,16 @@
         "cardinal,one,kotahi",
         "cardinal,two,rua",
         "cardinal,three,toru",
+
         "relation,father,matua",
         "relation,mother,whaea",
+
         "time,2:10,tekau mai i te rua",
         "time,3:30,haurua mai i te toru",
         "time,12:45,hauwha ki te tahi",
         "time,4:50,tekau ki te rima",
         "time,8:24,rua tekau mai i te waru",
+
         "day,monday,Rāhina",
         "day,tueday,Rātū",
         "day,wednesday,Rāapa",
@@ -127,6 +134,7 @@
         "day,Friday,Rāmere",
         "day,Saturday,Rāhoroi",
         "day,Sunday,Rātapu",
+
         "month,January,Kohitātea",
         "month,February,Hui-tanguru",
         "month,March,Poutū-te-rangi",
@@ -139,6 +147,7 @@
         "month,October,Whiringa-ā-nuku",
         "month,November,Whiringa-ā-rangi",
         "month,December,Hakihea",
+
         "locative,under,raro",
         "locative,on,runga",
         "locative,outside,waho",
@@ -150,6 +159,7 @@
         "locative,konā,by you",
         "locative,kora,by them",
         "locative,overseas,tāwāhi",
+
         "pronoun,I/me,ahau",
         "pronoun,you,koe",
         "pronoun,him/her,ia",
@@ -161,6 +171,7 @@
         "pronoun,you (3+),koutou",
         "pronoun,they (2),rāua",
         "pronoun,they (3+),rātou",
+
         "verb1,eating,kai",
         "verb1,singing,waiata",
         "verb1,sleeping,moe",
@@ -173,6 +184,7 @@
         "verb1,work,mahi",
         "verb1,talk,kōrero",
         "verb1,snore,ngōngoro",
+
         "verb2,read,pānui",
         "verb2,shout,ūmere",
         "verb2,stand,tū",
@@ -183,6 +195,7 @@
         "verb2,gather,tiki",
         "verb2,buy,utu",
         "verb2,learn,ako",
+
         "verb3,return,hoki",
         "verb3,pray,inoi",
         "verb3,understand,mārama",
@@ -190,11 +203,13 @@
         "verb3,cut,tapahi",
         "verb3,dance,kanikani",
         "verb3,look,titro",
+        "verb3,watch,mātakitaki",
         "verb3,see,kite",
         "verb3,greet,mihi",
         "verb3,call,karanga",
+
         "verb4,write,tuhi",
-        "verb4,argue,tautohetohe",
+        "verb4,argue,whawhai",
         "verb4,listen,whakarongo",
         "verb4,laugh,katakata",
         "verb4,sit,noho",
@@ -203,6 +218,9 @@
         "verb4,climb,piki",
         "verb4,take off,tango",
         "verb4,wait,taihoa",
+        "verb4,smile,menemene",
+        "verb4,embrace,awhiawhi",
+
         "verb5,kiss,kihi",
         "verb5,answer,whakautu",
         "verb5,teach,akona",
@@ -211,14 +229,15 @@
         "verb5,know,mōhio",
         "verb5,send,tono",
 
-
-
+        "command1,stand up,e tū",
+        "command1,sit down,e noho",
 
         "tense,am/are,kei te",
         "tense,will,ka",
         "tense,has just,kua",
         "tense,had,i",
         "tense,was,i te",
+
         "noun1,dog,kurī",
         "noun1,sheep,hipi",
         "noun1,man,tane",
@@ -226,6 +245,13 @@
         "noun1,teacher,kaiako",
         "noun1,student,tauira",
         "noun1,chicken,heihei",
+        "noun1,duck,rakiraki",
+        "noun1,pig,poaka",
+        "noun1,cat,ngeru",
+        "noun1,cow,kau",
+        "noun1,horse,hōiho",
+        "noun1,goat,nanekoti",
+
         "noun2,egg,hēki",
         "noun2,pen,pene",
         "noun2,car,motoka",
@@ -234,11 +260,28 @@
         "noun2, bread,paraoa",
         "noun2,banana,panana",
         "noun2,lolly,rare",
-        "noun2,T-shirt,Ti hate"
 
+        "noun2,T-shirt,Ti hate",
+        "noun3,broom,paruma",
+        "noun3,chair,tūru",
+        "noun3,table,tēpu",
+        "noun3,lamp,rama",
+        "noun3,phone,waea kōrero",
+        "noun3,bed,moenga",
+        "noun3,TV,pouaka whakaata",
+        "noun3,freezer,pouaka tio",
+        "noun3,fridge,poaka makariri",
+        "noun3,bathtub,tāpu",
 
+        "noun4,shower,uwhi",
+        "noun4,cup,kapu",
+        "noun4,drawer,toroa",
+        "noun4,washing machine,mīhini horoi kakahu",
 
-
+        "cost,$3.25,toru tāra e rua tekau mā rima hēneti",
+        "cost,$1.73,kotahi tāra e whitu tekau mā toru hēneti",
+        "cost,$38.69,e toru tekau mā waru tāra e ona tekau mā iwa hēneti",
+        "cost,$403.52,e wha rau e toru tāra e rima tekau mā rua hēneti"
 
       ]
 
@@ -257,7 +300,7 @@
           variableWord.forEach((item) => {
             item = item.replace("[", "").replace("]", "")
             variableWords = tupus.filter(v => (v.topic == item))
-            s = s.replace("[" + item + "]", variableWords[substitutedWordIndex].english)
+            s = s.replace("[" + item + "]", variableWords[substitutedWordIndex % variableWords.length].english)
           })
         }
         return s
@@ -270,7 +313,7 @@
           variableWord.forEach((item) => {
             item = item.replace("[", "").replace("]", "")
             variableWords = tupus.filter(v => (v.topic == item))
-            s = s.replace("[" + item + "]", variableWords[substitutedWordIndex].maori)
+            s = s.replace("[" + item + "]", variableWords[substitutedWordIndex % variableWords.length].maori)
           })
         }
         return s
@@ -334,21 +377,22 @@
       buttonStyle = "position:relative;color:black;background:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
       buttonLeftStyle = buttonStyle + "position:relative;float:left;"
       buttonRightStyle = buttonStyle + "position:relative;right:0;"
-      divStyle = "position:relative;display:block;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
+      divStyle = "position:relative;display:block;background:ivory;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
 
       //sentenceStyle = "color:black;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
       correctButtonStyle = "color:limeGreen;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
 
       display = () => {
         updateModel()
-        cl(maoriAnswerText)
+        //cl(maoriAnswerText)
+        //console.log(substitutedWordIndex)
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
 
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
         redoButton = addElement("redoButton", "button", englishDiv, 15, buttonLeftStyle, "@")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 70, buttonStyle, patternIndex+". "+englishSentenceText)
+        englishSentence = addElement("englishSentence", "button", englishDiv, 70, buttonStyle, patterns.length - patternIndex + ". " + englishSentenceText)
         nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 15, buttonRightStyle, ">")
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
@@ -359,39 +403,57 @@
         gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 33.33, buttonStyle, v))
       }
 
+      displayWordlist = (str) => {
+        //alert(str)
+        document.body.innerHTML = ""
+        b = addElement(1, "div", document.body, 100, "", "")
+        b.addEventListener("click", clicked)
+        wordlistDiv = addElement("wordlistDiv", "div", b, 100, divStyle, str)
+        //alert(str)
+
+      }
+
       //CONTROLLER
 
       clicked = e => {
         id = e.target.id
-
+console.log(id)
         if (id == "nextPatternButton") {
           question = !question
           if (question) {
             patternIndex = (patternIndex == patterns.length - 1) ? 0 : patternIndex + 1
           }
-          substitutedWordIndex = 0
+          // substitutedWordIndex = 0
+          substitutedWordIndex++
+
           maoriAnswerText = "."
           sentenceCorrect = false
+          display()
         }
 
         if (id == "englishSentence") {
           variableWord = patterns[patternIndex].englishA.match(/\[(\w+)\]/g)
-          str = ""
+          str = "<h2>close</h2><table><tbody>"
           if (variableWord != null) {
             variableWord.forEach((item) => {
               item = item.replace("[", "").replace("]", "")
               variableWords = tupus.filter(v => (v.topic == item))
               //s = s.replace("[" + item + "]", variableWords[substitutedWordIndex].maori)
               list = tupus.filter(v => (v.topic == item))
-
-              list.forEach(v => str = str + v.english + " " + v.maori + "\n")
+              list.forEach(v => str = str + "<tr><td>" + v.english + "</td><td>" + v.maori + "</td></tr>")
             })
-            alert(str)
+            displayWordlist(str)
           }
+        }
+
+        if (id == "wordlistDiv") {
+          console.log("clicked")
+          display()
         }
 
         if (id == "maoriSentence") {
           alert(maoriSentenceText)
+          display()
         }
 
         if (id.includes("tupu")) {
@@ -400,19 +462,22 @@
           if (maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriQ) ||
             maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriA))
             sentenceCorrect = true
+          display()
         }
 
         if (id == "deleteButton") {
           maoriAnswerText = maoriAnswerText.substring(0, maoriAnswerText.lastIndexOf(" "))
           sentenceCorrect = false
+          display()
         }
 
         if (id == "redoButton") {
           maoriAnswerText = "."
           substitutedWordIndex++
           sentenceCorrect = false
+          display()
         }
-        display()
+
       }
 
       display()
