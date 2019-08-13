@@ -39,37 +39,55 @@
       sentenceCorrect = false
 
       patternsCSV = [
-        // "what will the [noun1] do,ka aha te [noun1],the [noun1] will [verb1],ka [verb1] te [noun1]",
-        // "what is the [noun1] doing,kei te aha te [noun1],the [noun1] is [verb2],kei te [verb2] te [noun1]",
-        // "what has the [noun1] done,kua aha te [noun1],the [noun1] has [verb3],kua [verb3] te [noun1]",
-        // "what did the [noun1] do,i aha te [noun1],the [noun1] [verb4] -ed,i [verb4] te [noun1]",
-        // "what was the [noun1] doing,i te aha [noun1],the [noun1] was [verb5] -ing,i te [verb5] te [noun1]",
+        // "what will the [animal] do,ka aha te [animal],the [animal] will [verb1],ka [verb1] te [animal]",
+        // "what is the [animal] doing,kei te aha te [animal],the [animal] is [verb2],kei te [verb2] te [animal]",
+        // "what has the [animal] done,kua aha te [animal],the [animal] has [verb3],kua [verb3] te [animal]",
+        // "what did the [animal] do,i aha te [animal],the [animal] [verb4] -ed,i [verb4] te [animal]",
+        // "what was the [animal] doing,i te aha [animal],the [animal] was [verb5] -ing,i te [verb5] te [animal]",
 
-        "how much does a [noun2] cost,e hia te utu mō te [noun2],[cost] is the cost of the [noun2],[cost] te utu mō te [noun2]",
-        "how much does a [noun1] cost,e hia te utu mō te [noun1],[cost] is the cost of the [noun1],[cost] te utu mō te [noun1] ",
+        "what is your name,ko wai tōu ingoa,my name is [name],ko [name] tōku ingoa",
+        "where are you from?,nō hea koe,I am from [place],nō [place] ahau",
+        "how are you feeling (KT form),kei te pehea koe,I am feeling [feeling1],kei te [feeling1] ahau",
+        "how are you feeling (EA form),e pehea ana koe,I am feeling [feeling1],e [feeling1] ana ahau",
 
-        "the [noun1] will [verb1],ka [verb1] te [noun1],the [noun1] is [verb1] -ing,kei te [verb1] te [noun1]",
-        "the [noun1] has [verb2] -ed,kua [verb2] te [noun1],the [noun1] [verb2] -ed,i [verb2] te [noun1]",
-        "the [noun1] was [verb3] -ing,i te [verb3] te [noun1],the [noun1] is still [verb3] -ing,e [verb3] ana te [noun1]",
-        //"the [noun1] is [verb1] the [noun2],kei te [verb1] te [noun1] i te [noun2],the [noun1] is [verb1] the [noun2],kei te [verb1] te [noun1] ki te [noun2]",
-        "the [noun1] will be [feeling1],ka [feeling1] te [noun1],the [noun1] is [feeling1],kei te [feeling1] te [noun1]",
-        "the [noun1] has been [feeling2],kua [feeling2] te [noun1],the [noun1] was [feeling2],i [feeling2] te [noun1]",
+
+        "what is that,he aha tēnā,this is a [noun4],he [noun4] tēnei",
+        "what is that over there,he aha tērā,this is a [noun4],he [noun4] tērā",
+        "what is this thing by me,he aha tēnei,that thing by you is a [noun4],he [noun4] tēnā",
+
+        "where is Mere,kei hea a Mere,Mere is [locative] the house,kei [locative] a Mere i te whare",
+        "where is your [food],kei hea tōu [food],My [food] is [locative] the [household],kei [locative] tõku [household]",
+        "who is/are your [relation],ko wai [relation],My [relation] is Mere,ko Mere (t)ōku [relation]",
+        "what is/am/are [pronoun] doing,kei te aha [pronoun], [pronoun] is/am/are [verb1],kei te [verb1] [pronoun]",
+
+        "how many [relation] do you have,tokohia āu [relation],I have rima [relation],tokohia rima (t)ōku [relation]",
+
         "what is the time,ko te aha te wa,the time is [time],ko te [time] te wa",
         "what day is it,ko te aha tēnei rā,the day is [day],ko te [day] tēnei rā",
         "what month is this,ko te aha tēnei marama,the month is [month],ko [month] tēnei marama",
-        "how many [relation] do you have,tokohia āu [relation],I have rima [relation],tokohia rima (t)ōku [relation]",
-        "how are you feeling?,kei te pehea koe,I am feeling [feeling],kei te [feeling] ahau",
-        "where are you from?,nō hea koe,I am from [place],nō [place] ahau",
-        "where is Mere,kei hea a Mere,Mere is [locative] the house,kei [locative] a Mere i te whare",
-        "where is your [noun2],kei hea tōu [noun2],My [noun2] is [locative] the [noun3],kei [locative] tõku [noun3]",
-        "who is/are your [relation],ko wai [relation],My [relation] is Mere,ko Mere (t)ōku [relation]",
-        "what is/am/are [pronoun] doing,kei te aha [pronoun], [pronoun] is/am/are [verb],kei te [verb] [pronoun]",
-        "what is that,he aha tēnā,this is a [noun4],he [noun4] tēnei",
-        "what is that over there,he aha tērā,this is a [noun4],he [noun4] tērā",
-        "what is this thing by me,he aha tēnei,that thing by you is a [noun4],he [noun4] tēnā"
+
+
+        "the [animal] will [verb1],ka [verb1] te [animal],the [animal] is [verb1] -ing,kei te [verb1] te [animal]",
+        "the [animal] has [verb2] -ed,kua [verb2] te [animal],the [animal] [verb2] -ed,i [verb2] te [animal]",
+        "the [animal] was [verb3] -ing,i te [verb3] te [animal],the [animal] is still [verb3] -ing,e [verb3] ana te [animal]",
+
+        //"the [animal] is [verb1] the [food],kei te [verb1] te [animal] i te [food],the [animal] is [verb1] the [food],kei te [verb1] te [animal] ki te [food]",
+        "the [animal] will be [feeling1],ka [feeling1] te [animal],the [animal] is [feeling1],kei te [feeling1] te [animal]",
+        "the [animal] has been [feeling2],kua [feeling2] te [animal],the [animal] was [feeling2],i [feeling2] te [animal]",
+
+        "how much does a [food] cost,e hia te utu mō te [food],[cost] is the cost of the [food],[cost] te utu mō te [food]",
+        "how much does a [animal] cost,e hia te utu mō te [animal],[cost] is the cost of the [animal],[cost] te utu mō te [animal] ",
+
+
       ]
 
       tupuCSV = [
+
+        "name,Mary,Mere",
+        "name,John,Hoani",
+        "name,Peter,Pita",
+        "name,Brian,Brian",
+
         "place,Dunedin,Onetāhi",
         "place,Auckland,Tamaki Makaurau",
         "place,One Tree Hill,Maungakiekie",
@@ -163,14 +181,18 @@
         "pronoun,I/me,ahau",
         "pronoun,you,koe",
         "pronoun,him/her,ia",
-        "pronoun,we (2 including you),tāua",
-        "pronoun,we (3+ including you),tātou",
+        "pronoun,us (2),tāua",
+        "pronoun,us (3+),tātou",
         "pronoun,we (2 but not you),māua",
         "pronoun,we (3+ but not you),mātou",
         "pronoun,you (2),kōrua",
         "pronoun,you (3+),koutou",
-        "pronoun,they (2),rāua",
-        "pronoun,they (3+),rātou",
+        "pronoun,them (2),rāua",
+        "pronoun,them (3+),rātou",
+
+        "possessive,my,(t)ōku",
+        "possessive,your(s),(t)ōu",
+        "possessive,their(s),(t)ōna",
 
         "verb1,eating,kai",
         "verb1,singing,waiata",
@@ -199,7 +221,7 @@
         "verb3,return,hoki",
         "verb3,pray,inoi",
         "verb3,understand,mārama",
-        "verb3,māharahara",
+        "verb3,remember,māharahara",
         "verb3,cut,tapahi",
         "verb3,dance,kanikani",
         "verb3,look,titro",
@@ -238,45 +260,70 @@
         "tense,had,i",
         "tense,was,i te",
 
-        "noun1,dog,kurī",
-        "noun1,sheep,hipi",
-        "noun1,man,tane",
-        "noun1,woman,wahine",
-        "noun1,teacher,kaiako",
-        "noun1,student,tauira",
-        "noun1,chicken,heihei",
-        "noun1,duck,rakiraki",
-        "noun1,pig,poaka",
-        "noun1,cat,ngeru",
-        "noun1,cow,kau",
-        "noun1,horse,hōiho",
-        "noun1,goat,nanekoti",
+        "people,child,tamaiti",
+        "people,man,tane",
+        "people,woman,wahine",
+        "people,teacher,kaiako",
+        "people,student,tauira",
 
-        "noun2,egg,hēki",
-        "noun2,pen,pene",
-        "noun2,car,motoka",
-        "noun2,apple,āporo",
-        "noun2,milk,miraka",
-        "noun2, bread,paraoa",
-        "noun2,banana,panana",
-        "noun2,lolly,rare",
+        "animal,dog,kurī",
+        "animal,sheep,hipi",
+        "animal,chicken,heihei",
+        "animal,duck,rakiraki",
+        "animal,pig,poaka",
+        "animal,cat,ngeru",
+        "animal,cow,kau",
+        "animal,horse,hōiho",
+        "animal,goat,nanekoti",
 
-        "noun2,T-shirt,Ti hate",
-        "noun3,broom,paruma",
-        "noun3,chair,tūru",
-        "noun3,table,tēpu",
-        "noun3,lamp,rama",
-        "noun3,phone,waea kōrero",
-        "noun3,bed,moenga",
-        "noun3,TV,pouaka whakaata",
-        "noun3,freezer,pouaka tio",
-        "noun3,fridge,poaka makariri",
-        "noun3,bathtub,tāpu",
+        "transport,canoe,waka",
+        "transport,bus,pahi",
+        "transport,train,tereina",
+        "transport,helicopter,wakatopatopa",
+        "transport,truck,taraka",
+        "transport,bicycle,paihikara",
+        "transport,car,motoka",
 
-        "noun4,shower,uwhi",
-        "noun4,cup,kapu",
-        "noun4,drawer,toroa",
-        "noun4,washing machine,mīhini horoi kakahu",
+        "food,egg,hēki",
+        "food,pen,pene",
+        "food,seafood,kaimoana",
+        "food,vegetables,hua whenua",
+        "food,fruit,hua rākau",
+        "food,butter,pata",
+        "food,cream,kirīmi",
+        "food,apple,āporo",
+        "food,milk,miraka",
+        "food,bread loaf,paraoa",
+        "food,banana,panana",
+        "food,lolly,rare",
+
+        "clothing,T-shirt,ti hate",
+
+        "house,kitchen,kīhini",
+        "house,lounge,rūma noho",
+        "house,bedroom,rūma moe",
+        "house,bathroom,rūma horoi tinana",
+        "house,shed,wharau",
+        "house,floor,papa",
+        "house,ceiling,tuanui",
+        "house,wall,pakitara",
+        "house,window,matapihi",
+        "house,door,kuaha",
+
+        "household,broom,paruma",
+        "household,chair,tūru",
+        "household,table,tēpu",
+        "household,lamp,rama",
+        "household,phone,waea kōrero",
+        "household,bed,moenga",
+        "household,TV,pouaka whakaata",
+        "household,freezer,pouaka tio",
+        "household,fridge,poaka makariri",
+        "household,bathtub,tāpu",
+        "household,shower,uwhi",
+        "household,cup,kapu",
+        "household,drawer,toroa",
+        "household,washing machine,mīhini horoi kakahu",
 
         "cost,$3.25,toru tāra e rua tekau mā rima hēneti",
         "cost,$1.73,kotahi tāra e whitu tekau mā toru hēneti",
@@ -377,7 +424,7 @@
       buttonStyle = "position:relative;color:black;background:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
       buttonLeftStyle = buttonStyle + "position:relative;float:left;"
       buttonRightStyle = buttonStyle + "position:relative;right:0;"
-      divStyle = "position:relative;display:block;background:ivory;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
+      divStyle = "position:relative;display:block;background:lavender;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
 
       //sentenceStyle = "color:black;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
       correctButtonStyle = "color:limeGreen;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
@@ -391,9 +438,10 @@
         b.addEventListener("click", clicked)
 
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
-        redoButton = addElement("redoButton", "button", englishDiv, 15, buttonLeftStyle, "@")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 70, buttonStyle, patterns.length - patternIndex + ". " + englishSentenceText)
-        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 15, buttonRightStyle, ">")
+        redoButton = addElement("redoButton", "button", englishDiv, 7, buttonLeftStyle, "&#x1F504;")
+        englishSentence = addElement("englishSentence", "button", englishDiv, 79, buttonStyle, patterns.length - patternIndex + ". " + englishSentenceText)
+        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 7, buttonRightStyle, "&#x25B6;")
+        next5PatternButton = addElement("nextPattern5Button", "button", englishDiv, 7, buttonRightStyle, "&#x23E9;")
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
         maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 85, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
@@ -404,28 +452,23 @@
       }
 
       displayWordlist = (str) => {
-        //alert(str)
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
         wordlistDiv = addElement("wordlistDiv", "div", b, 100, divStyle, str)
-        //alert(str)
-
+        closeButton = addElement("closeButton", "button", wordlistDiv, 15, buttonRightStyle, "close")
       }
 
       //CONTROLLER
 
       clicked = e => {
         id = e.target.id
-console.log(id)
         if (id == "nextPatternButton") {
           question = !question
           if (question) {
             patternIndex = (patternIndex == patterns.length - 1) ? 0 : patternIndex + 1
+            substitutedWordIndex++
           }
-          // substitutedWordIndex = 0
-          substitutedWordIndex++
-
           maoriAnswerText = "."
           sentenceCorrect = false
           display()
@@ -433,27 +476,25 @@ console.log(id)
 
         if (id == "englishSentence") {
           variableWord = patterns[patternIndex].englishA.match(/\[(\w+)\]/g)
-          str = "<h2>close</h2><table><tbody>"
+          str = "<table><tbody>"
           if (variableWord != null) {
             variableWord.forEach((item) => {
               item = item.replace("[", "").replace("]", "")
               variableWords = tupus.filter(v => (v.topic == item))
-              //s = s.replace("[" + item + "]", variableWords[substitutedWordIndex].maori)
               list = tupus.filter(v => (v.topic == item))
               list.forEach(v => str = str + "<tr><td>" + v.english + "</td><td>" + v.maori + "</td></tr>")
             })
-            displayWordlist(str)
+            displayWordlist(str + "</tbody></table>" + "<br><br>")
           }
         }
 
-        if (id == "wordlistDiv") {
+        if (id == "closeButton") {
           console.log("clicked")
           display()
         }
 
         if (id == "maoriSentence") {
-          alert(maoriSentenceText)
-          display()
+          displayWordlist(maoriSentenceText + "<br><br>")
         }
 
         if (id.includes("tupu")) {
