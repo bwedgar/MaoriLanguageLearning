@@ -50,10 +50,9 @@
         "how are you feeling (KT form),kei te pehea koe,I am feeling [feeling1],kei te [feeling1] ahau",
         "how are you feeling (EA form),e pehea ana koe,I am feeling [feeling1],e [feeling1] ana ahau",
 
-
-        "what is that,he aha tēnā,this is a [noun4],he [noun4] tēnei",
-        "what is that over there,he aha tērā,this is a [noun4],he [noun4] tērā",
-        "what is this thing by me,he aha tēnei,that thing by you is a [noun4],he [noun4] tēnā",
+        "what is that,he aha tēnā,this is a [household],he [household] tēnei",
+        "what is that over there,he aha tērā,this is a [house],he [house] tērā",
+        "what is this thing by me,he aha tēnei,that thing by you is a [transport],he [transport] tēnā",
 
         "where is Mere,kei hea a Mere,Mere is [locative] the house,kei [locative] a Mere i te whare",
         "where is your [food],kei hea tōu [food],My [food] is [locative] the [household],kei [locative] tõku [household]",
@@ -93,7 +92,7 @@
         "place,One Tree Hill,Maungakiekie",
         "place,New Plymouth,Ngāmotu",
         "place,Christchurch,Ōtautahi",
-        "place,Taupō,aupō-nui-a Tia",
+        "place,Taupō,Taupō-nui-a-Tia",
         "place,Tauranga,Tauranga-moana",
         "place,Kaikoura,Te Ahi-kai-kōura-a-Tama-ki-te-rangi",
         "place,Hokianga,Te Hokianga-a-Kupe",
@@ -439,13 +438,13 @@
 
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
         redoButton = addElement("redoButton", "button", englishDiv, 7, buttonLeftStyle, "&#x1F504;")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 79, buttonStyle, patterns.length - patternIndex + ". " + englishSentenceText)
+        englishSentence = addElement("englishSentence", "button", englishDiv, 79, buttonStyle, patternIndex+1 + ". " + englishSentenceText)
         nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 7, buttonRightStyle, "&#x25B6;")
         next5PatternButton = addElement("nextPattern5Button", "button", englishDiv, 7, buttonRightStyle, "&#x23E9;")
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
         maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 85, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
-        deleteButton = addElement("deleteButton", "button", maoriDiv, 15, buttonRightStyle, "del")
+        deleteButton = addElement("deleteButton", "button", maoriDiv, 15, buttonRightStyle, "&#x232B;")
 
         wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "")
         gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 33.33, buttonStyle, v))
@@ -469,6 +468,17 @@
             patternIndex = (patternIndex == patterns.length - 1) ? 0 : patternIndex + 1
             substitutedWordIndex++
           }
+          maoriAnswerText = "."
+          sentenceCorrect = false
+          display()
+        }
+
+        if (id == "nextPattern5Button") {
+          question = true
+
+            patternIndex = (patternIndex+5) % patterns.length
+            console.log("patternIndex"+patternIndex+" patterns.length "+patterns.length)
+
           maoriAnswerText = "."
           sentenceCorrect = false
           display()
