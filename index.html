@@ -11,6 +11,8 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
+
+
 </head>
 
 <body>
@@ -37,6 +39,7 @@
       maoriAnswerText = "."
       gridWords = []
       sentenceCorrect = false
+      pairingCode="0000"
 
       patternsCSV = [
         // "what will the [animal] do,ka aha te [animal],the [animal] will [verb1],ka [verb1] te [animal]",
@@ -46,7 +49,7 @@
         // "what was the [animal] doing,i te aha [animal],the [animal] was [verb5] -ing,i te [verb5] te [animal]",
         //1
         "what is your name,ko wai tōu ingoa,my name is [name],ko [name] tōku ingoa",
-        "where are you from?,nō hea koe,I am from [place],nō [place] ahau",
+        "where are you from,nō hea koe,I am from [place],nō [place] ahau",
         "how are you feeling (KT form),kei te pehea koe,I am feeling [feeling1],kei te [feeling1] ahau",
         "how are you feeling (EA form),e pehea ana koe,I am feeling [feeling1],e [feeling1] ana ahau",
 
@@ -58,7 +61,7 @@
         "what are those over there,he aha ērā,these are [house] -s,he [house] ērā",
         "what are these things by me,he aha ēnei,those things by you are [transport] -s,he [transport] ēnā",
         //11
-        "is that a [household] ?,he [household] tēnā ?,[affirmation],[affirmation]",
+        "is that a [household],he [household] tēnā,[affirmation],[affirmation]",
 
         "what type of [house] is this,he [house] aha tēnei,this is a [colour] [house],he [house] [colour] tēnā",
 
@@ -505,14 +508,15 @@
         b.addEventListener("click", clicked)
 
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
-        redoButton = addElement("redoButton", "button", englishDiv, 7, buttonLeftStyle, "&#x1F504;")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 79, buttonStyle, patternIndex + 1 + ". " + englishSentenceText)
-        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 7, buttonRightStyle, "&#x25B6;")
-        next5PatternButton = addElement("nextPattern5Button", "button", englishDiv, 7, buttonRightStyle, "&#x23E9;")
+        redoButton = addElement("redoButton", "button", englishDiv, 5, buttonLeftStyle, "&#x1F504;")
+        englishSentence = addElement("englishSentence", "button", englishDiv, 85, buttonStyle, patternIndex + 1 + ". " + englishSentenceText)
+        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 5, buttonRightStyle, "&#x25B6;")
+        next5PatternButton = addElement("nextPattern5Button", "button", englishDiv, 5, buttonRightStyle, "&#x23E9;")
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
-        maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 85, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
-        deleteButton = addElement("deleteButton", "button", maoriDiv, 15, buttonRightStyle, "&#x232B;")
+        pairingButton = addElement("pairingButton", "button", maoriDiv, 5, buttonLeftStyle, "P")
+        maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 90, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
+        deleteButton = addElement("deleteButton", "button", maoriDiv, 5, buttonRightStyle, "&#x232B;")
 
         wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "")
         gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 33.33, buttonStyle, v))
@@ -524,6 +528,17 @@
         b.addEventListener("click", clicked)
         wordlistDiv = addElement("wordlistDiv", "div", b, 100, divStyle, str)
         closeButton = addElement("closeButton", "button", wordlistDiv, 15, buttonRightStyle, "close")
+      }
+
+      displayPairing = (str) => {
+        document.body.innerHTML = ""
+        b = addElement(1, "div", document.body, 100, "", "")
+        b.addEventListener("click", clicked)
+        instructionsDiv = addElement("instructionsDiv", "div", b, 100, divStyle, str)
+          pairingCodeButton = addElement("pairingCodeButton", "button", instructionsDiv, 15, buttonStyle, pairingCode)
+        a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+        a.forEach((v, i) => addElement("keyButton", "button", instructionsDiv, 30, buttonStyle, v))
+        closeButton = addElement("closeButton", "button", instructionsDiv, 15, buttonRightStyle, "close")
       }
 
       //CONTROLLER
@@ -582,6 +597,12 @@
             maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriA))
             sentenceCorrect = true
           display()
+        }
+
+        if (id == "pairingButton") {
+          pairingCode = 3456
+          str = "Share this pairing code or enter a pairing code from another player: <br><center><h2>" + pairingCode + "</h2></center><br>"
+          displayPairing(str)
         }
 
         if (id == "deleteButton") {
