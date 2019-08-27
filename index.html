@@ -39,7 +39,7 @@
       maoriAnswerText = "."
       gridWords = []
       sentenceCorrect = false
-      pairingCode="0000"
+      pairingCode = "0000"
 
       patternsCSV = [
         // "what will the [animal] do,ka aha te [animal],the [animal] will [verb1],ka [verb1] te [animal]",
@@ -91,6 +91,7 @@
 
         "how much does a [food] cost,e hia te utu mō te [food],[cost] is the cost of the [food],[cost] te utu mō te [food]",
         "how much does a [animal] cost,e hia te utu mō te [animal],[cost] is the cost of the [animal],[cost] te utu mō te [animal] ",
+        "where will [pronoun] [moving],ka [moving] aha,"
 
 
       ]
@@ -136,6 +137,7 @@
         "feeling2,correct,tika",
         "feeling2,well,ora",
         "feeling2,worried,āwangawanga",
+
         "feeling3,sad,pōuri",
         "feeling3,bad,kino",
         "feeling3,scared,mataku",
@@ -264,62 +266,144 @@
         "possessive,your(s),(t)ōu",
         "possessive,their(s),(t)ōna",
 
-        "verb1,eating,kai",
+        //moving
+        "moving,run,oma",
+        "moving,come,haere",
+        "moving,walking,hīkoi",
+        "moving,dance,kanikani",
+        "moving,climb,piki",
+        "moving,stand,tū",
+        "moving,come,kuhu",
+        "moving,come down,heke",
+        "moving,exit,puta",
+        "moving,wait,taihoa",
+        "moving,jump,peke",
+        "moving,return,hoki",
+        "moving,sit,noho",
+        "moving,swim,kauhoe",
+
+
+        //performance
         "verb1,singing,waiata",
-        "verb1,sleeping,moe",
-        "verb1,walking,hīkoi",
-        "verb1,drink,inu",
-        "verb1,nourish,whāngai",
-        "verb1,run,oma",
-        "verb1,come,haere",
-        "verb1,cry,tangi",
-        "verb1,work,mahi",
         "verb1,talk,kōrero",
+
+
+        //learning
+        "learning,read,pānui",
+        "learning,learn,ako",
+        "learning,understand,mārama",
+        "learning,remember,māharahara",
+        "learning,answer,whakautu",
+        "learning,teach,akona",
+        "learning,think,whakaaro",
+        "learning,question,patai",
+        "learning,know,mōhio",
+        "learning,write,tuhi",
+
+        //emoting
+        "emoting,cry,tangi",
+        "emoting,laugh,katakata",
+        "emoting,smile,menemene",
+        "emoting,embrace,awhiawhi",
+
+        //functioning
+
+        "verb1,eating,kai",
+        "verb1,sleeping,moe",
+        "verb1,drink,inu",
+        "verb1,feed,whāngai",
         "verb1,snore,ngōngoro",
+        "verb6,yawn,hītako",
+        "verb6,sneeze,matihe",
+        "verb6,burp,kūpa",
+        "verb6,cough,mapu",
+        "verb5,kiss,kihi",
+        "verb6,dream,moemoeā",
+        "verb6,lie down,tāpapa",
+        "verb6,fart,patero",
 
-        "verb2,read,pānui",
-        "verb2,shout,ūmere",
-        "verb2,stand,tū",
+
+
+        //working
+        "verb1,work,mahi",
         "verb2,carry,hari",
-        "verb2,come,kuhu",
-        "verb2,come down,heke",
-        "verb2,cook,tunu",
-        "verb2,gather,tiki",
-        "verb2,buy,utu",
-        "verb2,learn,ako",
+        "verb4,purchase,hoko",
+        "verb6,build,hanga",
+        "verb6,lift,hiki",
+        "verb6,fix,whakatika",
 
-        "verb3,return,hoki",
+        //communicating
+        "verb2,shout,ūmere",
         "verb3,pray,inoi",
-        "verb3,understand,mārama",
-        "verb3,remember,māharahara",
-        "verb3,cut,tapahi",
-        "verb3,dance,kanikani",
+        "verb4,argue,whawhai",
+
+
+        //sensing
+        "verb4,listen,whakarongo",
         "verb3,look,titro",
         "verb3,watch,mātakitaki",
         "verb3,see,kite",
+
+        //housekeeping
+        "verb2,cook,tunu",
+        "verb2,gather,tiki",
+        "verb2,buy,utu",
+        "verb3,cut,tapahi",
+        "verb6,wash,horoi",
+        "verb6,tidy,whakapai",
+
+//play
+"verb6,throw,whiu",
+"verb6,chase,whai",
+
+
+//creating
+"verb6,paint,peita",
+"verb6,weave,raranga",
+"verb6,carve,whakairo",
+
+
+        //greeting
         "verb3,greet,mihi",
         "verb3,call,karanga",
 
-        "verb4,write,tuhi",
-        "verb4,argue,whawhai",
-        "verb4,listen,whakarongo",
-        "verb4,laugh,katakata",
-        "verb4,sit,noho",
-        "verb4,purchase,hoko",
-        "verb4,exit,puta",
-        "verb4,climb,piki",
-        "verb4,take off,tango",
-        "verb4,wait,taihoa",
-        "verb4,smile,menemene",
-        "verb4,embrace,awhiawhi",
 
-        "verb5,kiss,kihi",
-        "verb5,answer,whakautu",
-        "verb5,teach,akona",
+
+        "verb4,take off,tango",
+
+
+
         "verb5,give back,homai",
-        "verb5,question,patai",
-        "verb5,know,mōhio",
+
         "verb5,send,tono",
+
+        "verb6,rip,tīhae",
+
+
+
+        "verb6,search,kimi/rapu",
+        "verb6,stretch,whātoro",
+        "verb6,point,tohu",
+        "verb6,clap,pakipaki",
+        "verb6,erase,ūkui",
+        "verb6,pull,kukume",
+        "verb6,touch,pā",
+        "verb6,push,pana",
+        "verb6,shake,rūrū",
+        "verb6,hang up,whakairi",
+        "verb6,bend,piko",
+        "verb6,wait,tatari",
+        "verb6,dry,whakamaroke",
+        "verb6,sweep,tahitahi",
+        "verb6,pull weeds,huhuti taru",
+        "verb6,mow,tapahi karaehe",
+        "verb6,vacuum,whakangote puehu",
+        "verb6,turn off,whakaweto",
+
+        "verb6,fall off,taka",
+        "verb6,hurt,whakamāmae",
+        "verb6,slap,paki",
+
 
         "command1,stand up,e tū",
         "command1,sit down,e noho",
@@ -535,7 +619,7 @@
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
         instructionsDiv = addElement("instructionsDiv", "div", b, 100, divStyle, str)
-          pairingCodeButton = addElement("pairingCodeButton", "button", instructionsDiv, 15, buttonStyle, pairingCode)
+        pairingCodeButton = addElement("pairingCodeButton", "button", instructionsDiv, 15, buttonStyle, pairingCode)
         a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
         a.forEach((v, i) => addElement("keyButton", "button", instructionsDiv, 30, buttonStyle, v))
         closeButton = addElement("closeButton", "button", instructionsDiv, 15, buttonRightStyle, "close")
