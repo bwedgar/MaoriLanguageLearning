@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
   <link rel="apple-touch-icon" href="launch.png">
   <link rel="apple-touch-startup-image" href="launch.png">
-  <meta name="apple-mobile-web-app-title" content="Push To Telescope">
+  <meta name="apple-mobile-web-app-title" content="Korero">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -104,11 +104,11 @@
 
         "how much does a [food] cost,e hia te utu mō te [food],[cost] is the cost of the [food],[cost] te utu mō te [food]",
         "how much does a [animal] cost,e hia te utu mō te [animal],[cost] is the cost of the [animal],[cost] te utu mō te [animal] ",
-      //  "where will [pronoun] [moving],ka [moving] aha,"
+        //  "where will [pronoun] [moving],ka [moving] aha,"
 
         // Haerenga
-        "where are you going and why are you going,ka haere ana koe ki hea. ki te aha,I am going to [country] to [compound noun],ka haere ana ahau ki [country] ki te [compund noun]",
-        "where are you going and why are you going,ka haere ana koe ki hea. ki te aha,I am going to [room] to [compound noun],ka haere ana ahau ki [room] ki te [compund noun]",
+        "where are you going and why are you going,ka haere ana koe ki hea ki te aha,I am going to [country] to [compoundNoun],ka haere ana ahau ki [country] ki te [compoundNoun]",
+        "where are you going and why are you going,ka haere ana koe ki hea ki te aha,I am going to [room] to [compoundNoun],ka haere ana ahau ki [room] ki te [compoundNoun]",
 
         "how will you travel,mā hea koe haere ai,i will travel by [transport],mā runga ahau [transport]",
 
@@ -410,13 +410,13 @@
 
 
         //reasons for travel
-        "compound noun,get food,tiki kai",
-        "compound noun,sight seeing,titiro haere",
-        "compound noun,buy food,hoko kai",
-        "compound noun,buy presents,hoko taonga",
-        "compound noun,play sports,tākaro hākinakina",
-        "compound noun,meet relations,tūtaki whanaunga",
-        "compound noun,find work,kimi mahi",
+        "compoundNoun,get food,tiki kai",
+        "compoundNoun,sight seeing,titiro haere",
+        "compoundNoun,buy food,hoko kai",
+        "compoundNoun,buy presents,hoko taonga",
+        "compoundNoun,play sports,tākaro hākinakina",
+        "compoundNoun,meet relations,tūtaki whanaunga",
+        "compoundNoun,find work,kimi mahi",
 
 
 
@@ -635,15 +635,16 @@
         b.addEventListener("click", clicked)
 
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
-        redoButton = addElement("redoButton", "button", englishDiv, 5, buttonLeftStyle, "&#x1F504;")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 85, buttonStyle, patternIndex + 1 + ". " + englishSentenceText)
-        nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 5, buttonRightStyle, "&#x25B6;")
-        next5PatternButton = addElement("nextPattern5Button", "button", englishDiv, 5, buttonRightStyle, "&#x23E9;")
+        redoButton = addElement("redoButton", "button", englishDiv, 5, buttonLeftStyle, "R")//&#x1F504;")
+        englishSentence = addElement("englishSentence", "button", englishDiv, 80, buttonStyle, patternIndex + 1 + ". " + englishSentenceText)
+        prevPatternButton = addElement("prevPatternButton", "button", englishDiv, 5, buttonRightStyle, "<")//"&#x25B6;")
+                nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 5, buttonRightStyle, ">")//"&#x25B6;")
+        next5PatternButton = addElement("nextPattern5Button", "button", englishDiv, 5, buttonRightStyle, "5")//"&#x23E9;")
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
         pairingButton = addElement("pairingButton", "button", maoriDiv, 5, buttonLeftStyle, "P")
         maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 90, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
-        deleteButton = addElement("deleteButton", "button", maoriDiv, 5, buttonRightStyle, "&#x232B;")
+        deleteButton = addElement("deleteButton", "button", maoriDiv, 5, buttonRightStyle, "<")//"&#x232B;")
 
         wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "")
         gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 33.33, buttonStyle, v))
