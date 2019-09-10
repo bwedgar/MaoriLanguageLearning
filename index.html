@@ -109,8 +109,7 @@
         // Haerenga
         "where are you going and why are you going,ka haere ana koe ki hea ki te aha,I am going to [country] to [compoundNoun],ka haere ana ahau ki [country] ki te [compoundNoun]",
         "where are you going and why are you going,ka haere ana koe ki hea ki te aha,I am going to [room] to [compoundNoun],ka haere ana ahau ki [room] ki te [compoundNoun]",
-
-        "how will you travel,mā hea koe haere ai,i will travel by [transport],mā runga ahau [transport]",
+        "how will you travel,mā hea koe haere ai,i will travel by [transport],mā runga [transport] ahau haere ai",
 
 
       ]
@@ -408,7 +407,6 @@
         "exercising,bend,piko",
         "exercising,wait,tatari",
 
-
         //reasons for travel
         "compoundNoun,get food,tiki kai",
         "compoundNoun,sight seeing,titiro haere",
@@ -417,8 +415,6 @@
         "compoundNoun,play sports,tākaro hākinakina",
         "compoundNoun,meet relations,tūtaki whanaunga",
         "compoundNoun,find work,kimi mahi",
-
-
 
 
         "verb5,send,tono",
@@ -618,13 +614,13 @@
         return element
       }
 
-      buttonStyle = "position:relative;color:black;background:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
-      buttonLeftStyle = buttonStyle + "position:relative;float:left;"
-      buttonRightStyle = buttonStyle + "position:relative;right:0;"
-      divStyle = "position:relative;display:block;background:lavender;border-style:none;border-width:1px;font-size:3vw;font-family:verdana;"
+      buttonStyle = "position:relative;height:4vw;text-align:left;color:black;background:ivory;border-style:solid;border-width:1px;font-size:2vw;font-family:verdana;"
+      buttonLeftStyle = buttonStyle + "position:relative;float:left;text-align:left;"
+      buttonRightStyle = buttonStyle + "position:relative;right:0;text-align:left;"
+      divStyle = "position:relative;text-align:left;display:block;background:lavender;border-style:none;border-width:1px;font-size:2vw;font-family:verdana;"
 
       //sentenceStyle = "color:black;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
-      correctButtonStyle = "color:limeGreen;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
+      correctButtonStyle = "color:limeGreen;background-color:ivory;border-style:solid;border-width:1px;font-size:2vw;font-family:verdana;"
 
       display = () => {
         updateModel()
@@ -636,18 +632,18 @@
 
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
         redoButton = addElement("redoButton", "button", englishDiv, 5, buttonLeftStyle, "R")//&#x1F504;")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 80, buttonStyle, patternIndex + 1 + ". " + englishSentenceText)
+        englishSentence = addElement("englishSentence", "button", englishDiv, 79, buttonStyle, patternIndex + 1 + ". " + englishSentenceText)
         prevPatternButton = addElement("prevPatternButton", "button", englishDiv, 5, buttonRightStyle, "<")//"&#x25B6;")
                 nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 5, buttonRightStyle, ">")//"&#x25B6;")
         next5PatternButton = addElement("nextPattern5Button", "button", englishDiv, 5, buttonRightStyle, "5")//"&#x23E9;")
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
         pairingButton = addElement("pairingButton", "button", maoriDiv, 5, buttonLeftStyle, "P")
-        maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 90, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
+        maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 89, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
         deleteButton = addElement("deleteButton", "button", maoriDiv, 5, buttonRightStyle, "<")//"&#x232B;")
 
         wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "")
-        gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 33.33, buttonStyle, v))
+        gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 25, buttonStyle, v))
       }
 
       displayWordlist = (str) => {
