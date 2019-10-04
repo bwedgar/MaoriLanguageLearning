@@ -20,14 +20,32 @@
   <script>
     addEventListener('load', function(e) {
 
-      cl = (arg) => console.log(arg)
+      cl = (line, arg) => {
+        a = arg.split(" ")
+        s = line + " "
+        a.forEach(v => s = s + v + ": " + eval(v) + "  ")
+        console.log(s)
+      }
+
       makeObject = (array, names) => {
         o = {}
         names.map((v, i) => o[v] = array[i])
         return o
       }
-      r = Math.random()
-      shuffle = (a, b) => Math.random(r) - 0.5
+
+      seed = Math.floor(Math.random() * (80 - 0 + 1) + 0)
+
+      random = () => {
+        x = Math.sin(seed++) * 10000
+        return x - Math.floor(x)
+      }
+      randomRange = (min, max) => Math.floor(random() * (max - min + 1) + min)
+
+      initialSeed = randomRange(0, 80)
+
+      shuffle = (a, b) => random() - 0.5
+      code = (n) => parseInt(n + "", 10).toString(9) * 1 + 11
+      decode = (n) => parseInt((n - 11).toString(10), 9)
 
       //MODEL
 
@@ -40,6 +58,8 @@
       gridWords = []
       sentenceCorrect = false
       pairingCode = "0000"
+      pairing = false
+      firstSpeaker = true
 
       patternsCSV = [
         // "what will the [animal] do,ka aha te [animal],the [animal] will [verb1],ka [verb1] te [animal]",
@@ -56,11 +76,11 @@
         "how are you all feeling (EA form),e pehea ana koutou,we are feeling [stateOfMindBad],e [stateOfMindBad] ana mātou",
 
         "what is that,he aha tēnā,this is a [household],he [household] tēnei",
-        "what is that over there,he aha tērā,this is a [house],he [house] tērā",
+        "what is that over there,he aha tērā,that over there is a [house],he [house] tērā",
         "what is this thing by me,he aha tēnei,that thing by you is a [transport],he [transport] tēnā",
 
         "what are those,he aha ēnā,these are [household] -s,he [household] ēnei",
-        "what are those over there,he aha ērā,these are [house] -s,he [house] ērā",
+        "what are those over there,he aha ērā,those are [house] -s,he [house] ērā",
         "what are these things by me,he aha ēnei,those things by you are [transport] -s,he [transport] ēnā",
 
         "is that a [household],he [household] tēnā,[affirmation],[affirmation]",
@@ -69,9 +89,9 @@
 
         "where is [name],kei hea a [name],[name] is [locative] the [house],kei [locative] a [name] i te [house]",
         "where is the [food],kei hea te [food],the [food] is [locative] the [transport],kei [locative] te [food] i te [transport]",
-        "where is your [relation],kei hea tōu [relation],My [relation] is [locative] the [household],kei te [household] tōku [relation]",
+        "where is your [relation],kei hea tōu [relation],my [relation] is [locative] the [household],kei te [household] tōku [relation]",
 
-        "how many [kitchen] are there,e hia ngā [kitchen],there are [cardinal] [kitchen],[cardinal] ngā [kitchen]",
+        "how many [kitchen]-s are there,e hia ngā [kitchen],there are [cardinal] [kitchen],[cardinal] ngā [kitchen]",
 
         "who is/are your [relation],ko wai [relation],my [relation] is Mere,ko Mere (t)ōku [relation]",
         "what are you doing,kei te aha koe,I am [moving],kei te [moving] ahau",
@@ -87,15 +107,16 @@
         // Mahi Ngahau
         "what are you doing,kei te aha koe,I am [functioning],ki te [functioning] ahau",
         "what are those 3 doing,kei te aha rātou,they are [meeting] in the [house],kei te [meeting] ki te [house]",
-        //  "what are you and me going to do,ka aha māua,",
+        "what are you and me going to do,ka aha māua,we will [moving],ka [moving] māua",
+        "what did you two and me just do,kua aha mātou,we were[housekeeping],kua [housekeeping] mātou",
 
         "where is he going,kei te haere ia ki hea,he is going to the [room],kei te haere ia ki [room]",
         "where will you go,ka haere koe ki hea,i am going to [place],ka haere ahau ki [place]",
 
 
 
-        //  "the [animal] will [verb1],ka [verb1] te [animal]",
-        //  "the [animal] has [verb2] -ed,kua [verb2] te [animal],the [animal] [verb2] -ed,i [verb2] te [animal]",
+        "what will the [animal] do,ka aha te [animal],the [animal] will [functioning],ka [functioning] te [animal]",
+        "what did the [animal] do,I aha te [animal],the [animal] [functioning]-ed,ka [functioning] te [animal]",
         //  "the [animal] was [verb3] -ing,i te [verb3] te [animal],the [animal] is still [verb3] -ing,e [verb3] ana te [animal]",
 
         //"the [animal] is [verb1] the [food],kei te [verb1] te [animal] i te [food],the [animal] is [verb1] the [food],kei te [verb1] te [animal] ki te [food]",
@@ -111,15 +132,56 @@
         "where are you going and why are you going,ka haere ana koe ki hea ki te aha,I am going to [room] to [compoundNoun],ka haere ana ahau ki [room] ki te [compoundNoun]",
         "how will you travel,mā hea koe haere ai,i will travel by [transport],mā runga [transport] ahau haere ai",
 
+        // Tikanga marae
+        //"the [people] will [meeting],ka [meeting] te [people],
+
+        "who [meeting]-ed,nā wai i [meeting],[npronoun] [meeting]-ed,[npronoun] i [meeting]",
+        "who [meeting]-ed,nā wai i [meeting],[name] [meeting]-ed,nā [name] i [meeting]",
+        //"who will [meeting],mā wai e [meeting],[name] will [meeting],nā [name] i [meeting]",
+        "who [meeting]-ed,nā wai i [meeting],the [people] [meeting]-ed,nā te [people] i [meeting]",
+        "who [meeting]-ed,nā wai i [meeting],[name] [meeting]-ed,nā [name] i [meeting]",
 
       ]
 
       tupuCSV = [
 
-        "name,Mary,Mere",
-        "name,John,Hoani",
-        "name,Peter,Pita",
+        //PRONOUNS
+
+        "pronoun,I/me,ahau",
+        "pronoun,you,koe",
+        "pronoun,him/her,ia",
+        "pronoun,us (2),tāua",
+        "pronoun,us (3+),tātou",
+        "pronoun,we (2 but not you),māua",
+        "pronoun,we (3+ but not you),mātou",
+        "pronoun,you (2),kōrua",
+        "pronoun,you (3+),koutou",
+        "pronoun,them (2),rāua",
+        "pronoun,them (3+),rātou",
+
+        "possessiveSingluar,my,tōku",
+        "possessiveSingluar,your,tōu",
+        "possessiveSingluar,their,tōna",
+
+        "possessivePlural,my,ōku",
+        "possessivePlural,your,ōu",
+        "possessivePlural,their,ōna",
+
+        "npronoun,I,nāku",
+        "npronoun,you,nāu",
+        "npronoun,he or she,nāna",
+
+        //NOUNS PROPER
+
+        "name,Te_Rauparaha,Te_Rauparaha",
+        "name,Mere,Mere",
+        "name,Hoani,Hoani",
+        "name,Pita,Pita",
+        "name,Te_Ohorere,Te_Ohorere",
         "name,Brian,Brian",
+        "name,Sue,Sue",
+        "name,Matthew,Matthew",
+        "name,Isabelle,Isabelle",
 
         "place,Dunedin,Onetāhi",
         "place,Auckland,Tamaki Makaurau",
@@ -128,14 +190,14 @@
         "place,Christchurch,Ōtautahi",
         "place,Taupō,Taupō-nui-a-Tia",
         "place,Tauranga,Tauranga-moana",
-        "place,Kaikoura,Te Ahi-kai-kōura-a-Tama-ki-te-rangi",
-        "place,Hokianga,Te Hokianga-a-Kupe",
-        "place,Wellington,Te Whanga-nui-a-Tara",
+        "place,Kaikoura,Te_Ahi-kai-kōura-a-Tama-ki-te-rangi",
+        "place,Hokianga,Te_Hokianga-a-Kupe",
+        "place,Wellington,Te_Whanga-nui-a-Tara",
         "place,Nelson,Whakatū",
         "place,Gisborne,Tūranga-nui-a-Kiwa",
-        "place,napier,ahuriri",
-        "place,palmerston north,te papaioea",
-        "place,otago,ōtakou",
+        "place,Napier,Ahuriri",
+        "place,Palmerston North,Te_Papaioea",
+        "place,Otago,Ōtakou",
 
 
         "country,australia,ahitereiria",
@@ -148,6 +210,251 @@
         "country,france,wīwī",
         "country,asia,āhia",
         "country,europe,ūropi",
+
+        //NOUNS COMMON
+
+        "people,child,tamaiti",
+        "people,man,tane",
+        "people,woman,wahine",
+        "people,teacher,kaiako",
+        "people,student,tauira",
+        "people,old woman,kuia",
+        "people,old man,korua",
+        "people,girl,kōtiro",
+        "people,boy,tama",
+
+        "animal,dog,kurī",
+        "animal,sheep,hipi",
+        "animal,chicken,heihei",
+        "animal,duck,rakiraki",
+        "animal,pig,poaka",
+        "animal,cat,ngeru",
+        "animal,cow,kau",
+        "animal,horse,hōiho",
+        "animal,goat,nanekoti",
+
+        "transport,canoe,waka",
+        "transport,bus,pahi",
+        "transport,train,tereina",
+        "transport,helicopter,wakatopatopa",
+        "transport,truck,taraka",
+        "transport,bicycle,paihikara",
+        "transport,car,motoka",
+        "transport,horse,hōiho",
+        "transport,boat,waka_poti",
+        "transport,plane,waka_rererangi",
+        "transport,scooter,huta",
+
+        "food,egg,hēki",
+        "food,pen,pene",
+        "food,seafood,kaimoana",
+        "food,vegetables,hua_whenua",
+        "food,fruit,hua_rākau",
+        "food,butter,pata",
+        "food,cream,kirīmi",
+        "food,apple,āporo",
+        "food,milk,miraka",
+        "food,bread loaf,paraoa",
+        "food,banana,panana",
+        "food,lolly,rare",
+
+        "clothing,T-shirt,ti hate",
+
+
+        "house,floor,papa",
+        "house,ceiling,tuanui",
+        "house,wall,pakitara",
+        "house,window,matapihi",
+        "house,door,kuaha",
+
+        "room,kitchen,kīhini",
+        "room,lounge,rūma_noho",
+        "room,bedroom,rūma_moe",
+        "room,bathroom,rūma_horoi_tinana",
+        "room,shed,wharau",
+
+        "household,broom,paruma",
+        "household,chair,tūru",
+        "household,table,tēpu",
+        "household,lamp,rama",
+        "household,phone,waea_kōrero",
+        "household,bed,moenga",
+        "household,TV,pouaka_whakaata",
+        "household,freezer,pouaka_tio",
+        "household,fridge,poaka_makariri",
+        "household,bathtub,tāpu",
+        "household,shower,uwhi",
+        "household,cup,kapu",
+        "household,drawer,toroa",
+        "household,washing machine,mīhini_horoi_kakahu",
+
+        "body,nose,ihu",
+        "body,neck,kakī",
+        "body,tongue,arero",
+        "body,chin,kauae",
+        "body,hair,māhunga",
+        "body,heart,manawa",
+        "body,teeth,niho",
+        "body,chest,poho",
+        "body,belly,puku,",
+        "body,hand,ringa",
+        "body,head,upoko",
+        "body,leg,waewae",
+        "body,breast,ū",
+        "body,penis,ure",
+        "body,vagina,tenetene",
+        "body,knee,turi",
+
+        "kitchen,frying pan,parai",
+        "kitchen,knife,ripi",
+        "kitchen,oven,ōmu",
+        "kitchen,ladle,kōtutu",
+        "kitchen,pot,kōhua",
+        "kitchen,serviette,parehūhare",
+        "kitchen,spoon,koko",
+        "kitchen,tea towel,tītaora",
+        "kitchen,tongs,pīnohi",
+        "kitchen,serving platter,paepae_mahora",
+        "kitchen,plastic wrap,takai_kirihou",
+        "kitchen,hob,mura",
+        "kitchen,plate,pereti",
+
+        "relation,father,matua",
+        "relation,mother,whaea",
+
+
+        //VERBS ACTION
+
+        "moving,run,oma",
+        "moving,come,haere",
+        "moving,walking,hīkoi",
+        "moving,dance,kanikani",
+        "moving,climb,piki",
+        "moving,stand,tū",
+        "moving,come,kuhu",
+        "moving,come down,heke",
+        "moving,exit,puta",
+        "moving,wait,taihoa",
+        "moving,jump,peke",
+        "moving,return,hoki",
+        "moving,sit,noho",
+        "moving,swim,kauhoe",
+        "moving,rest,whakatā",
+
+        "performing,singing,waiata",
+        "performing,talk,kōrero",
+        "performing,clap,pakipaki",
+        "performing,paint,peita",
+        "performing,weave,raranga",
+        "performing,carve,whakairo",
+
+        "learning,read,pānui",
+        "learning,learn,ako",
+        "learning,understand,mārama",
+        "learning,remember,māharahara",
+        "learning,answer,whakautu",
+        "learning,teach,akona",
+        "learning,think,whakaaro",
+        "learning,question,patai",
+        "learning,know,mōhio",
+        "learning,write,tuhi",
+
+        "meeting,cry,tangi",
+        "meeting,laugh,katakata",
+        "meeting,smile,menemene",
+        "meeting,embrace,awhiawhi",
+        "meeting,greet,mihi",
+        "meeting,call,karanga",
+        "meeting,kiss,kihi",
+
+        "functioning,eating,kai",
+        "functioning,sleeping,moe",
+        "functioning,drink,inu",
+        "functioning,feed,whāngai",
+        "functioning,snore,ngōngoro",
+        "functioning,yawn,hītako",
+        "functioning,sneeze,matihe",
+        "functioning,burp,kūpa",
+        "functioning,cough,mapu",
+        "functioning,dream,moemoeā",
+        "functioning,lie down,tāpapa",
+        "functioning,fart,patero",
+
+        "working,work,mahi",
+        "working,carry,hari",
+        "working,purchase,hoko",
+        "working,build,hanga",
+        "working,lift,hiki",
+        "working,fix,whakatika",
+        "working,take off,tango",
+
+        "communicating,shout,ūmere",
+        "communicating,pray,inoi",
+        "communicating,argue,whawhai",
+        "communicating,write,tuhi",
+        "communicating,listen,whakarongo",
+        "communicating,look,titro",
+        "communicating,watch,mātakitaki",
+        "communicating,see,kite",
+
+        "housekeeping,cook,tunu",
+        "housekeeping,gather,tiki",
+        "housekeeping,buy,utu",
+        "housekeeping,cut,tapahi",
+        "housekeeping,wash,horoi",
+        "housekeeping,tidy,whakapai",
+        "housekeeping,dry,whakamaroke",
+        "housekeeping,sweep,tahitahi",
+        "housekeeping,pull weeds,huhuti_taru",
+        "housekeeping,mow,tapahi_karaehe",
+        "housekeeping,vacuum,whakangote_puehu",
+        "housekeeping,hang up,whakairi",
+
+        "exercising,throw,whiu",
+        "exercising,chase,whai",
+        "exercising,stretch,whātoro",
+        "exercising,pull,kukume",
+        "exercising,touch,pā",
+        "exercising,push,pana",
+        "exercising,shake,rūrū",
+        "exercising,bend,piko",
+        "exercising,wait,tatari",
+
+
+        "meeting,gift,koha",
+        "meeting,gathering,hui",
+        "meeting,support sing,waiata_tautoko",
+        "meeting,greet,mihi",
+        "meeting,handshake,hariru",
+        "meeting,call,karanga",
+        "meeting,challenge,wero",
+
+        //reasons for travel
+        "compoundNoun,get food,tiki kai",
+        "compoundNoun,sight seeing,titiro haere",
+        "compoundNoun,buy food,hoko kai",
+        "compoundNoun,buy presents,hoko taonga",
+        "compoundNoun,play sports,tākaro hākinakina",
+        "compoundNoun,meet relations,tūtaki whanaunga",
+        "compoundNoun,find work,kimi mahi",
+
+
+        "verb5,send,tono",
+
+        "verb6,rip,tīhae",
+
+
+
+        "verb6,search,kimi/rapu",
+        "verb6,point,tohu",
+
+        "verb6,erase,ūkui",
+        "verb6,turn off,whakaweto",
+        "verb6,fall off,taka",
+        "verb6,hurt,whakamāmae",
+        "verb6,slap,paki",
+
+        //VERBS STATIVES
 
         "stateOfBody,sleepy,hiamoe",
         "stateOfBody,hot,wera",
@@ -180,7 +487,7 @@
         "stateOfMindBad,angry,riri",
         "stateOfMindBad,worried,āwangawanga",
         "stateOfMindBad,bad,kino",
-        "stateOfMindBad,wrong,ku to he",
+        "stateOfMindBad,wrong,ku_to_he",
         "stateOfMindBad,annoyed,whakahohā",
 
         "cardinal,one,kotahi",
@@ -209,39 +516,6 @@
         "colour,brown,parauri",
         "colour,grey,kiwikiwi",
 
-        "body,nose,ihu",
-        "body,neck,kakī",
-        "body,tongue,arero",
-        "body,chin,kauae",
-        "body,hair,māhunga",
-        "body,heart,manawa",
-        "body,teeth,niho",
-        "body,chest,poho",
-        "body,belly,puku,",
-        "body,hand,ringa",
-        "body,head,upoko",
-        "body,leg,waewae",
-        "body,breast,ū",
-        "body,penis,ure",
-        "body,vagina,tenetene",
-        "body,knee,turi",
-
-        "kitchen,frying pan,parai",
-        "kitchen,knife,ripi",
-        "kitchen,oven,ōmu",
-        "kitchen,ladle,kōtutu",
-        "kitchen,pot,kōhua",
-        "kitchen,serviette,parehūhare",
-        "kitchen,spoon,koko",
-        "kitchen,tea towel,tītaora",
-        "kitchen,tongs,pīnohi",
-        "kitchen,serving platter,paepae mahora",
-        "kitchen,plastic wrap,takai kirihou",
-        "kitchen,hob,mura",
-
-
-        "relation,father,matua",
-        "relation,mother,whaea",
 
         "time,2:10,tekau mai i te rua",
         "time,3:30,haurua mai i te toru",
@@ -284,155 +558,6 @@
         "locative,right side,taha matau",
         "locative,left side,taha mauī",
 
-
-        "pronoun,I/me,ahau",
-        "pronoun,you,koe",
-        "pronoun,him/her,ia",
-        "pronoun,us (2),tāua",
-        "pronoun,us (3+),tātou",
-        "pronoun,we (2 but not you),māua",
-        "pronoun,we (3+ but not you),mātou",
-        "pronoun,you (2),kōrua",
-        "pronoun,you (3+),koutou",
-        "pronoun,them (2),rāua",
-        "pronoun,them (3+),rātou",
-
-        "possessive,my,(t)ōku",
-        "possessive,your(s),(t)ōu",
-        "possessive,their(s),(t)ōna",
-
-        //moving
-        "moving,run,oma",
-        "moving,come,haere",
-        "moving,walking,hīkoi",
-        "moving,dance,kanikani",
-        "moving,climb,piki",
-        "moving,stand,tū",
-        "moving,come,kuhu",
-        "moving,come down,heke",
-        "moving,exit,puta",
-        "moving,wait,taihoa",
-        "moving,jump,peke",
-        "moving,return,hoki",
-        "moving,sit,noho",
-        "moving,swim,kauhoe",
-        "moving,rest,whakatā",
-
-        //performing
-        "performing,singing,waiata",
-        "performing,talk,kōrero",
-        "performing,clap,pakipaki",
-        "performing,paint,peita",
-        "performing,weave,raranga",
-        "performing,carve,whakairo",
-
-        //learning
-        "learning,read,pānui",
-        "learning,learn,ako",
-        "learning,understand,mārama",
-        "learning,remember,māharahara",
-        "learning,answer,whakautu",
-        "learning,teach,akona",
-        "learning,think,whakaaro",
-        "learning,question,patai",
-        "learning,know,mōhio",
-        "learning,write,tuhi",
-
-        //meeting
-        "meeting,cry,tangi",
-        "meeting,laugh,katakata",
-        "meeting,smile,menemene",
-        "meeting,embrace,awhiawhi",
-        "meeting,greet,mihi",
-        "meeting,call,karanga",
-        "meeting,kiss,kihi",
-
-
-        //functioning
-
-        "functioning,eating,kai",
-        "functioning,sleeping,moe",
-        "functioning,drink,inu",
-        "functioning,feed,whāngai",
-        "functioning,snore,ngōngoro",
-        "functioning,yawn,hītako",
-        "functioning,sneeze,matihe",
-        "functioning,burp,kūpa",
-        "functioning,cough,mapu",
-        "functioning,dream,moemoeā",
-        "functioning,lie down,tāpapa",
-        "functioning,fart,patero",
-
-        //working
-        "working,work,mahi",
-        "working,carry,hari",
-        "working,purchase,hoko",
-        "working,build,hanga",
-        "working,lift,hiki",
-        "working,fix,whakatika",
-        "working,take off,tango",
-
-        //communicating
-        "communicating,shout,ūmere",
-        "communicating,pray,inoi",
-        "communicating,argue,whawhai",
-        "communicating,write,tuhi",
-        "communicating,listen,whakarongo",
-        "communicating,look,titro",
-        "communicating,watch,mātakitaki",
-        "communicating,see,kite",
-
-        //housekeeping
-        "housekeeping,cook,tunu",
-        "housekeeping,gather,tiki",
-        "housekeeping,buy,utu",
-        "housekeeping,cut,tapahi",
-        "housekeeping,wash,horoi",
-        "housekeeping,tidy,whakapai",
-        "housekeeping,dry,whakamaroke",
-        "housekeeping,sweep,tahitahi",
-        "housekeeping,pull weeds,huhuti taru",
-        "housekeeping,mow,tapahi karaehe",
-        "housekeeping,vacuum,whakangote puehu",
-        "housekeeping,hang up,whakairi",
-
-        //exercising
-        "exercising,throw,whiu",
-        "exercising,chase,whai",
-        "exercising,stretch,whātoro",
-        "exercising,pull,kukume",
-        "exercising,touch,pā",
-        "exercising,push,pana",
-        "exercising,shake,rūrū",
-        "exercising,bend,piko",
-        "exercising,wait,tatari",
-
-        //reasons for travel
-        "compoundNoun,get food,tiki kai",
-        "compoundNoun,sight seeing,titiro haere",
-        "compoundNoun,buy food,hoko kai",
-        "compoundNoun,buy presents,hoko taonga",
-        "compoundNoun,play sports,tākaro hākinakina",
-        "compoundNoun,meet relations,tūtaki whanaunga",
-        "compoundNoun,find work,kimi mahi",
-
-
-        "verb5,send,tono",
-
-        "verb6,rip,tīhae",
-
-
-
-        "verb6,search,kimi/rapu",
-        "verb6,point,tohu",
-
-        "verb6,erase,ūkui",
-        "verb6,turn off,whakaweto",
-        "verb6,fall off,taka",
-        "verb6,hurt,whakamāmae",
-        "verb6,slap,paki",
-
-
         "command,stand up,e tū",
         "command,sit down,e noho",
         "command,give back,homai",
@@ -445,83 +570,11 @@
         "tense,had,i",
         "tense,was,i te",
 
-        "people,child,tamaiti",
-        "people,man,tane",
-        "people,woman,wahine",
-        "people,teacher,kaiako",
-        "people,student,tauira",
-
-        "animal,dog,kurī",
-        "animal,sheep,hipi",
-        "animal,chicken,heihei",
-        "animal,duck,rakiraki",
-        "animal,pig,poaka",
-        "animal,cat,ngeru",
-        "animal,cow,kau",
-        "animal,horse,hōiho",
-        "animal,goat,nanekoti",
-
-        "transport,canoe,waka",
-        "transport,bus,pahi",
-        "transport,train,tereina",
-        "transport,helicopter,wakatopatopa",
-        "transport,truck,taraka",
-        "transport,bicycle,paihikara",
-        "transport,car,motoka",
-        "transport,horse,hōiho",
-        "transport,boat,waka poti",
-        "transport,plane,waka rererangi",
-        "transport,scooter,huta",
-
-
-
-        "food,egg,hēki",
-        "food,pen,pene",
-        "food,seafood,kaimoana",
-        "food,vegetables,hua whenua",
-        "food,fruit,hua rākau",
-        "food,butter,pata",
-        "food,cream,kirīmi",
-        "food,apple,āporo",
-        "food,milk,miraka",
-        "food,bread loaf,paraoa",
-        "food,banana,panana",
-        "food,lolly,rare",
-
-        "clothing,T-shirt,ti hate",
-
-
-        "house,floor,papa",
-        "house,ceiling,tuanui",
-        "house,wall,pakitara",
-        "house,window,matapihi",
-        "house,door,kuaha",
-
-        "room,kitchen,kīhini",
-        "room,lounge,rūma noho",
-        "room,bedroom,rūma moe",
-        "room,bathroom,rūma horoi tinana",
-        "room,shed,wharau",
-
-        "household,broom,paruma",
-        "household,chair,tūru",
-        "household,table,tēpu",
-        "household,lamp,rama",
-        "household,phone,waea kōrero",
-        "household,bed,moenga",
-        "household,TV,pouaka whakaata",
-        "household,freezer,pouaka tio",
-        "household,fridge,poaka makariri",
-        "household,bathtub,tāpu",
-        "household,shower,uwhi",
-        "household,cup,kapu",
-        "household,drawer,toroa",
-        "household,washing machine,mīhini horoi kakahu",
 
         "cost,$3.25,toru tāra e rua tekau mā rima hēneti",
         "cost,$1.73,kotahi tāra e whitu tekau mā toru hēneti",
         "cost,$38.69,e toru tekau mā waru tāra e ona tekau mā iwa hēneti",
-        "cost,$403.52,e wha rau e toru tāra e rima tekau mā rua hēneti"
+        "cost,$403.52,e wha rau e toru tāra e rima tekau mā rua hēneti",
 
       ]
 
@@ -530,8 +583,10 @@
 
       tupus = []
       tupuCSV.forEach(v => tupus.push(makeObject(v.split(","), ["topic", "english", "maori"])))
+      seed = initialSeed
+      tupusOriginal = [...tupus]
       tupus.sort(shuffle)
-
+      cl("after sort", "initialSeed tupus[0].english tupusOriginal[0].english")
 
       substituteEnglishVariableWord = (str) => {
         variableWord = str.match(/\[(\w+)\]/g)
@@ -563,11 +618,12 @@
 
 
       makeSentences = (patternIndex, question) => {
+
         if (question) {
-          englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishQ)
+          englishSentenceText = (firstSpeaker) ? substituteEnglishVariableWord(patterns[patternIndex].englishQ) : "type what you hear"
           maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriQ)
         } else {
-          englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishA)
+          englishSentenceText = (firstSpeaker && pairing) ? "type what you hear" : englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishA)
           maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriA)
         }
       }
@@ -575,6 +631,9 @@
       maoriWordList = () => {
         list = []
         patterns.forEach(v => list = [...list, ...v.maoriQ.replace(/ \[(\w+)\]/, "").split(" ")])
+        cl("maoriWordList from questions", "list")
+        //list = list.sort(shuffle)
+        list = [...new Set(list)]
         return list
       }
 
@@ -585,14 +644,23 @@
         if (variableWord != null) {
           tupus.filter(v => v.topic == variableWord[1]).forEach(v => list = [...list, ...v.maori.split(" ")])
         }
+        //list = list.sort(shuffle)
+
+        cl("list of topic words", "list")
         return list
       }
 
       makeGridWords = () => {
-        words = maoriSentenceText.replace(/\[(\w+)\]/, "").split(" ")
-        words = [...words, ...maoriWordList(), ...topicWordList()] //, ...["tōku", "rāua", "ki", "ō", "aha", "koutou", "ona", "tōu", "haere", "māua", "i", "etahi"]]
+        requiredWords = maoriSentenceText.replace(/\[(\w+)\]/, "").split(" ")
+        cl("", "requiredWords")
+        cl("", "maoriWordList().length maoriWordList()")
+        cl("", "topicWordList().length topicWordList()")
+        words = [...maoriWordList().slice(0, 20 - Math.min(6, topicWordList().length)), ...topicWordList().slice(0, 6)]
+        cl("maori and topic words", "words")
+        words = [...words.slice(0, 24 - requiredWords.length), ...requiredWords]
         words = [...new Set(words)]
-        words = words.slice(0, 24)
+        //words.sort(shuffle)
+        //words = words.slice(0, 24)
         words = words.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         gridWords = words
       }
@@ -614,33 +682,32 @@
         return element
       }
 
-      buttonStyle = "position:relative;height:4vw;text-align:left;color:black;background:ivory;border-style:solid;border-width:1px;font-size:2vw;font-family:verdana;"
-      buttonLeftStyle = buttonStyle + "position:relative;float:left;text-align:left;"
-      buttonRightStyle = buttonStyle + "position:relative;right:0;text-align:left;"
+      buttonStyle = "position:relative;height:4vw;text-align:center;color:black;background:ivory;border-style:solid;border-width:1px;font-size:2vw;font-family:verdana;"
+      buttonLeftStyle = buttonStyle + "position:relative;float:left;text-align:center;"
+      buttonRightStyle = buttonStyle + "position:relative;right:0;text-align:center;"
       divStyle = "position:relative;text-align:left;display:block;background:lavender;border-style:none;border-width:1px;font-size:2vw;font-family:verdana;"
-
-      //sentenceStyle = "color:black;background-color:ivory;border-style:solid;border-width:1px;font-size:3vw;font-family:verdana;"
-      correctButtonStyle = "color:limeGreen;background-color:ivory;border-style:solid;border-width:1px;font-size:2vw;font-family:verdana;"
+      correctButtonStyle = buttonStyle + "color:limeGreen;background-color:ivory;border-style:solid;border-width:1px;font-size:2vw;font-family:verdana;"
 
       display = () => {
         updateModel()
-        //cl(maoriAnswerText)
-        //console.log(substitutedWordIndex)
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
 
+        navigationDiv = addElement("navigationDiv", "div", b, 100, divStyle, "")
+        pairingButton = addElement("pairingButton", "button", navigationDiv, 20, buttonLeftStyle, "korero")
+        redoButton = addElement("redoButton", "button", navigationDiv, 20, buttonRightStyle, pairing ? ". " : "kupu hou")
+        prevPatternButton = addElement("prevPatternButton", "button", navigationDiv, 20, buttonRightStyle, pairing ? " ." : "prev")
+        next5PatternButton = addElement("nextPattern5Button", "button", navigationDiv, 20, buttonRightStyle, pairing ? ". " : "skip 5")
+
+        nextPatternButton = addElement("nextPatternButton", "button", navigationDiv, 20, buttonRightStyle, "next") //"&#x25B6;")
+
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
-        redoButton = addElement("redoButton", "button", englishDiv, 5, buttonLeftStyle, "R")//&#x1F504;")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 79, buttonStyle, patternIndex + 1 + ". " + englishSentenceText)
-        prevPatternButton = addElement("prevPatternButton", "button", englishDiv, 5, buttonRightStyle, "<")//"&#x25B6;")
-                nextPatternButton = addElement("nextPatternButton", "button", englishDiv, 5, buttonRightStyle, ">")//"&#x25B6;")
-        next5PatternButton = addElement("nextPattern5Button", "button", englishDiv, 5, buttonRightStyle, "5")//"&#x23E9;")
+        englishSentence = addElement("englishSentence", "button", englishDiv, 100, buttonStyle, patternIndex + 1 + ". " + englishSentenceText)
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
-        pairingButton = addElement("pairingButton", "button", maoriDiv, 5, buttonLeftStyle, "P")
-        maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 89, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
-        deleteButton = addElement("deleteButton", "button", maoriDiv, 5, buttonRightStyle, "<")//"&#x232B;")
+        maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 93, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
+        deleteButton = addElement("deleteButton", "button", maoriDiv, 7, buttonRightStyle, "del") //"&#x232B;")
 
         wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "")
         gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 25, buttonStyle, v))
@@ -654,38 +721,50 @@
         closeButton = addElement("closeButton", "button", wordlistDiv, 15, buttonRightStyle, "close")
       }
 
-      displayPairing = (str) => {
+      displayPairing = () => {
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
-        instructionsDiv = addElement("instructionsDiv", "div", b, 100, divStyle, str)
-        pairingCodeButton = addElement("pairingCodeButton", "button", instructionsDiv, 15, buttonStyle, pairingCode)
-        a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
-        a.forEach((v, i) => addElement("keyButton", "button", instructionsDiv, 30, buttonStyle, v))
-        closeButton = addElement("closeButton", "button", instructionsDiv, 15, buttonRightStyle, "close")
+        instructionsDiv = addElement("instructionsDiv", "button", b, 100, buttonLeftStyle, "Share code below or enter pairing code and click OK")
+        pairingCodeButton = addElement("pairingCodeButton", "button", instructionsDiv, 100, buttonStyle, pairingCode)
+        a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        a.forEach((v, i) => addElement("keyButton" + v, "button", instructionsDiv, 30, buttonStyle, v))
+        acceptButton = addElement("acceptButton", "button", instructionsDiv, 50, buttonLeftStyle, "OK")
+        cancelButton = addElement("cancelButton", "button", instructionsDiv, 50, buttonRightStyle, "Cancel")
       }
 
       //CONTROLLER
 
       clicked = e => {
         id = e.target.id
+
         if (id == "nextPatternButton") {
           question = !question
+          if (pairing && question) firstSpeaker = !firstSpeaker
+          cl("after next button", "firstSpeaker substitutedWordIndex")
           if (question) {
             patternIndex = (patternIndex == patterns.length - 1) ? 0 : patternIndex + 1
-            substitutedWordIndex++
+            //substitutedWordIndex++
           }
           maoriAnswerText = "."
           sentenceCorrect = false
+          makeGridWords()
+          display()
+        }
+
+        if (id == "prevPatternButton") {
+          question = true
+          patternIndex = (patternIndex == 0) ? 0 : patternIndex - 1
+          maoriAnswerText = "."
+          sentenceCorrect = false
+
           display()
         }
 
         if (id == "nextPattern5Button") {
           question = true
-
           patternIndex = (patternIndex + 5) % patterns.length
           console.log("patternIndex" + patternIndex + " patterns.length " + patterns.length)
-
           maoriAnswerText = "."
           sentenceCorrect = false
           display()
@@ -706,7 +785,19 @@
         }
 
         if (id == "closeButton") {
-          console.log("clicked")
+          display()
+        }
+
+        if (id == "deleteButton") {
+          maoriAnswerText = maoriAnswerText.substring(0, maoriAnswerText.lastIndexOf(" "))
+          sentenceCorrect = false
+          display()
+        }
+
+        if (id == "redoButton") {
+          maoriAnswerText = "."
+          substitutedWordIndex++
+          sentenceCorrect = false
           display()
         }
 
@@ -724,24 +815,36 @@
         }
 
         if (id == "pairingButton") {
-          pairingCode = 3456
-          str = "Share this pairing code or enter a pairing code from another player: <br><center><h2>" + pairingCode + "</h2></center><br>"
-          displayPairing(str)
+          pairingCode = code(initialSeed) + code(patternIndex).toString()
+          displayPairing()
         }
 
-        if (id == "deleteButton") {
-          maoriAnswerText = maoriAnswerText.substring(0, maoriAnswerText.lastIndexOf(" "))
-          sentenceCorrect = false
+
+        if (id.includes("keyButton")) {
+          if (pairingCode.length == 4) pairingCode = ""
+          firstSpeaker = false
+          if (pairingCode.length < 4) {
+            pairingCode = pairingCode + id.match(/\d+/g)
+          }
+          patternIndex = decode(pairingCode.slice(2))
+          initialSeed = decode(pairingCode.slice(0, 2))
+          displayPairing()
+        }
+
+        if (id == "acceptButton") {
+          initialSeed = decode(pairingCode.slice(0, 2))
+          seed = initialSeed
+          tupus = [...tupusOriginal]
+          tupus.sort(shuffle)
+          cl("after accept sort", "pairingCode initialSeed tupus[0].english")
+          pairing = true
           display()
         }
 
-        if (id == "redoButton") {
-          maoriAnswerText = "."
-          substitutedWordIndex++
-          sentenceCorrect = false
+        if (id == "cancelButton") {
+          pairing = false
           display()
         }
-
       }
 
       display()
