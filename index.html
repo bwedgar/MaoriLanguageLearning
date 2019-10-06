@@ -76,10 +76,12 @@
         "how are you all feeling (EA form),e pehea ana koutou,we are feeling [stateOfMindBad],e [stateOfMindBad] ana mātou",
 
         // 6 BOOK 2 WHAKAPAPA
-        "who is [femaleName1] 's [femaleRelationOfFemale],ko wai [femaleRelationOfFemale] a [femaleName1],the [femaleRelationOfFemale] of [femaleName1] is [femaleName2],ko [femaleName2] ou [femaleRelationOfFemale] a [femaleName1]",
-        "who is [femaleName1] 's [maleRelationOfFemale],ko wai [maleRelationOfFemale] a [femaleName1],the [maleRelationOfFemale] of [femaleName1] is [maleName2],ko [maleName2] ou [femaleRelationOfFemale] a [femaleName1]",
-        "who is [maleName1] 's [femaleRelationOfmale],ko wai [femaleRelationOfmale] a [maleName1],the [femaleRelationOfmale] of [maleName1] is [femaleName2],ko [femaleName2] ou [maleRelationOfFemale] a [maleName1]",
-        "who is [maleName1] 's [maleRelationOfmale],ko wai [maleRelationOfmale] a [maleName1],the [maleRelationOfmale] of [maleName1] is [maleName2],ko [maleName2] ou [maleRelationOfFemale] a [maleName1]",
+        "who is [femaleName1] 's [femaleRelationOfFemale],ko wai [femaleRelationOfFemale] a [femaleName1],the [femaleRelationOfFemale] of [femaleName1] is [femaleName2],ko [femaleName2] te [femaleRelationOfFemale] o [femaleName1]",
+        "who is [femaleName1] 's [maleRelationOfFemale],ko wai [maleRelationOfFemale] a [femaleName1],the [maleRelationOfFemale] of [femaleName1] is [maleName2],ko [maleName2] te [maleRelationOfFemale] o [femaleName1]",
+        "who is [maleName1] 's [femaleRelationOfmale],ko wai [femaleRelationOfmale] a [maleName1],the [femaleRelationOfmale] of [maleName1] is [femaleName2],ko [femaleName2] te [maleRelationOfFemale] o [maleName1]",
+        "who is [maleName1] 's [maleRelationOfmale],ko wai [maleRelationOfmale] a [maleName1],the [maleRelationOfmale] of [maleName1] is [maleName2],ko [maleName2] te [maleRelationOfFemale] o [maleName1]",
+        "who are your [relation]s,ko wai o [relation],my [relation]s are [maleName1] and [maleName2],ko [maleName1] rāua ko [femaleName1] ōku [relation]",
+        "who are your [relation]s,ko wai o [relation],my [relation]s are [maleName1] [maleName2] and [femaleName2],ko [maleName1] rātou ko [maleName2] ko [femaleName2] ōku [relation]",
         "how many [relation] do you have,tokohia āu [relation],I have [numberRelations] [relation],tokohia [numberRelations] āku [relation]",
 
         // 11 BOOK 3 WAHI
@@ -93,7 +95,7 @@
         "what type of [animal] is this,he [animal] aha tēnei,that is a [colour] [animal],he [animal] [colour] tēnā",
         "where is [maleName1],kei hea a [maleName1],[maleName1] is [locative] the [house],kei [locative] a [maleName1] i te [house]",
         "where is the [food],kei hea te [food],the [food] is [locative] the [transport],kei [locative] te [food] i te [transport]",
-        "where is your [household1],kei hea tōu [household1],my [household1] is [locative] the [household2],kei te [household2] tōku [household1]",
+        "where is your [household1],kei hea tōu [household1],my [household1] is [locative] the [household2],kei [locative] te [household2] tōku [household1]",
         "how many [kitchen]-s are there,e hia ngā [kitchen],there are [cardinal] [kitchen],[cardinal] ngā [kitchen]",
 
         // 23 BOOK 4 TE WA
@@ -124,10 +126,9 @@
         "how will you travel,mā hea koe haere ai,i will travel by [transport],mā runga [transport] ahau haere ai",
 
         // 45 BOOK 7 TIKANGA MARAE
-        "who [meeting] -ed,nā wai i [meeting],[npronoun] [meeting] -ed,[npronoun] i [meeting]",
-        "who [meeting] -ed,nā wai i [meeting],[name] [meeting] -ed,nā [name] i [meeting]",
-        "who [meeting] -ed,nā wai i [meeting],the [people] [meeting] -ed,nā te [people] i [meeting]",
-        "who [meeting] -ed,nā wai i [meeting],[name] [meeting] -ed,nā [name] i [meeting]",
+        "the [maraePeople1] [welcoming1],ka [welcoming1] te [maraePeople1],then the [maraePeople2] [welcoming2],kātahi ka [welcoming2] te [maraePeople2]",
+        "the [maraePeople1] [welcoming1],ka [welcoming1] te [maraePeople1],after that the [maraePeople2] [welcoming2],a muri i tērā ka [welcoming2] te [maraePeople2]",
+
       ]
 
       tupuCSV = [
@@ -229,7 +230,6 @@
         "maleRelationOfMale,older brother,tuakana",
         "maleRelationOfMale,grandfather,matua tūpuna",
 
-
         "femaleRelationOfMale,girl friend,hoa_wahine",
         "femaleRelationOfMale,aunty,whaea kēkē",
         "femaleRelationOfMale,grandmother,whaea tūpuna",
@@ -244,7 +244,6 @@
         "femaleRelationOfFemale,younger sister,teina",
         "femaleRelationOfFemale,older sister,tuakana",
 
-
         "maleRelationOfFemale,brother,tungāne",
         "maleRelationOfFemale,uncle,matua kēkē",
         "maleRelationOfFemale,grandfather,matua tūpuna",
@@ -252,9 +251,8 @@
 
         "relation,grandchildren,mokopuna",
         "relation,children,tamariki",
-        "relation,nieces,irāmutu",
+        "relation,niece and nephew,irāmutu",
         "relation,cousins,kaihanga",
-
 
         "people,child,tamaiti",
         "people,man,tane",
@@ -265,6 +263,16 @@
         "people,old man,korua",
         "people,girl,kōtiro",
         "people,boy,tama",
+
+        "maraePeople1,old lady,kuia",
+        "maraePeople1,old man,korua",
+        "maraePeople1,hosts,tangata whenua",
+        "maraePeople1,visitors,manuhire",
+
+        "maraePeople2,man,tane",
+        "maraePeople2,girl,kōtiro",
+        "maraePeople2,cooks,ringawera",
+        "maraePeople2,speakers,kaikōrero",
 
         "animal,dog,kurī",
         "animal,sheep,hipi",
@@ -302,8 +310,8 @@
         "food,lolly,rare",
 
         "clothing,T-shirt,ti hate",
-"clothing,hat,potae",
-"clothing,shoes,hu",
+        "clothing,hat,potae",
+        "clothing,shoes,hu",
 
 
         "house,floor,papa",
@@ -471,13 +479,18 @@
         "exercising,wait,tatari",
 
 
-        "meeting,gift,koha",
-        "meeting,gathering,hui",
-        "meeting,support sing,waiata_tautoko",
-        "meeting,greet,mihi",
-        "meeting,handshake,hariru",
-        "meeting,call,karanga",
-        "meeting,challenge,wero",
+        "welcoming1,gift,koha",
+        "welcoming1,gathering,hui",
+        "welcoming1,support sing,waiata_tautoko",
+        "welcoming1,greet,mihi",
+        "welcoming1,dance,haka pōhiri",
+
+        "welcoming2,handshake,hariru",
+        "welcoming2,call,karanga",
+        "welcoming2,challenge,wero",
+        "welcoming2,call for food,karanga mō te kai",
+        "welcoming2,prayer for food,karakia mō te kai",
+        "welcoming2,food,kai",
 
         //reasons for travel
         "compoundNoun,get food,tiki kai",
@@ -556,11 +569,8 @@
         "numberRelations,two,tokorua āku",
         "numberRelations,three,tokotoru āku",
 
-
-
         "affirmation,yes,ae",
         "affirmation,no,kahore",
-
 
         "colour,white,mā",
         "colour,red,whero",
@@ -572,7 +582,6 @@
         "colour,purple,waiporoporo",
         "colour,brown,parauri",
         "colour,grey,kiwikiwi",
-
 
         "time,2:10,tekau mai i te rua",
         "time,3:30,haurua mai i te toru",
@@ -759,6 +768,7 @@
 
       display = () => {
         updateModel()
+        document.body.style.cssText = "background:black;"
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
@@ -784,6 +794,7 @@
 
       displayWordlist = (str) => {
         vocabWords = updateVocab()
+        document.body.style.cssText = "background:black;"
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
@@ -794,6 +805,7 @@
       }
 
       displayStructure = (str) => {
+        document.body.style.cssText = "background:black;"
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
@@ -803,6 +815,7 @@
       }
 
       displayPairing = () => {
+        document.body.style.cssText = "background:black;"
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
@@ -877,7 +890,9 @@
         }
 
         if (id.includes("vocab")) {
-          element.style.cssText = revealedButtonStyle
+          //console.log(element.style.color)
+          (element.style.color == "black")?element.style.color = "white":element.style.color = "black"
+
         }
 
         if (id == "deleteButton") {
