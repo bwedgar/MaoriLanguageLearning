@@ -163,7 +163,6 @@
 
         "name,fred,fred",
 
-
         "maleName1,Te_Rauparaha,Te_Rauparaha",
         "maleName1,Hoani,Hoani",
         "maleName1,Pita,Pita",
@@ -251,8 +250,9 @@
 
         "relation,grandchildren,mokopuna",
         "relation,children,tamariki",
-        "relation,niece and nephew,irāmutu",
-        "relation,cousins,kaihanga",
+        "relation,child,tamaiti",
+        "relation,niece or nephew,irāmutu",
+        "relation,cousin,kaihanga",
 
         "people,child,tamaiti",
         "people,man,tane",
@@ -264,6 +264,15 @@
         "people,girl,kōtiro",
         "people,boy,tama",
 
+        "marae,shake hands,harirū",
+        "marae,is that so,meinga_meinga",
+        "marae,carving,whakairo",
+        "marae,carving on roof,tekoteko",
+        "marae,carving,whakairo",
+        "marae,formal speech,whaikõrero",
+
+
+
         "maraePeople1,old lady,kuia",
         "maraePeople1,old man,korua",
         "maraePeople1,hosts,tangata whenua",
@@ -272,7 +281,7 @@
         "maraePeople2,man,tane",
         "maraePeople2,girl,kōtiro",
         "maraePeople2,cooks,ringawera",
-        "maraePeople2,speakers,kaikōrero",
+        "maraePeople2,speaker,kaikōrero",
 
         "animal,dog,kurī",
         "animal,sheep,hipi",
@@ -379,6 +388,57 @@
         "kitchen,plastic wrap,takai_kirihou",
         "kitchen,hob,mura",
         "kitchen,plate,pereti",
+
+        //ADJECTIVES
+
+        "adjectives1,beautiful,ātaahua",
+        "adjectives1,big,nui",
+        "adjectives1,long,roa",
+        "adjectives1,small,iti",
+        "adjectives1,old,tawhito",
+        "adjectives1,new,hōu",
+        "adjectives1,ugly,anuhea",
+        "adjectives1,scared,mataku",
+        "adjectives1,sad,pouri",
+        "adjectives1,lonely,mokemoke",
+        "adjectives1,hot,wera",
+        "adjectives1,warm,mahana",
+        "adjectives1,cold,makariri",
+
+        "adjectives2,quick,horo",
+        "adjectives2,fast,tere",
+        "adjectives2,slow,pōturi",
+        "adjectives2,fat,mōmona",
+        "adjectives2,skinny,tūpuhi",
+        "adjectives2,tall,tāroroa",
+        "adjectives2,thin,angiangi",
+        "adjectives2,wide,whānui",
+        "adjectives2,thick,mātotoru",
+        "adjectives2,few,torutoru",
+        "adjectives2,many,maha",
+        "adjectives2,shiny,pīata",
+        "adjectives2,dull,pūhuki",
+
+        "personal qualities 1,lazy,māngere",
+        "personal qualities 1,expert,tohunga",
+        "personal qualities 1,knowledgeable,mātau",
+        "personal qualities 1,brave,toa",
+        "personal qualities 1,entertaining,ngahau",
+        "personal qualities 1,weak,ngoikore",
+        "personal qualities 1,all right,āhau pai",
+        "personal qualities 1,pleasant person,ngākau māhaki",
+        "personal qualities 1,quiet,nohopuku",
+
+        "personal qualities 2,faithful,ngākau nui",
+        "personal qualities 2,amusing,hātakēhi",
+        "personal qualities 2,quick,kakama",
+        "personal qualities 2,industrious,pukumahi",
+        "personal qualities 2,intelligent,koi te hinengaro",
+        "personal qualities 2,ignorant,kūare",
+        "personal qualities 2,very good,tino pai",
+        "personal qualities 2,generous,marae",
+        "personal qualities 2,fabulous,tino rawe",
+        "personal qualities 2,serene,mauritau",
 
 
         //VERBS ACTION
@@ -589,9 +649,9 @@
         "time,4:50,tekau ki te rima",
         "time,8:24,rua tekau mai i te waru",
 
-        "day,monday,Rāhina",
-        "day,tueday,Rātū",
-        "day,wednesday,Rāapa",
+        "day,Monday,Rāhina",
+        "day,Tuesday,Rātū",
+        "day,Wednesday,Rāapa",
         "day,Thursday,Rāpare",
         "day,Friday,Rāmere",
         "day,Saturday,Rāhoroi",
@@ -890,9 +950,9 @@
         }
 
         if (id.includes("vocab")) {
-          //console.log(element.style.color)
-          (element.style.color == "black")?element.style.color = "white":element.style.color = "black"
-
+          //if (element.id.match(/\d+/) % 2 != 0) { // stops english words disappering
+          (element.style.color == "black") ? element.style.color = "white": element.style.color = "black"
+          //  }
         }
 
         if (id == "deleteButton") {
