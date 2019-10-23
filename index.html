@@ -60,6 +60,9 @@
       pairingCode = "0000"
       pairing = false
       firstSpeaker = true
+      englishWords = []
+      maoriWords = []
+      //list=[]
 
       patternsCSV = [
         // "what will the [animal] do,ka aha te [animal],the [animal] will [verb1],ka [verb1] te [animal]",
@@ -709,6 +712,12 @@
 
       tupus = []
       tupuCSV.forEach(v => tupus.push(makeObject(v.split(","), ["topic", "english", "maori"])))
+
+      patternList = [...patterns.map(p => p.englishQ)]
+      //console.log(patternList)
+      vocabList = [...new Set([...tupus.map(t => t.topic)])]
+      //console.log(vocabList)
+
       seed = initialSeed
       tupusOriginal = [...tupus]
       tupus.sort(shuffle)
@@ -755,25 +764,25 @@
       }
 
       maoriWordList = () => {
-        list = []
-        patterns.forEach(v => list = [...list, ...v.maoriQ.replace(/ \[(\w+)\]/g, "").split(" ")])
-        cl("maoriWordList from questions", "list")
+        wordList = []
+        patterns.forEach(v => wordList = [...wordList, ...v.maoriQ.replace(/ \[(\w+)\]/g, "").split(" ")])
+        cl("maoriWordList from questions", "wordList")
         //list = list.sort(shuffle)
-        list = [...new Set(list)]
-        return list
+        wordList = [...new Set(wordList)]
+        return wordList
       }
 
       topicWordList = () => {
-        list = []
+        wordList = []
         str = question ? patterns[patternIndex].englishQ : patterns[patternIndex].englishA
         variableWord = str.match(/\[(\w+)\]/)
         if (variableWord != null) {
-          tupus.filter(v => v.topic == variableWord[1]).forEach(v => list = [...list, ...v.maori.split(" ")])
+          tupus.filter(v => v.topic == variableWord[1]).forEach(v => wordList = [...wordList, ...v.maori.split(" ")])
         }
         //list = list.sort(shuffle)
 
-        cl("list of topic words", "list")
-        return list
+        cl("list of topic words", "wordList")
+        return wordList
       }
 
       makeGridWords = () => {
@@ -797,12 +806,13 @@
       }
 
       updateVocab = () => {
-        //return [...englishWords,...maoriWords]
         a = []
+        //cl("", "englishWords")
         englishWords.forEach((v, i) => {
           a.push(englishWords[i])
           a.push(maoriWords[i])
         })
+        console.log(a)
         return a
       }
 
@@ -821,12 +831,13 @@
       buttonStyle = style + "position:relative;height:5vw;text-align:center;"
       buttonLeftStyle = buttonStyle + "position:relative;float:left;text-align:center;"
       buttonRightStyle = buttonStyle + "position:relative;right:0;text-align:center;"
+      listStyle = buttonStyle + "position:relative;right:0;text-align:left;"
       divStyle = style + "position:relative;text-align:left;display:block;"
       correctButtonStyle = buttonStyle + "color:limeGreen;"
       hiddenButtonStyle = buttonStyle + "color:black;font-size:2vw;"
       revealedButtonStyle = buttonStyle + "width:25%;font-size:2vw;"
 
-      display = () => {
+      display = () => {  //enter maori text
         updateModel()
         document.body.style.cssText = "background:black;"
         document.body.innerHTML = ""
@@ -834,15 +845,15 @@
         b.addEventListener("click", clicked)
 
         navigationDiv = addElement("navigationDiv", "div", b, 100, divStyle, "")
-        pairingButton = addElement("pairingButton", "button", navigationDiv, 20, buttonLeftStyle, "korero")
-        redoButton = addElement("redoButton", "button", navigationDiv, 20, buttonRightStyle, pairing ? ". " : "kupu hou")
-        prevPatternButton = addElement("prevPatternButton", "button", navigationDiv, 20, buttonRightStyle, pairing ? " ." : "prev")
-        next5PatternButton = addElement("nextPattern5Button", "button", navigationDiv, 20, buttonRightStyle, pairing ? ". " : "skip 5")
-
+        pairingButton = addElement("pairingButton", "button", navigationDiv, 16, buttonLeftStyle, "korero")
+        redoButton = addElement("redoButton", "button", navigationDiv, 16, buttonRightStyle, pairing ? ". " : "kupu hou")
+        patternListButton = addElement("patternListButton", "button", navigationDiv, 16, buttonRightStyle, pairing ? ". " : "structs")
+        vocabListButton = addElement("vocabListButton", "button", navigationDiv, 16, buttonRightStyle, pairing ? ". " : "vocab")
+        prevPatternButton = addElement("prevPatternButton", "button", navigationDiv, 16, buttonRightStyle, pairing ? " ." : "prev")
         nextPatternButton = addElement("nextPatternButton", "button", navigationDiv, 20, buttonRightStyle, "next") //"&#x25B6;")
 
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 100, buttonStyle, patternIndex + 1 + ". " + englishSentenceText)
+        englishSentence = addElement("englishSentence", "button", englishDiv, 100, buttonStyle,  englishSentenceText) //patternIndex + 1 + ". " +
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
         maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 93, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
@@ -852,7 +863,7 @@
         gridWords.forEach((v, i) => addElement("tupu" + i, "button", wordGrid, 25, buttonStyle, v))
       }
 
-      displayWordlist = (str) => {
+      displayWordlist = () => {  // show english and maori words
         vocabWords = updateVocab()
         document.body.style.cssText = "background:black;"
         document.body.innerHTML = ""
@@ -861,17 +872,41 @@
         wordlistDiv = addElement("wordlistDiv", "div", b, 100, divStyle, "")
         closeButton = addElement("closeButton", "button", wordlistDiv, 100, buttonRightStyle, "close")
         wordGrid = addElement("wordGrid", "div", b, 100, divStyle, "")
-        vocabWords.forEach((v, i) => addElement("vocab" + i, "button", wordGrid, 25, i % 2 == 0 ? buttonStyle : hiddenButtonStyle, v))
+        vocabWords.forEach((v, i) => addElement("word" + i, "button", wordGrid, 25, i % 2 == 0 ? buttonStyle : hiddenButtonStyle, v))
       }
 
-      displayStructure = (str) => {
+      displayPatternList = () => {  // show all the sentence patterns
+        document.body.style.cssText = "background:black;"
+        document.body.innerHTML = ""
+        b = addElement(1, "div", document.body, 100, "", "")
+        b.addEventListener("click", clicked)
+        patternListDiv = addElement("patternListDiv", "div", b, 100, divStyle, "")
+        closePatternListButton = addElement("closePatternListButton", "button", patternListDiv, 100, buttonRightStyle, "close")
+        patternGrid = addElement("patternGrid", "div", b, 100, divStyle, "")
+        console.log("patternList :  " + patternList)
+        patternList.forEach((v, i) => addElement("patternListIndex" + i, "button", patternGrid, 100, listStyle, v))
+      }
+
+      displayVocabList = () => {  // show a list of all the vocab groups
+        document.body.style.cssText = "background:black;"
+        document.body.innerHTML = ""
+        b = addElement(1, "div", document.body, 100, "", "")
+        b.addEventListener("click", clicked)
+        vocabListDiv = addElement("vocabListDiv", "div", b, 100, divStyle, "")
+        closeTupuListButton = addElement("closeVocabListButton", "button", vocabListDiv, 100, buttonRightStyle, "close")
+        vocabGrid = addElement("vocabGrid", "div", b, 100, divStyle, "")
+        //  console.log("patternList :  "+patternList)
+        vocabList.forEach((v, i) => addElement("vocabListIndex" + i, "button", vocabGrid, 100, listStyle, v))
+      }
+
+      displayStructure = (str) => {  // show the maori translation
         document.body.style.cssText = "background:black;"
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
         wordlistDiv = addElement("wordlistDiv", "div", b, 100, divStyle, "")
         closeButton = addElement("closeButton", "button", wordlistDiv, 100, buttonRightStyle, "close")
-        structureDiv = addElement("structureDiv", "div", wordlistDiv, 100, buttonStyle, str)
+        structureDiv = addElement("structureDiv", "button", wordlistDiv, 100, buttonStyle, str)
       }
 
       displayPairing = () => {
@@ -911,31 +946,66 @@
           question = true
           patternIndex = (patternIndex == 0) ? 0 : patternIndex - 1
           maoriAnswerText = "."
-          sentenceCorrect = false
-
+          sentenceCorrect = fals
           display()
         }
 
-        if (id == "nextPattern5Button") {
-          question = true
-          patternIndex = (patternIndex + 5) % patterns.length
-          console.log("patternIndex" + patternIndex + " patterns.length " + patterns.length)
-          maoriAnswerText = "."
-          sentenceCorrect = false
+        if (id == "patternListButton") {
+          //cl("","patternList")
+          displayPatternList()
+          //alert()
+        }
+
+        if (id.includes("patternListIndex")) {
+          //if (element.id.match(/\d+/) % 2 != 0) { // stops english words disappering
+          //(element.style.color == "black") ? element.style.color = "white": element.style.color = "black"
+          //  }
+          //console.log("id:"+element.id)//.match(/\d+/))
+          //displayVocab()
+          patternIndex = element.id.match(/\d+/)
+          display()
+        }
+
+        if (id == "closePatternListButton") {
+          display()
+        }
+
+        if (id == "vocabListButton") {
+          displayVocabList()
+        }
+
+        if (id.includes("vocabListIndex")) {
+          variableWord = [element.innerHTML]
+          englishWords = []
+          maoriWords = []
+          if (variableWord != null) {
+            variableWord.forEach((item) => {
+              variableWords = tupus.filter(v => (v.topic == item))
+              wordList = tupus.filter(v => (v.topic == item))
+              wordList.forEach(v => {
+                englishWords.push(v.english)
+                maoriWords.push(v.maori)
+              })
+            })
+          }
+        //  console.log("word lists" + englishWords + " " + maoriWords)
+          displayWordlist()
+        }
+
+        if (id == "closeVocabListButton") {
           display()
         }
 
         if (id == "englishSentence") {
           variableWord = patterns[patternIndex].englishA.match(/\[(\w+)\]/g)
-          //str = "<table><tbody>"
           englishWords = []
           maoriWords = []
           if (variableWord != null) {
             variableWord.forEach((item) => {
               item = item.replace("[", "").replace("]", "")
               variableWords = tupus.filter(v => (v.topic == item))
-              list = tupus.filter(v => (v.topic == item))
-              list.forEach(v => {
+              wordList = tupus.filter(v => (v.topic == item))
+              wordList.forEach(v => {
                 englishWords.push(v.english)
                 maoriWords.push(v.maori)
               })
@@ -949,10 +1019,8 @@
           display()
         }
 
-        if (id.includes("vocab")) {
-          //if (element.id.match(/\d+/) % 2 != 0) { // stops english words disappering
+        if (id.includes("word")) {
           (element.style.color == "black") ? element.style.color = "white": element.style.color = "black"
-          //  }
         }
 
         if (id == "deleteButton") {
@@ -969,7 +1037,7 @@
         }
 
         if (id == "maoriSentence") {
-          displayStructure(maoriSentenceText + "<br><br>")
+          displayStructure(maoriSentenceText)// + "<br><br>")
         }
 
         if (id.includes("tupu")) {
