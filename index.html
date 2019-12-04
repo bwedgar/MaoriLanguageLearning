@@ -11,7 +11,9 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-
+  <script type="text/javascript" src="../mespeakmaori/mespeak-core.js"></script>
+  <script type="text/javascript" src="../mespeakmaori/mespeak.js?v=2.0.4"></script>
+  <script type="text/javascript" src="../mespeakmaori/mespeakmaori.js"></script>
 
 </head>
 
@@ -50,7 +52,7 @@
       //MODEL
 
       patternIndex = 0
-      question = true
+      sentenceType = "question"
       substitutedWordIndex = 0
       englishSentenceText = " "
       maoriSentenceText = " "
@@ -59,12 +61,14 @@
       sentenceCorrect = false
       pairingCode = "0000"
       pairing = false
-      firstSpeaker = true
-      words1=[]
+      speaker = "host"
+      words1 = []
       //englishWords = []
-    //  maoriWords = []
+      //  maoriWords = []
       blankMaori = true
       //list=[]
+      voices = false
+      spoken = false
 
       patternsCSV = [
         // "what will the [animal] do,ka aha te [animal],the [animal] will [verb1],ka [verb1] te [animal]",
@@ -168,34 +172,29 @@
 
         "name,fred,fred",
 
-        "maleName1,Te_Rauparaha,Te_Rauparaha",
+        "maleName1,Mikaere,Mikaere",
         "maleName1,Hoani,Hoani",
         "maleName1,Pita,Pita",
-        "maleName1,Matthew,Matthew",
-        "maleName1,Brian,Brian",
+        "maleName1,Matiu,Matiu",
 
-        "maleName2,Martin,Martin",
-        "maleName2,Allan,Allan",
-        "maleName2,Nicholas,Pita",
-        "maleName2,Jack,Jack",
-        "maleName2,Andrew,Andrew",
+        "maleName2,Hemi,Hemi",
+        "maleName2,Wiremu,Wiremu",
+        "maleName2,Rawiri,Rawiri",
+        "maleName2,Nikau,Nikau",
+        "maleName2,Ihaka,Ihaka",
 
         "femaleName1,Mere,Mere",
-        "femaleName1,Te_Ohorere,Te_Ohorere",
-        "femaleName1,Sue,Sue",
-        "femaleName1,Isabelle,Isabelle",
+        "femaleName1,Hine,Hine",
+        "femaleName1,Aroha,Aroha",
+        "femaleName1,Kara,Kara",
 
         "femaleName2,hinemoa,hinemoa",
-        "femaleName2,Te_Puea,Te_Puea",
+        "femaleName2,Kahurangi,Kahurangi",
         "femaleName2,Ngaio,Ngaio",
         "femaleName2,Rehua,Rehua",
 
-        "genderNeutralName,Chris,Chris",
-        "genderNeutralName,Alex,Alex",
-        "genderNeutralName,Charlie,Charlie",
-        "genderNeutralName,Danny,Danny",
-        "genderNeutralName,Ricky,Ricky",
-        "genderNeutralName,Robin,Robin",
+        "genderNeutralName,Mikaere,Mikaere",
+
 
         "place,Dunedin,Onetāhi",
         "place,Auckland,Tamaki Makaurau",
@@ -723,7 +722,7 @@
       seed = initialSeed
       tupusOriginal = [...tupus]
       tupus.sort(shuffle)
-    //  cl("after sort", "initialSeed tupus[0].english tupusOriginal[0].english")
+      //  cl("after sort", "initialSeed tupus[0].english tupusOriginal[0].english")
 
       substituteEnglishVariableWord = (str) => {
         variableWord = str.match(/\[(\w+)\]/g)
@@ -754,21 +753,26 @@
       //  substitutedWordIndex = (substitutedWordIndex == tupus.filter(v => v.topic == variableWord[1]).length) ? 0 : substitutedWordIndex++
 
 
-      makeSentences = (patternIndex, question) => {
+      makeSentences = (patternIndex) => {
 
-        if (question) {
-          englishSentenceText = (firstSpeaker) ? substituteEnglishVariableWord(patterns[patternIndex].englishQ) : "type what you hear"
+        if (sentenceType == "question") {
+          englishSentenceText = (speaker == "guest") ? substituteEnglishVariableWord(patterns[patternIndex].englishQ) : "type what you hear"
           maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriQ)
         } else {
-          englishSentenceText = (firstSpeaker && pairing) ? "type what you hear" : englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishA)
+          englishSentenceText = ((speaker == "guest") && pairing) ? "type what you hear" : englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishA)
           maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriA)
+        }
+        if ((speaker == "guest") && pairing && voices && !spoken) {
+          //alert(maoriSentenceText)
+          spoken = true
+          mespeakmaori(maoriSentenceText.toLowerCase())
         }
       }
 
       maoriWordList = () => {
         wordList = []
         patterns.forEach(v => wordList = [...wordList, ...v.maoriQ.replace(/ \[(\w+)\]/g, "").split(" ")])
-        cl("maoriWordList from questions", "wordList")
+        //cl("maoriWordList from questions", "wordList")
         //list = list.sort(shuffle)
         wordList = [...new Set(wordList)]
         return wordList
@@ -776,7 +780,7 @@
 
       topicWordList = () => {
         wordList = []
-        str = question ? patterns[patternIndex].englishQ : patterns[patternIndex].englishA
+        str = (sentenceType == "question") ? patterns[patternIndex].englishQ : patterns[patternIndex].englishA
         variableWord = str.match(/\[(\w+)\]/)
         if (variableWord != null) {
           tupus.filter(v => v.topic == variableWord[1]).forEach(v => wordList = [...wordList, ...v.maori.split(" ")])
@@ -789,21 +793,15 @@
 
       makeGridWords = () => {
         requiredWords = maoriSentenceText.replace(/\[(\w+)\]/, "").split(" ")
-        //  cl("", "requiredWords")
-        //  cl("", "maoriWordList().length maoriWordList()")
-        //  cl("", "topicWordList().length topicWordList()")
         words = [...maoriWordList().slice(0, 20 - Math.min(6, topicWordList().length)), ...topicWordList().slice(0, 6)]
-        //  cl("maori and topic words", "words")
         words = [...words.slice(0, 24 - requiredWords.length), ...requiredWords]
         words = [...new Set(words)]
-        //words.sort(shuffle)
-        //words = words.slice(0, 24)
         words = words.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         gridWords = words
       }
 
       updateModel = () => {
-        makeSentences(patternIndex, question)
+        makeSentences(patternIndex)
         makeGridWords()
       }
 
@@ -887,7 +885,7 @@
         patternListDiv = addElement("patternListDiv", "div", b, 100, divStyle, "")
         closePatternListButton = addElement("closePatternListButton", "button", patternListDiv, 100, buttonRightStyle, "close")
         patternGrid = addElement("patternGrid", "div", b, 100, divStyle, "")
-        console.log("patternList :  " + patternList)
+        //console.log("patternList :  " + patternList)
         patternList.forEach((v, i) => addElement("patternListIndex" + i, "button", patternGrid, 100, listStyle, v))
       }
 
@@ -899,7 +897,6 @@
         vocabListDiv = addElement("vocabListDiv", "div", b, 100, divStyle, "")
         closeVocabListButton = addElement("closeVocabListButton", "button", vocabListDiv, 100, buttonRightStyle, "close")
         vocabGrid = addElement("vocabGrid", "div", b, 100, divStyle, "")
-        //  console.log("patternList :  "+patternList)
         vocabList.forEach((v, i) => addElement("vocabListIndex" + i, "button", vocabGrid, 100, listStyle, v))
       }
 
@@ -918,6 +915,7 @@
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
+        voicesDiv = addElement("voicesDiv", "button", b, 100, buttonLeftStyle, "Pair with Hine")
         instructionsDiv = addElement("instructionsDiv", "button", b, 100, buttonLeftStyle, "Share code below or enter pairing code and click OK")
         pairingCodeButton = addElement("pairingCodeButton", "button", instructionsDiv, 100, buttonStyle, pairingCode)
         a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -933,12 +931,35 @@
         element = e.target
 
         if (id == "nextPatternButton") {
-          question = !question
-          if (pairing && question) firstSpeaker = !firstSpeaker
-          cl("after next button", "firstSpeaker substitutedWordIndex")
-          if (question) {
+          spoken = false
+
+
+          //if the the first (host) speaker has just asked a question then they must answer the next
+          if (speaker == "host" && sentenceType == "question") {
+            newspeaker = "guest"
+            newsentenceType = "answer"
+          }
+          if (speaker == "guest" && sentenceType == "answer") {
+            newspeaker = "guest"
+            newsentenceType = "question"
+          }
+          if (speaker == "guest" && sentenceType == "question") {
+            newspeaker = "host"
+            newsentenceType = "answer"
+          }
+          if (speaker == "host" && sentenceType == "answer") {
+            newspeaker = "host"
+            newsentenceType = "question"
+          }
+          speaker = newspeaker
+          sentenceType = newsentenceType
+
+          console.log("pairing: " + pairing, "speaker: " + speaker, "sentenceType: " + sentenceType, "voices: " + voices, "spoken: " + spoken)
+
+
+          if (sentenceType == "question") {
             patternIndex = (patternIndex == patterns.length - 1) ? 0 : patternIndex + 1
-            //substitutedWordIndex++
+            //sentenceType = "question"
           }
           maoriAnswerText = "."
           sentenceCorrect = false
@@ -950,22 +971,15 @@
           question = true
           patternIndex = (patternIndex == 0) ? 0 : patternIndex - 1
           maoriAnswerText = "."
-          sentenceCorrect = fals
+          sentenceCorrect = false
           display()
         }
 
         if (id == "patternListButton") {
-          //cl("","patternList")
           displayPatternList()
-          //alert()
         }
 
         if (id.includes("patternListIndex")) {
-          //if (element.id.match(/\d+/) % 2 != 0) { // stops english words disappering
-          //(element.style.color == "black") ? element.style.color = "white": element.style.color = "black"
-          //  }
-          //console.log("id:"+element.id)//.match(/\d+/))
-          //displayVocab()
           patternIndex = element.id.match(/\d+/)
           display()
         }
@@ -980,24 +994,19 @@
 
         if (id.includes("vocabListIndex")) {
           variableWord = [element.innerHTML]
-          //englishWords = []
-          //maoriWords = []
-          words1=[]
+          words1 = []
           if (variableWord != null) {
             variableWord.forEach((item) => {
               variableWords = tupus.filter(v => (v.topic == item))
               wordList = tupus.filter(v => (v.topic == item))
               wordList.forEach(v => {
-                word2={}
-                word2.english=v.english
-                word2.maori=v.maori
+                word2 = {}
+                word2.english = v.english
+                word2.maori = v.maori
                 words1.push(word2)
-              //  maoriWords.push(v.maori)
               })
             })
           }
-          //  console.log("word lists" + englishWords + " " + maoriWords)
-          //console.log("WORDS: "+words1)
           displayWordlist()
         }
 
@@ -1018,19 +1027,19 @@
           variableWord = patterns[patternIndex].englishA.match(/\[(\w+)\]/g)
           //englishWords = []
           //maoriWords = []
-          words1=[]
+          words1 = []
           if (variableWord != null) {
             variableWord.forEach((item) => {
               item = item.replace("[", "").replace("]", "")
               variableWords = tupus.filter(v => (v.topic == item))
               wordList = tupus.filter(v => (v.topic == item))
               wordList.forEach(v => {
-              //  englishWords.push(v.english)
-              //  maoriWords.push(v.maori)
-              word2={}
-              word2.english=v.english
-              word2.maori=v.maori
-              words1.push(word2)
+                //  englishWords.push(v.english)
+                //  maoriWords.push(v.maori)
+                word2 = {}
+                word2.english = v.english
+                word2.maori = v.maori
+                words1.push(word2)
               })
             })
           }
@@ -1077,6 +1086,11 @@
           displayPairing()
         }
 
+        if (id == "voicesDiv") {
+          voices = true
+          pairing = true
+          display()
+        }
 
         if (id.includes("keyButton")) {
           if (pairingCode.length == 4) pairingCode = ""
@@ -1094,7 +1108,7 @@
           seed = initialSeed
           tupus = [...tupusOriginal]
           tupus.sort(shuffle)
-          cl("after accept sort", "pairingCode initialSeed tupus[0].english")
+          //cl("after accept sort", "pairingCode initialSeed tupus[0].english")
           pairing = true
           display()
         }
