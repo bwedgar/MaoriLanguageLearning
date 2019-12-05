@@ -756,10 +756,10 @@
       makeSentences = (patternIndex) => {
 
         if (sentenceType == "question") {
-          englishSentenceText = (speaker == "guest") ? substituteEnglishVariableWord(patterns[patternIndex].englishQ) : "type what you hear"
+          englishSentenceText = (speaker == "host") ? substituteEnglishVariableWord(patterns[patternIndex].englishQ) : "type what you hear"
           maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriQ)
         } else {
-          englishSentenceText = ((speaker == "guest") && pairing) ? "type what you hear" : englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishA)
+          englishSentenceText = ((speaker == "host") && pairing) ? englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishA) : "type what you hear"
           maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriA)
         }
         if ((speaker == "guest") && pairing && voices && !spoken) {
@@ -853,7 +853,8 @@
         nextPatternButton = addElement("nextPatternButton", "button", navigationDiv, 20, buttonRightStyle, "next") //"&#x25B6;")
 
         englishDiv = addElement("englishDiv", "div", b, 100, divStyle, "")
-        englishSentence = addElement("englishSentence", "button", englishDiv, 100, buttonStyle, englishSentenceText) //patternIndex + 1 + ". " +
+        englishSentence = addElement("englishSentence", "button", englishDiv, 93, buttonStyle, englishSentenceText) //patternIndex + 1 + ". " +
+        sayAgain = addElement("sayAgain", "button", englishDiv, 7, buttonStyle, "say") //patternIndex + 1 + ". " +
 
         maoriDiv = addElement("maoriDiv", "div", b, 100, divStyle, "")
         maoriSentenceElement = addElement("maoriSentence", "button", maoriDiv, 93, sentenceCorrect ? correctButtonStyle : buttonStyle, maoriAnswerText)
@@ -1047,6 +1048,7 @@
 
         }
 
+
         if (id == "closeButton") {
           display()
         }
@@ -1090,6 +1092,10 @@
           voices = true
           pairing = true
           display()
+        }
+
+        if (id == "sayAgain") {
+          mespeakmaori(maoriSentenceText.toLowerCase())
         }
 
         if (id.includes("keyButton")) {
