@@ -13,14 +13,18 @@
 
   <script type="text/javascript" src="../mespeakmaori/mespeak-core.js"></script>
   <script type="text/javascript" src="../mespeakmaori/mespeak.js?v=2.0.4"></script>
-  <script type="text/javascript" src="../mespeakmaori/mespeakmaori.js"></script>
-  <script type="text/javascript" src="vocab.js"></script>
+  <script type="text/javascript" src='../mespeakmaori/mespeakmaori.js'></script>
+
+  <script type="text/javascript" src="./vocab.js"></script>
 
 </head>
 
 <body>
 
-  <script>
+  <script type="text/javascript">
+
+   //mespeakmaori("kia ora")
+
     addEventListener('load', function(e) {
 
       cl = (line, arg) => {
@@ -130,7 +134,7 @@
         if ((speaker == "guest") && pairing && voices && !spoken) {
           //alert(maoriSentenceText)
           spoken = true
-          mespeakmaori(maoriSentenceText.toLowerCase())
+          mespeakmaori.speak(maoriSentenceText.toLowerCase())
         }
       }
 
@@ -460,7 +464,7 @@
         }
 
         if (id == "sayAgain") {
-          mespeakmaori(maoriSentenceText.toLowerCase())
+          mespeakmaori.speak(maoriSentenceText.toLowerCase())
         }
 
         if (id.includes("keyButton")) {
