@@ -348,8 +348,8 @@
           words1 = []
           if (variableWord != null) {
             variableWord.forEach((item) => {
-              variableWords = tupus.filter(v => (v.topic == item))
-              wordList = tupus.filter(v => (v.topic == item))
+              variableWords = vocab.tupus.filter(v => (v.topic == item))
+              wordList = vocab.tupus.filter(v => (v.topic == item))
               wordList.forEach(v => {
                 word2 = {}
                 word2.english = v.english
@@ -382,8 +382,8 @@
           if (variableWord != null) {
             variableWord.forEach((item) => {
               item = item.replace("[", "").replace("]", "")
-              variableWords = tupus.filter(v => (v.topic == item))
-              wordList = tupus.filter(v => (v.topic == item))
+              variableWords = vocab.tupus.filter(v => (v.topic == item))
+              wordList = vocab.tupus.filter(v => (v.topic == item))
               wordList.forEach(v => {
                 //  englishWords.push(v.english)
                 //  maoriWords.push(v.maori)
