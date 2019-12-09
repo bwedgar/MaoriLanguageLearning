@@ -21,15 +21,7 @@
 <body>
 
   <script>
-
     addEventListener('load', function(e) {
-
-      cl = (line, arg) => {
-        a = arg.split(" ")
-        s = line + " "
-        a.forEach(v => s = s + v + ": " + eval(v) + "  ")
-        console.log(s)
-      }
 
       makeObject = (array, names) => {
         o = {}
@@ -65,29 +57,20 @@
       pairing = false
       speaker = "host"
       words1 = []
-      //englishWords = []
-      //  maoriWords = []
       blankMaori = true
-      //list=[]
       voices = false
       spoken = false
 
+      vocab.setup()
 
-
-      patterns = []
-      patternsCSV.forEach(v => patterns.push(makeObject(v.split(","), ["englishQ", "maoriQ", "englishA", "maoriA"])))
-
-      tupus = []
-      tupuCSV.forEach(v => tupus.push(makeObject(v.split(","), ["topic", "english", "maori"])))
-
-      patternList = [...patterns.map(p => p.englishQ)]
+      patternList = [...vocab.patterns.map(p => p.englishQ)]
       //console.log(patternList)
-      vocabList = [...new Set([...tupus.map(t => t.topic)])]
+      vocabList = [...new Set([...vocab.tupus.map(t => t.topic)])]
       //console.log(vocabList)
 
       seed = initialSeed
-      tupusOriginal = [...tupus]
-      tupus.sort(shuffle)
+      tupusOriginal = [...vocab.tupus]
+      vocab.tupus.sort(shuffle)
       //  cl("after sort", "initialSeed tupus[0].english tupusOriginal[0].english")
 
       substituteEnglishVariableWord = (str) => {
@@ -96,7 +79,7 @@
         if (variableWord != null) {
           variableWord.forEach((item) => {
             item = item.replace("[", "").replace("]", "")
-            variableWords = tupus.filter(v => (v.topic == item))
+            variableWords = vocab.tupus.filter(v => (v.topic == item))
             s = s.replace("[" + item + "]", variableWords[substitutedWordIndex % variableWords.length].english)
           })
         }
@@ -109,7 +92,7 @@
         if (variableWord != null) {
           variableWord.forEach((item) => {
             item = item.replace("[", "").replace("]", "")
-            variableWords = tupus.filter(v => (v.topic == item))
+            variableWords = vocab.tupus.filter(v => (v.topic == item))
             s1 = s1.replace("[" + item + "]", variableWords[substitutedWordIndex % variableWords.length].maori)
           })
         }
@@ -122,11 +105,11 @@
       makeSentences = (patternIndex) => {
 
         if (sentenceType == "question") {
-          englishSentenceText = (speaker == "host") ? substituteEnglishVariableWord(patterns[patternIndex].englishQ) : "type what you hear"
-          maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriQ)
+          englishSentenceText = (speaker == "host" && !pairing) ? substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ) : "type what you hear"
+          maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriQ)
         } else {
-          englishSentenceText = ((speaker == "host") && pairing) ? englishSentenceText = substituteEnglishVariableWord(patterns[patternIndex].englishA) : "type what you hear"
-          maoriSentenceText = substituteMaoriVariableWord(patterns[patternIndex].maoriA)
+          englishSentenceText = ((speaker == "host") && !pairing) ? englishSentenceText = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA) : "type what you hear"
+          maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriA)
         }
         if ((speaker == "guest") && pairing && voices && !spoken) {
           //alert(maoriSentenceText)
@@ -137,7 +120,7 @@
 
       maoriWordList = () => {
         wordList = []
-        patterns.forEach(v => wordList = [...wordList, ...v.maoriQ.replace(/ \[(\w+)\]/g, "").split(" ")])
+        vocab.patterns.forEach(v => wordList = [...wordList, ...v.maoriQ.replace(/ \[(\w+)\]/g, "").split(" ")])
         //cl("maoriWordList from questions", "wordList")
         //list = list.sort(shuffle)
         wordList = [...new Set(wordList)]
@@ -146,10 +129,10 @@
 
       topicWordList = () => {
         wordList = []
-        str = (sentenceType == "question") ? patterns[patternIndex].englishQ : patterns[patternIndex].englishA
+        str = (sentenceType == "question") ? vocab.patterns[patternIndex].englishQ : vocab.patterns[patternIndex].englishA
         variableWord = str.match(/\[(\w+)\]/)
         if (variableWord != null) {
-          tupus.filter(v => v.topic == variableWord[1]).forEach(v => wordList = [...wordList, ...v.maori.split(" ")])
+          vocab.tupus.filter(v => v.topic == variableWord[1]).forEach(v => wordList = [...wordList, ...v.maori.split(" ")])
         }
         //list = list.sort(shuffle)
 
@@ -319,6 +302,7 @@
             newsentenceType = "question"
           }
           speaker = newspeaker
+          if (!pairing) speaker="host"
           sentenceType = newsentenceType
 
           console.log("pairing: " + pairing, "speaker: " + speaker, "sentenceType: " + sentenceType, "voices: " + voices, "spoken: " + spoken)
@@ -443,8 +427,8 @@
         if (id.includes("tupu")) {
           maoriAnswerText = maoriAnswerText + " " + gridWords[id.match(/\d+/g)]
           maoriAnswerText = maoriAnswerText.replace(".", "")
-          if (maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriQ) ||
-            maoriAnswerText.trim() == substituteMaoriVariableWord(patterns[patternIndex].maoriA))
+          if (maoriAnswerText.trim() == substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriQ) ||
+            maoriAnswerText.trim() == substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriA))
             sentenceCorrect = true
           display()
         }
