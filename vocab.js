@@ -67,6 +67,9 @@ vocab = {
     "the [maraePeople1] [welcoming1],ka [welcoming1] te [maraePeople1],then the [maraePeople2] [welcoming2],kātahi ka [welcoming2] te [maraePeople2]",
     "the [maraePeople1] [welcoming1],ka [welcoming1] te [maraePeople1],after that the [maraePeople2] [welcoming2],a muri i tērā ka [welcoming2] te [maraePeople2]",
 
+//Maori Made Easy
+"will he [moving] tomorrow,ka [moving] āpōpō,he will not [moving] tomorrow,kāore ia e [moving]",
+
   ],
 
   tupuCSV: [
@@ -124,21 +127,20 @@ vocab = {
 
     "genderNeutralName,Mikaere,Mikaere",
 
-
     "place,Dunedin,Onetāhi",
     "place,Auckland,Tamaki Makaurau",
     "place,One Tree Hill,Maungakiekie",
     "place,New Plymouth,Ngāmotu",
     "place,Christchurch,Ōtautahi",
-    "place,Taupō,Taupō-nui-a-Tia",
-    "place,Tauranga,Tauranga-moana",
-    "place,Kaikoura,Te_Ahi-kai-kōura-a-Tama-ki-te-rangi",
-    "place,Hokianga,Te_Hokianga-a-Kupe",
-    "place,Wellington,Te_Whanga-nui-a-Tara",
+    "place,Taupō,Taupō nui a Tia",
+    "place,Tauranga,Tauranga moana",
+    "place,Kaikoura,Te Ahi kai kōura a Tama ki te rangi",
+    "place,Hokianga,Te_Hokianga a Kupe",
+    "place,Wellington,Te_Whanga nui a Tara",
     "place,Nelson,Whakatū",
-    "place,Gisborne,Tūranga-nui-a-Kiwa",
+    "place,Gisborne,Tūranga nui a Kiwa",
     "place,Napier,Ahuriri",
-    "place,Palmerston North,Te_Papaioea",
+    "place,Palmerston North,Te Papaioea",
     "place,Otago,Ōtakou",
 
 
@@ -352,26 +354,26 @@ vocab = {
     "adjectives2,shiny,pīata",
     "adjectives2,dull,pūhuki",
 
-    "personal qualities 1,lazy,māngere",
-    "personal qualities 1,expert,tohunga",
-    "personal qualities 1,knowledgeable,mātau",
-    "personal qualities 1,brave,toa",
-    "personal qualities 1,entertaining,ngahau",
-    "personal qualities 1,weak,ngoikore",
-    "personal qualities 1,all right,āhau pai",
-    "personal qualities 1,pleasant person,ngākau māhaki",
-    "personal qualities 1,quiet,nohopuku",
+    "personalQualities1,lazy,māngere",
+    "personalQualities1,expert,tohunga",
+    "personalQualities1,knowledgeable,mātau",
+    "personalQualities1,brave,toa",
+    "personalQualities1,entertaining,ngahau",
+    "personalQualities1,weak,ngoikore",
+    "personalQualities1,all right,āhau pai",
+    "personalQualities1,pleasant person,ngākau māhaki",
+    "personalQualities1,quiet,nohopuku",
 
-    "personal qualities 2,faithful,ngākau nui",
-    "personal qualities 2,amusing,hātakēhi",
-    "personal qualities 2,quick,kakama",
-    "personal qualities 2,industrious,pukumahi",
-    "personal qualities 2,intelligent,koi te hinengaro",
-    "personal qualities 2,ignorant,kūare",
-    "personal qualities 2,very good,tino pai",
-    "personal qualities 2,generous,marae",
-    "personal qualities 2,fabulous,tino rawe",
-    "personal qualities 2,serene,mauritau",
+    "personalQualities2,faithful,ngākau nui",
+    "personalQualities2,amusing,hātakēhi",
+    "personalQualities2,quick,kakama",
+    "personalQualities2,industrious,pukumahi",
+    "personalQualities2,intelligent,koi te hinengaro",
+    "personalQualities2,ignorant,kūare",
+    "personalQualities2,very good,tino pai",
+    "personalQualities2,generous,marae",
+    "personalQualities2,fabulous,tino rawe",
+    "personalQualities2,serene,mauritau",
 
 
     //VERBS ACTION
@@ -591,16 +593,16 @@ vocab = {
     "day,Sunday,Rātapu",
 
     "month,January,Kohitātea",
-    "month,February,Hui-tanguru",
-    "month,March,Poutū-te-rangi",
-    "month,April,Paenga-whāwhā",
+    "month,February,Hui tanguru",
+    "month,March,Poutū te rangi",
+    "month,April,Paenga whāwhā",
     "month,May,Haratua",
     "month,June,Pipiri",
     "month,July,Hōngongoi",
-    "month,August,Here-turi-kōkā",
+    "month,August,Here turi kōkā",
     "month,September,Mahuru",
-    "month,October,Whiringa-ā-nuku",
-    "month,November,Whiringa-ā-rangi",
+    "month,October,Whiringa ā nuku",
+    "month,November,Whiringa ā rangi",
     "month,December,Hakihea",
 
     "locative,under,raro",
@@ -641,13 +643,7 @@ vocab = {
     names.map((v, i) => o[v] = array[i])
     return o
   },
-  //
-  // patterns: function() {
-  //   },
-  //
-  // tupus: function() {
-  //
-  // },
+
   setup: function(){
     this.patterns = []
     this.patternsCSV.forEach(v => this.patterns.push(this.makeObject(v.split(","), ["englishQ", "maoriQ", "englishA", "maoriA"])))
