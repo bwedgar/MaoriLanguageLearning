@@ -313,7 +313,7 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
 
 
           if (sentenceType == "question") {
-            patternIndex = (patternIndex == vocab.patterns.length - 1) ? 0 : patternIndex++
+            patternIndex = (patternIndex == vocab.patterns.length - 1) ? 0 : ++patternIndex
             //sentenceType = "question"
           }
           maoriAnswerText = "."

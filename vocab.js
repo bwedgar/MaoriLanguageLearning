@@ -253,9 +253,20 @@ vocab = {
     "food,banana,panana",
     "food,lolly,rare",
 
-    "clothing,T-shirt,ti hate",
+    "clothing,clothes,kākahu",
+    "clothing,T-shirt,tihāte",
     "clothing,hat,potae",
-    "clothing,shoes,hu",
+    "clothing,shoes,hū",
+"clothing,skirt,panekoti",
+"clothing,pants,tarau",
+"clothing,socks,tōkena",
+"clothing,dress,kaka",
+"clothing,glasses,mōwhiti",
+"clothing,togs,kākahu kaukau",
+"clothing,jandals,hanara",
+"clothing,bag,pēke",
+"clothing,shorts,tarau poto",
+
 
 
     "house,floor,papa",
@@ -272,6 +283,23 @@ vocab = {
     "room,bedroom,rūma_moe",
     "room,bathroom,rūma_horoi_tinana",
     "room,shed,wharau",
+
+    "bathroom,bathtub,kauranga",
+    "bathroom,shower,uwhiuwhi",
+    "bathroom,plughole,waiputa",
+    "bathroom,plug,puru",
+        "bathroom,basin,oko horoi",
+        "bathroom,toilet,heketua",
+        "bathroom,cabinet,kāpata kaumanga",
+
+    "bathroom2,soap,hopi",
+    "bathroom2,toothpaste,paniaku niho",
+    "bathroom2,toothbrush,taitai niho",
+    "bathroom2,towel,tauwera",
+    "bathroom2,toilet paper,whēru",
+    "bathroom2,comb,heru",
+    "bathroom2,deodorant,whakakakara",
+
 
     "household1,broom,paruma",
     "household1,chair,tūru",
@@ -312,17 +340,26 @@ vocab = {
 
     "kitchen,frying pan,parai",
     "kitchen,knife,ripi",
-    "kitchen,oven,ōmu",
+    "kitchen,oven,umu",
     "kitchen,ladle,kōtutu",
     "kitchen,pot,kōhua",
+    "kitchen2,bowl,oko",
+    "kitchen,plate,pereti",
     "kitchen,serviette,parehūhare",
     "kitchen,spoon,koko",
     "kitchen,tea towel,tītaora",
     "kitchen,tongs,pīnohi",
-    "kitchen,serving platter,paepae_mahora",
-    "kitchen,plastic wrap,takai_kirihou",
-    "kitchen,hob,mura",
-    "kitchen,plate,pereti",
+
+    "kitchen2,serving platter,paepae_mahora",
+    "kitchen2,plastic wrap,takai_kirihou",
+    "kitchen2,hob,mura",
+    "kitchen2,cupboard,kāpata",
+    "kitchen2,stove,tū",
+    "kitchen2,microwave,umu tira",
+    "kitchen2,kettle,tikera",
+    "kitchen2,sink,puoto",
+    "kitchen2,tap,kōrere wai",
+
 
     //ADJECTIVES
 
@@ -522,6 +559,7 @@ vocab = {
     "stateOfBody,thirsty,hiainu",
     "stateOfBody,well,ora",
     "stateOfBody,hungry,hiakai",
+    "stateOfBody,tired out,pau",
 
     "feeling,sharp,koi",
 
@@ -649,6 +687,7 @@ vocab = {
     this.patternsCSV.forEach(v => this.patterns.push(this.makeObject(v.split(","), ["englishQ", "maoriQ", "englishA", "maoriA"])))
     this.tupus = []
     this.tupuCSV.forEach(v => this.tupus.push(this.makeObject(v.split(","), ["topic", "english", "maori"])))
-
+   this.topics=[]
+   this.tupus.
   }
 }
