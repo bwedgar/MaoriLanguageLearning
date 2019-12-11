@@ -81,6 +81,7 @@
           variableWord.forEach((item) => {
             item = item.replace("[", "").replace("]", "")
             variableWords = vocab.tupus.filter(v => (v.topic == item))
+console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex: ${substitutedWordIndex}`)
             s = s.replace("[" + item + "]", variableWords[substitutedWordIndex % variableWords.length].english)
           })
         }
@@ -130,6 +131,7 @@
 
       topicWordList = () => {
         wordList = []
+        console.log(`patternIndex: ${patternIndex} vocab.patterns[patternIndex] ${vocab.patterns[patternIndex]}`)
         str = (sentenceType == "question") ? vocab.patterns[patternIndex].englishQ : vocab.patterns[patternIndex].englishA
         variableWord = str.match(/\[(\w+)\]/)
         if (variableWord != null) {
@@ -311,7 +313,7 @@
 
 
           if (sentenceType == "question") {
-            patternIndex = (vocab.patternIndex == vocab.patterns.length - 1) ? 0 : patternIndex + 1
+            patternIndex = (patternIndex == vocab.patterns.length - 1) ? 0 : patternIndex++
             //sentenceType = "question"
           }
           maoriAnswerText = "."
@@ -377,7 +379,7 @@
         }
 
         if (id == "nextVocabButton") {
-          console.log("next vocab")
+          console.log(`topic index: ${topicIndex} vocabList ${vocabList[topicIndex]}`)
           topicIndex++
           wordList = vocab.tupus.filter(v => (v.topic == vocabList[topicIndex]))
           words1 = []
