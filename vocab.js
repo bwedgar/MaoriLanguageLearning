@@ -67,8 +67,8 @@ vocab = {
     "the [maraePeople1] [welcoming1],ka [welcoming1] te [maraePeople1],then the [maraePeople2] [welcoming2],kātahi ka [welcoming2] te [maraePeople2]",
     "the [maraePeople1] [welcoming1],ka [welcoming1] te [maraePeople1],after that the [maraePeople2] [welcoming2],a muri i tērā ka [welcoming2] te [maraePeople2]",
 
-//Maori Made Easy
-"will he [moving] tomorrow,ka [moving] āpōpō,he will not [moving] tomorrow,kāore ia e [moving]",
+    //Maori Made Easy
+    "will he [moving] tomorrow,ka [moving] āpōpō,he will not [moving] tomorrow,kāore ia e [moving]",
 
   ],
 
@@ -135,8 +135,8 @@ vocab = {
     "place,Taupō,Taupō nui a Tia",
     "place,Tauranga,Tauranga moana",
     "place,Kaikoura,Te Ahi kai kōura a Tama ki te rangi",
-    "place,Hokianga,Te_Hokianga a Kupe",
-    "place,Wellington,Te_Whanga nui a Tara",
+    "place,Hokianga,Te Hokianga a Kupe",
+    "place,Wellington,Te Whanga nui a Tara",
     "place,Nelson,Whakatū",
     "place,Gisborne,Tūranga nui a Kiwa",
     "place,Napier,Ahuriri",
@@ -206,8 +206,6 @@ vocab = {
     "marae,carving,whakairo",
     "marae,formal speech,whaikõrero",
 
-
-
     "maraePeople1,old lady,kuia",
     "maraePeople1,old man,korua",
     "maraePeople1,hosts,tangata whenua",
@@ -257,15 +255,15 @@ vocab = {
     "clothing,T-shirt,tihāte",
     "clothing,hat,potae",
     "clothing,shoes,hū",
-"clothing,skirt,panekoti",
-"clothing,pants,tarau",
-"clothing,socks,tōkena",
-"clothing,dress,kaka",
-"clothing,glasses,mōwhiti",
-"clothing,togs,kākahu kaukau",
-"clothing,jandals,hanara",
-"clothing,bag,pēke",
-"clothing,shorts,tarau poto",
+    "clothing,skirt,panekoti",
+    "clothing,pants,tarau",
+    "clothing,socks,tōkena",
+    "clothing,dress,kaka",
+    "clothing,glasses,mōwhiti",
+    "clothing,togs,kākahu kaukau",
+    "clothing,jandals,hanara",
+    "clothing,bag,pēke",
+    "clothing,shorts,tarau poto",
 
 
 
@@ -288,9 +286,9 @@ vocab = {
     "bathroom,shower,uwhiuwhi",
     "bathroom,plughole,waiputa",
     "bathroom,plug,puru",
-        "bathroom,basin,oko horoi",
-        "bathroom,toilet,heketua",
-        "bathroom,cabinet,kāpata kaumanga",
+    "bathroom,basin,oko horoi",
+    "bathroom,toilet,heketua",
+    "bathroom,cabinet,kāpata kaumanga",
 
     "bathroom2,soap,hopi",
     "bathroom2,toothpaste,paniaku niho",
@@ -575,7 +573,6 @@ vocab = {
     "stateOfMindGood,correct,tika",
     "stateOfMindGood,overjoyed,harikoa",
     "stateOfMindGood,happy,hari",
-    "stateOfMindGood,pleased,waingohia",
 
     "stateOfMindBad,furious,pukuriri",
     "stateOfMindBad,lost,ngaro",
@@ -676,18 +673,18 @@ vocab = {
     "cost,$403.52,e wha rau e toru tāra e rima tekau mā rua hēneti",
 
   ],
-  makeObject :(array, names) => {
+  makeObject: (array, names) => {
     o = {}
     names.map((v, i) => o[v] = array[i])
     return o
   },
 
-  setup: function(){
+  setup: function() {
     this.patterns = []
     this.patternsCSV.forEach(v => this.patterns.push(this.makeObject(v.split(","), ["englishQ", "maoriQ", "englishA", "maoriA"])))
     this.tupus = []
     this.tupuCSV.forEach(v => this.tupus.push(this.makeObject(v.split(","), ["topic", "english", "maori"])))
-   this.topics=[]
-   this.tupus.
+    this.topics = []
+    //this.tupus.
   }
 }
