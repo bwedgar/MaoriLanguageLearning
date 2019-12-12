@@ -61,11 +61,15 @@
       voices = false
       spoken = false
       topicIndex = 0
+      randomIndex=false
 
       vocab.setup()
 
       patternList = [...vocab.patterns.map(p => p.englishQ)]
       //console.log(patternList)
+      patternRandomIndex=0
+      patternRandomArray=[...Array(vocab.patterns.length).keys()].sort(shuffle)
+      console.log(patternRandomArray[0])
       vocabList = [...new Set([...vocab.tupus.map(t => t.topic)])]
       //console.log(vocabList)
 
@@ -272,8 +276,9 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
-        voicesDiv = addElement("voicesDiv", "button", b, 100, buttonLeftStyle, "Pair with Māori speaker")
-        instructionsDiv = addElement("instructionsDiv", "button", b, 100, buttonLeftStyle, "Share code below or enter pairing code and click OK")
+        voicesDiv = addElement("voicesDiv", "button", b, 50, buttonLeftStyle, "Pair with snyth (sequential)")
+        voicesRandomDiv = addElement("voicesRandomDiv", "button", b, 50, buttonLeftStyle, "Pair with synth (random)")
+        instructionsDiv = addElement("instructionsDiv", "button", b, 100, buttonLeftStyle, "Pair with person, share code below or enter pairing code and click OK")
         pairingCodeButton = addElement("pairingCodeButton", "button", b, 100, buttonStyle, pairingCode)
         a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         a.forEach((v, i) => addElement("keyButton" + v, "button", b, 33.3, buttonStyle, v))
@@ -312,11 +317,12 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
           if (!pairing) speaker = "host"
           sentenceType = newsentenceType
 
-          console.log("pairing: " + pairing, "speaker: " + speaker, "sentenceType: " + sentenceType, "voices: " + voices, "spoken: " + spoken)
+          console.log("pairing: " + pairing, "speaker: " + speaker, "sentenceType: " + sentenceType, "voices: " + voices, "spoken: " + spoken,"random: ",randomIndex)
 
 
           if (sentenceType == "question") {
-            patternIndex = (patternIndex == vocab.patterns.length - 1) ? 0 : ++patternIndex
+            if (randomIndex)   patternIndex = (++patternRandomIndex>vocab.patterns.length)?0:patternRandomArray[patternRandomIndex]
+            if (!randomIndex) patternIndex = (patternIndex == vocab.patterns.length - 1) ? 0 : ++patternIndex
             //sentenceType = "question"
           }
           maoriAnswerText = "."
@@ -466,6 +472,14 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
         if (id == "voicesDiv") {
           voices = true
           pairing = true
+          random=false
+          display()
+        }
+
+        if (id == "voicesRandomDiv") {
+          voices = true
+          pairing = true
+          randomIndex=true
           display()
         }
 
