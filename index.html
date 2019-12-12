@@ -107,10 +107,13 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
       makeSentences = (patternIndex) => {
 
         if (sentenceType == "question") {
-          englishSentenceText = (speaker == "host" && !pairing) ? substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ) : "type what you hear"
+          if (speaker == "host") englishSentenceText=substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ)
+          if (speaker == "guest" ) englishSentenceText="type what you hear"
           maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriQ)
-        } else {
-          englishSentenceText = ((speaker == "host") && !pairing) ? englishSentenceText = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA) : "type what you hear"
+        }
+          if (sentenceType == "answer") {
+           if (speaker == "host" ) englishSentenceText= englishSentenceText = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA)
+               if (speaker == "guest" ) englishSentenceText= "type what you hear"
           maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriA)
         }
         if ((speaker == "guest") && pairing && voices && !spoken) {
@@ -269,13 +272,13 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
         document.body.innerHTML = ""
         b = addElement(1, "div", document.body, 100, "", "")
         b.addEventListener("click", clicked)
-        voicesDiv = addElement("voicesDiv", "button", b, 100, buttonLeftStyle, "Pair with Hine")
+        voicesDiv = addElement("voicesDiv", "button", b, 100, buttonLeftStyle, "Pair with Māori speaker")
         instructionsDiv = addElement("instructionsDiv", "button", b, 100, buttonLeftStyle, "Share code below or enter pairing code and click OK")
-        pairingCodeButton = addElement("pairingCodeButton", "button", instructionsDiv, 100, buttonStyle, pairingCode)
+        pairingCodeButton = addElement("pairingCodeButton", "button", b, 100, buttonStyle, pairingCode)
         a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        a.forEach((v, i) => addElement("keyButton" + v, "button", instructionsDiv, 30, buttonStyle, v))
-        acceptButton = addElement("acceptButton", "button", instructionsDiv, 50, buttonLeftStyle, "OK")
-        cancelButton = addElement("cancelButton", "button", instructionsDiv, 50, buttonRightStyle, "Cancel")
+        a.forEach((v, i) => addElement("keyButton" + v, "button", b, 33.3, buttonStyle, v))
+        acceptButton = addElement("acceptButton", "button", b, 50, buttonLeftStyle, "OK")
+        cancelButton = addElement("cancelButton", "button", b, 50, buttonRightStyle, "Cancel")
       }
 
       //CONTROLLER
@@ -443,7 +446,7 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
         }
 
         if (id == "maoriSentence") {
-          displayStructure(maoriSentenceText) // + "<br><br>")
+          displayStructure(maoriSentenceText+"<br>"+englishSentenceText+"<br>")
         }
 
         if (id.includes("tupu")) {
