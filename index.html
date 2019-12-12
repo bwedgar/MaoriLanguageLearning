@@ -61,14 +61,15 @@
       voices = false
       spoken = false
       topicIndex = 0
-      randomIndex=false
+      randomIndex = false
+      translation=""
 
       vocab.setup()
 
       patternList = [...vocab.patterns.map(p => p.englishQ)]
       //console.log(patternList)
-      patternRandomIndex=0
-      patternRandomArray=[...Array(vocab.patterns.length).keys()].sort(shuffle)
+      patternRandomIndex = 0
+      patternRandomArray = [...Array(vocab.patterns.length).keys()].sort(shuffle)
       console.log(patternRandomArray[0])
       vocabList = [...new Set([...vocab.tupus.map(t => t.topic)])]
       //console.log(vocabList)
@@ -85,7 +86,7 @@
           variableWord.forEach((item) => {
             item = item.replace("[", "").replace("]", "")
             variableWords = vocab.tupus.filter(v => (v.topic == item))
-console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex: ${substitutedWordIndex}`)
+            console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex: ${substitutedWordIndex}`)
             s = s.replace("[" + item + "]", variableWords[substitutedWordIndex % variableWords.length].english)
           })
         }
@@ -111,20 +112,23 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
       makeSentences = (patternIndex) => {
 
         if (sentenceType == "question") {
-          if (speaker == "host") englishSentenceText=substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ)
-          if (speaker == "guest" ) englishSentenceText="type what you hear"
+          if (speaker == "host") englishSentenceText = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ)
+          if (speaker == "guest") englishSentenceText = "type what you hear"
+          translation=substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ)
           maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriQ)
         }
-          if (sentenceType == "answer") {
-           if (speaker == "host" ) englishSentenceText= englishSentenceText = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA)
-               if (speaker == "guest" ) englishSentenceText= "type what you hear"
-          maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriA)
+        if (sentenceType == "answer") {
+          if (speaker == "host") englishSentenceText = englishSentenceText = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA)
+          if (speaker == "guest") englishSentenceText = "type what you hear"
+          translation=substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA)
+maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriA)
         }
         if ((speaker == "guest") && pairing && voices && !spoken) {
           //alert(maoriSentenceText)
           spoken = true
           mespeakmaori.speak(maoriSentenceText.toLowerCase())
         }
+
       }
 
       maoriWordList = () => {
@@ -317,11 +321,11 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
           if (!pairing) speaker = "host"
           sentenceType = newsentenceType
 
-          console.log("pairing: " + pairing, "speaker: " + speaker, "sentenceType: " + sentenceType, "voices: " + voices, "spoken: " + spoken,"random: ",randomIndex)
+          console.log("pairing: " + pairing, "speaker: " + speaker, "sentenceType: " + sentenceType, "voices: " + voices, "spoken: " + spoken, "random: ", randomIndex)
 
 
           if (sentenceType == "question") {
-            if (randomIndex)   patternIndex = (++patternRandomIndex>vocab.patterns.length)?0:patternRandomArray[patternRandomIndex]
+            if (randomIndex) patternIndex = (++patternRandomIndex > vocab.patterns.length) ? 0 : patternRandomArray[patternRandomIndex]
             if (!randomIndex) patternIndex = (patternIndex == vocab.patterns.length - 1) ? 0 : ++patternIndex
             //sentenceType = "question"
           }
@@ -452,7 +456,7 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
         }
 
         if (id == "maoriSentence") {
-          displayStructure(maoriSentenceText+"<br>"+englishSentenceText+"<br>")
+          displayStructure(maoriSentenceText + "<br>" + translation + "<br>")
         }
 
         if (id.includes("tupu")) {
@@ -472,14 +476,14 @@ console.log(`item: ${item} variableWords: ${variableWords} substitutedWordIndex:
         if (id == "voicesDiv") {
           voices = true
           pairing = true
-          random=false
+          random = false
           display()
         }
 
         if (id == "voicesRandomDiv") {
           voices = true
           pairing = true
-          randomIndex=true
+          randomIndex = true
           display()
         }
 
