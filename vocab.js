@@ -67,9 +67,10 @@ vocab = {
     "the [maraePeople1] [welcoming1],ka [welcoming1] te [maraePeople1],then the [maraePeople2] [welcoming2],kātahi ka [welcoming2] te [maraePeople2]",
     "the [maraePeople1] [welcoming1],ka [welcoming1] te [maraePeople1],after that the [maraePeople2] [welcoming2],a muri i tērā ka [welcoming2] te [maraePeople2]",
 
-    //Maori Made Easy
+    //Maori Made Easy Week ?
     "will he [moving] tomorrow,ka [moving] āpōpō,he will not [moving] tomorrow,kāore ia e [moving]",
-
+    //Maori Made Easy Week 12
+    "who will [moving] the [household1],mā wai [household1] e [moving],[mpronoun] will [moving] the [household1],[mpronoun] [household1] e [moving]",
   ],
 
   tupuCSV: [
@@ -99,6 +100,14 @@ vocab = {
     "npronoun,I,nāku",
     "npronoun,you,nāu",
     "npronoun,he or she,nāna",
+
+  "mpronoun,I,māku",
+    "mpronoun,you,māu",
+    "mpronoun,he or she,māna",
+    "mpronoun,you and I,mā tāua",
+    "mpronoun,we all,mā tātou",
+    "mpronoun,he and I,mā māua",
+
 
     //NOUNS PROPER
 
