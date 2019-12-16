@@ -42,7 +42,9 @@
       shuffle = (a, b) => random() - 0.5
       code = (n) => parseInt(n + "", 10).toString(9) * 1 + 11
       decode = (n) => parseInt((n - 11).toString(10), 9)
-
+textOnly=str=>str.replace(/{.*}/,"")
+grammarOnly=str=>str.match(/{(.*)}/,"")[1]
+console.log(grammarOnly("this is the sentence {ko (wai) that}"))
       //MODEL
 
       patternIndex = 0
@@ -62,7 +64,7 @@
       spoken = false
       topicIndex = 0
       randomIndex = false
-      translation=""
+      translation = ""
 
       vocab.setup()
 
@@ -114,14 +116,17 @@
         if (sentenceType == "question") {
           if (speaker == "host") englishSentenceText = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ)
           if (speaker == "guest") englishSentenceText = "type what you hear"
-          translation=substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ)
-          maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriQ)
+          translation = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ)
+          maoriSentenceText = substituteMaoriVariableWord(textOnly(vocab.patterns[patternIndex].maoriQ))
+          grammar=grammarOnly(vocab.patterns[patternIndex].maoriQ)
         }
         if (sentenceType == "answer") {
           if (speaker == "host") englishSentenceText = englishSentenceText = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA)
           if (speaker == "guest") englishSentenceText = "type what you hear"
-          translation=substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA)
-maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriA)
+          translation = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA)
+          maoriSentenceText = substituteMaoriVariableWord(textOnly(vocab.patterns[patternIndex].maoriA))
+          grammar=grammarOnly(vocab.patterns[patternIndex].maoriA)
+
         }
         if ((speaker == "guest") && pairing && voices && !spoken) {
           //alert(maoriSentenceText)
@@ -148,9 +153,6 @@ maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].mao
         if (variableWord != null) {
           vocab.tupus.filter(v => v.topic == variableWord[1]).forEach(v => wordList = [...wordList, ...v.maori.split(" ")])
         }
-        //list = list.sort(shuffle)
-
-        //  cl("list of topic words", "wordList")
         return wordList
       }
 
@@ -199,6 +201,7 @@ maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].mao
       correctButtonStyle = buttonStyle + "color:limeGreen;"
       hiddenButtonStyle = buttonStyle + "color:black;font-size:2vw;"
       revealedButtonStyle = buttonStyle + "width:25%;font-size:2vw;"
+      buttonTallStyle = buttonStyle + "position:relative;height:25vw;text-align:center;"
 
       display = () => { //enter maori text
         updateModel()
@@ -272,7 +275,7 @@ maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].mao
         b.addEventListener("click", clicked)
         wordlistDiv = addElement("wordlistDiv", "div", b, 100, divStyle, "")
         closeButton = addElement("closeButton", "button", wordlistDiv, 100, buttonRightStyle, "close")
-        structureDiv = addElement("structureDiv", "button", wordlistDiv, 100, buttonStyle, str)
+        structureDiv = addElement("structureDiv", "button", wordlistDiv, 100, buttonTallStyle, str)
       }
 
       displayPairing = () => {
@@ -456,7 +459,7 @@ maoriSentenceText = substituteMaoriVariableWord(vocab.patterns[patternIndex].mao
         }
 
         if (id == "maoriSentence") {
-          displayStructure(maoriSentenceText + "<br>" + translation + "<br>")
+          displayStructure(maoriSentenceText + "<br>" + translation + "<br>"+grammar)
         }
 
         if (id.includes("tupu")) {

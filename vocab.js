@@ -7,7 +7,7 @@ vocab = {
     // "what was the [animal] doing,i te aha [animal],the [animal] was [verb5] -ing,i te [verb5] te [animal]",
 
     // 1 BOOK 1 AOTEAROA
-    "what is your name,ko wai tōu ingoa,my name is [maleName1],ko [maleName1] tōku ingoa",
+    "what is your name,ko wai tōu ingoa{specifically (ko)+ who or what (wai) + N-pronoun + name (ingoa)},my name is [maleName1],ko [maleName1] tōku ingoa",
     "where are you from,nō hea koe,I am from [place],nō [place] ahau",
     "how are you feeling (KT form),kei te pēhea koe,I am feeling [stateOfMind],kei te [stateOfMind] ahau",
     "how are you feeling (EA form),e pēhea ana koe,I am feeling [stateOfMindGood],e [stateOfMindGood] ana ahau",
@@ -70,7 +70,7 @@ vocab = {
     //Maori Made Easy Week ?
     "will he [moving] tomorrow,ka [moving] āpōpō,he will not [moving] tomorrow,kāore ia e [moving]",
     //Maori Made Easy Week 12
-    "who will [moving] the [household1],mā wai [household1] e [moving],[mpronoun] will [moving] the [household1],[mpronoun] [household1] e [moving]",
+    "who will [moving] the [household1],mā wai [household1] e [moving]{agent indicated by mā+object affected+e+verb},[mpronoun] will [moving] the [household1],[mpronoun] [household1] e [moving]",
   ],
 
   tupuCSV: [
