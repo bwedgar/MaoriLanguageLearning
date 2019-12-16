@@ -138,9 +138,7 @@ console.log(grammarOnly("this is the sentence {ko (wai) that}"))
 
       maoriWordList = () => {
         wordList = []
-        vocab.patterns.forEach(v => wordList = [...wordList, ...v.maoriQ.replace(/ \[(\w+)\]/g, "").split(" ")])
-        //cl("maoriWordList from questions", "wordList")
-        //list = list.sort(shuffle)
+        vocab.patterns.forEach(v => wordList = [...wordList, ...textOnly(v.maoriQ).replace(/ \[(\w+)\]/g, "").split(" ")])
         wordList = [...new Set(wordList)]
         return wordList
       }
@@ -157,7 +155,7 @@ console.log(grammarOnly("this is the sentence {ko (wai) that}"))
       }
 
       makeGridWords = () => {
-        requiredWords = maoriSentenceText.replace(/\[(\w+)\]/, "").split(" ")
+        requiredWords = textOnly(maoriSentenceText).replace(/\[(\w+)\]/, "").split(" ")
         words = [...maoriWordList().slice(0, 20 - Math.min(6, topicWordList().length)), ...topicWordList().slice(0, 6)]
         words = [...words.slice(0, 24 - requiredWords.length), ...requiredWords]
         words = [...new Set(words)]
