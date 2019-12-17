@@ -43,7 +43,7 @@
       code = (n) => parseInt(n + "", 10).toString(9) * 1 + 11
       decode = (n) => parseInt((n - 11).toString(10), 9)
 textOnly=str=>str.replace(/{.*}/,"")
-grammarOnly=str=>str.match(/{(.*)}/,"")[1]
+grammarOnly=str=>(str.match(/{(.*)}/,"")==null)?"":str.match(/{(.*)}/,"")[1]
 console.log(grammarOnly("this is the sentence {ko (wai) that}"))
       //MODEL
 
