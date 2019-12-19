@@ -85,6 +85,7 @@ vocab = {
 "where was the [animal],i hea te [animal],the [animal] was [locative] the [room] [communicating]ing,i [locative] te [animal] i te [room] e [communicating] ana{locative phrase + action phrase}",
 //Maori made easy week 15
 "where was the [animal],i hea te [animal],the [animal] was [locative] the [room] [communicating]ing,i [locative] te [animal] i te [room] e [communicating] ana{locative phrase + action phrase}",
+//MME week 17
 
 
 
@@ -93,6 +94,30 @@ vocab = {
   tupuCSV: [
 
     //PRONOUNS
+
+"household2,mat,whāriki",
+"feeling,warm,mahana",
+"adjective,high,teitei",
+"learning,training,whakangungu",
+"adjective,useless,koretake",
+"adjective,intelligent,atamai",
+"noun,plan,mahere",
+"food,mushroom,harore",
+"verb,win,toa",
+"noun,present,perehana",
+"verb,start,timata",
+"verb,spill,maringi",
+"feeling,lonely,mokemoke",
+
+
+
+"adjective,tired,ngenge",
+"adjective,wet,mākū",
+"noun,hurt,mamae",
+
+
+
+
 
     "pronoun,I/me,ahau",
     "pronoun,you,koe",
@@ -255,7 +280,8 @@ vocab = {
     "animal,horse,hōiho",
     "animal,goat,nanekoti",
 
-    
+    "classroom,science,pūtaiao",
+    "classroom,stories,pakiwaitara",
 
     "transport,canoe,waka",
     "transport,bus,pahi",
@@ -389,7 +415,6 @@ vocab = {
     "kitchen2,sink,puoto",
     "kitchen2,tap,kōrere wai",
 
-
     //ADJECTIVES
 
     "adjectives1,beautiful,ātaahua",
@@ -440,7 +465,6 @@ vocab = {
     "personalQualities2,generous,marae",
     "personalQualities2,fabulous,tino rawe",
     "personalQualities2,serene,mauritau",
-
 
     //VERBS ACTION
 
