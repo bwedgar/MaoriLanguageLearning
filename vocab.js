@@ -75,17 +75,17 @@ vocab = {
     "who will [moving] the [household1],mā wai te [household1] e [moving]{agent indicated by mā + who or what (wai) + e + verb},ehara i te mea [mpronoun] will [moving] the [household1],[mpronoun] te [household1] e [moving]{negative phrase + agent indicated by mā + object or person affected + e + verb}",
     //Maori Made Easy Week 12 c
     "who will [moving] the [household1],mā wai te [household1] e [moving]{agent indicated by mā + who or what (wai) + e + verb},kaua [mpronoun] will [moving] the [household1],[mpronoun] te [household1] e [moving]{negative phrase + agent indicated by mā + object or person affected + e + verb}",
-  //Maori Made Easy Week 13 a
+    //Maori Made Easy Week 13 a
     "who [moving]-ed the [household1],nā wai te [household1] i [moving]{agent indicated by nā + who or what (wai) + i + verb},[mpronoun] will [moving] the [household1],[mpronoun] [household1] i [moving]{agent indicated by nā + object or person affected + i + verb}",
     //Maori Made Easy Week 13 b
-    "who [moving]-ed the [household1],nā wai te [household1] i [moving]{agent indicated by nā + who or what (wai) + i + verb},ehara i te mea [mpronoun] will [moving] the [household1],[mpronoun] [household1] i [moving]{megative phrase + agent indicated by nā + object or person affected + i + verb}",
-//Maori made easy week 15
-"where is the [animal],kei hea te [animal],the [animal] is [locative] the [room] [communicating]ing,kei [locative] te [animal] i te [room] e [communicating] ana{locative phrase + action phrase}",
-//Maori made easy week 15
-"where was the [animal],i hea te [animal],the [animal] was [locative] the [room] [communicating]ing,i [locative] te [animal] i te [room] e [communicating] ana{locative phrase + action phrase}",
-//Maori made easy week 15
-"where was the [animal],i hea te [animal],the [animal] was [locative] the [room] [communicating]ing,i [locative] te [animal] i te [room] e [communicating] ana{locative phrase + action phrase}",
-//MME week 17
+    "who [moving]-ed the [household1],nā wai te [household1] i [moving]{agent indicated by nā + who or what (wai) + i + verb},ehara i te mea [mpronoun] will [moving] the [household1],[mpronoun] [household1] i [moving]{negative phrase + agent indicated by nā + object or person affected + i + verb}",
+    //Maori made easy week 15
+    "where is the [animal],kei hea te [animal],the [animal] is [locative] the [room] [communicating]ing,kei [locative] te [animal] i te [room] e [communicating] ana{locative phrase + action phrase}",
+    //Maori made easy week 15
+    "where was the [animal],i hea te [animal],the [animal] was [locative] the [room] [communicating]ing,i [locative] te [animal] i te [room] e [communicating] ana{locative phrase + action phrase}",
+    //Maori made easy week 15
+    "where was the [animal],i hea te [animal],the [animal] was [locative] the [room] [communicating]ing,i [locative] te [animal] i te [room] e [communicating] ana{locative phrase + action phrase}",
+    //MME week 17
 
 
 
@@ -95,25 +95,25 @@ vocab = {
 
     //PRONOUNS
 
-"household2,mat,whāriki",
-"feeling,warm,mahana",
-"adjective,high,teitei",
-"learning,training,whakangungu",
-"adjective,useless,koretake",
-"adjective,intelligent,atamai",
-"noun,plan,mahere",
-"food,mushroom,harore",
-"verb,win,toa",
-"noun,present,perehana",
-"verb,start,timata",
-"verb,spill,maringi",
-"feeling,lonely,mokemoke",
+    "household2,mat,whāriki",
+    "feeling,warm,mahana",
+    "adjective,high,teitei",
+    "learning,training,whakangungu",
+    "adjective,useless,koretake",
+    "adjective,intelligent,atamai",
+    "noun,plan,mahere",
+    "food,mushroom,harore",
+    "verb,win,toa",
+    "noun,present,perehana",
+    "verb,start,timata",
+    "verb,spill,maringi",
+    "feeling,lonely,mokemoke",
 
 
 
-"adjective,tired,ngenge",
-"adjective,wet,mākū",
-"noun,hurt,mamae",
+    "adjective,tired,ngenge",
+    "adjective,wet,mākū",
+    "noun,hurt,mamae",
 
 
 
@@ -149,10 +149,10 @@ vocab = {
     "mpronoun,you and I,mā tāua",
     "mpronoun,we all,mā tātou",
     "mpronoun,he and I,mā māua",
-"mpronoun,they and I,mā mātou",
-"mpronoun,you two,mā kōrua",
-"mpronoun,they,mā rāua",
-"mpronoun,they three,mā rātou",
+    "mpronoun,they and I,mā mātou",
+    "mpronoun,you two,mā kōrua",
+    "mpronoun,they,mā rāua",
+    "mpronoun,they three,mā rātou",
 
     //NOUNS PROPER
 

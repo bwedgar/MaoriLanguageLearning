@@ -38,13 +38,14 @@
       randomRange = (min, max) => Math.floor(random() * (max - min + 1) + min)
 
       initialSeed = randomRange(0, 80)
+      
 
       shuffle = (a, b) => random() - 0.5
       code = (n) => parseInt(n + "", 10).toString(9) * 1 + 11
       decode = (n) => parseInt((n - 11).toString(10), 9)
-textOnly=str=>str.replace(/{.*}/,"")
-grammarOnly=str=>(str.match(/{(.*)}/,"")==null)?"":str.match(/{(.*)}/,"")[1]
-console.log(grammarOnly("this is the sentence {ko (wai) that}"))
+      textOnly = str => str.replace(/{.*}/, "")
+      grammarOnly = str => (str.match(/{(.*)}/, "") == null) ? "" : str.match(/{(.*)}/, "")[1]
+      console.log(grammarOnly("this is the sentence {ko (wai) that}"))
       //MODEL
 
       patternIndex = 0
@@ -118,18 +119,17 @@ console.log(grammarOnly("this is the sentence {ko (wai) that}"))
           if (speaker == "guest") englishSentenceText = "type what you hear"
           translation = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishQ)
           maoriSentenceText = substituteMaoriVariableWord(textOnly(vocab.patterns[patternIndex].maoriQ))
-          grammar=grammarOnly(vocab.patterns[patternIndex].maoriQ)
+          grammar = grammarOnly(vocab.patterns[patternIndex].maoriQ)
         }
         if (sentenceType == "answer") {
           if (speaker == "host") englishSentenceText = englishSentenceText = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA)
           if (speaker == "guest") englishSentenceText = "type what you hear"
           translation = substituteEnglishVariableWord(vocab.patterns[patternIndex].englishA)
           maoriSentenceText = substituteMaoriVariableWord(textOnly(vocab.patterns[patternIndex].maoriA))
-          grammar=grammarOnly(vocab.patterns[patternIndex].maoriA)
+          grammar = grammarOnly(vocab.patterns[patternIndex].maoriA)
 
         }
         if ((speaker == "guest") && pairing && voices && !spoken) {
-          //alert(maoriSentenceText)
           spoken = true
           mespeakmaori.speak(maoriSentenceText.toLowerCase())
         }
@@ -457,14 +457,14 @@ console.log(grammarOnly("this is the sentence {ko (wai) that}"))
         }
 
         if (id == "maoriSentence") {
-          displayStructure(maoriSentenceText + "<br>" + translation + "<br>"+grammar)
+          displayStructure(maoriSentenceText + "<br>" + translation + "<br>" + grammar)
         }
 
         if (id.includes("tupu")) {
           maoriAnswerText = maoriAnswerText + " " + gridWords[id.match(/\d+/g)]
           maoriAnswerText = maoriAnswerText.replace(".", "")
-          if (maoriAnswerText.trim() == substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriQ) ||
-            maoriAnswerText.trim() == substituteMaoriVariableWord(vocab.patterns[patternIndex].maoriA))
+          if (maoriAnswerText.trim() == substituteMaoriVariableWord(textOnly(vocab.patterns[patternIndex].maoriQ)) ||
+            maoriAnswerText.trim() == substituteMaoriVariableWord(textOnly(vocab.patterns[patternIndex].maoriA)))
             sentenceCorrect = true
           display()
         }
