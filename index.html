@@ -38,7 +38,7 @@
       randomRange = (min, max) => Math.floor(random() * (max - min + 1) + min)
 
       initialSeed = randomRange(0, 80)
-      
+
 
       shuffle = (a, b) => random() - 0.5
       code = (n) => parseInt(n + "", 10).toString(9) * 1 + 11
@@ -47,6 +47,8 @@
       grammarOnly = str => (str.match(/{(.*)}/, "") == null) ? "" : str.match(/{(.*)}/, "")[1]
       console.log(grammarOnly("this is the sentence {ko (wai) that}"))
       //MODEL
+
+
 
       patternIndex = 0
       sentenceType = "question"
