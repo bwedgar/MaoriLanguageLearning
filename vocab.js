@@ -32,7 +32,7 @@ vocab = {
     "is that a [household],he [household] tēnā,[affirmation],[affirmation]",
     "what type of [animal] is this,he [animal] aha tēnei,that is a [colour] [animal],he [animal] [colour] tēnā",
     "where is [maleName1],kei hea a [maleName1],[maleName1] is [locative] the [house],kei [locative] a [maleName1] i te [house]",
-    "where is the [food],kei hea te [food],the [food] is [locative] the [transport],kei [locative] te [food] i te [transport]",
+    "where is the [food],kei hea te [food],the [food] is [locative] the [household1],kei [locative] te [food] i te [household1]",
     "where is your [household1],kei hea tōu [household1],my [household1] is [locative] the [household2],kei [locative] te [household2] tōku [household1]",
     "how many [kitchen]-s are there,e hia ngā [kitchen],there are [cardinal] [kitchen],[cardinal] ngā [kitchen]",
 
@@ -536,11 +536,10 @@ vocab = {
     "communicating,argue,whawhai",
     "communicating,write,tuhi",
     "communicating,listen,whakarongo",
-    "communicating,look,titro",
+    "communicating,look,titiro",
     "communicating,watch,mātakitaki",
     "communicating,see,kite",
     "communicating,bark,auau",
-
 
     "housekeeping,cook,tunu",
     "housekeeping,gather,tiki",
@@ -703,13 +702,14 @@ vocab = {
     "locative,inside,roto",
     "locative,behind,muri",
     "locative,in front,mua",
-    "locative,between,waenganui",
-    "locative,here by me,konei",
-    "locative,there by you,konā",
-    "locative,over there by them,korā",
-    "locative,overseas,tāwāhi",
-    "locative,right side,taha matau",
-    "locative,left side,taha mauī",
+
+    "locative2,between,waenganui",
+    "locative2,here by me,konei",
+    "locative2,there by you,konā",
+    "locative2,over there by them,korā",
+    "locative2,overseas,tāwāhi",
+    "locative2,right side,taha matau",
+    "locative2,left side,taha mauī",
 
     "command,stand up,e tū",
     "command,sit down,e noho",
