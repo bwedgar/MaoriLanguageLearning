@@ -45,7 +45,7 @@ vocab = {
     "what are you doing,kei te aha koe,I am [moving],kei te [moving] ahau",
     "what are you two doing,kei te aha korua,we are [working],kei te [working] māua",
     "what are you three doing,kei te aha koutou,we are [exercising],kei te [exercising] mātou",
-    "what are those 3 doing,kei te aha rātou,they are [meeting] in the [house],kei te [meeting] ki te [house]",
+    "what are those 3 doing,kei te aha rātou,they are [meeting] in the [room],kei te [meeting] ki te [room]",
     "what are you and me going to do,ka aha māua,we will [moving],ka [moving] māua",
     "what did you two and me just do,kua aha mātou,we were [housekeeping],kua [housekeeping] mātou",
     "what did you do,i aha koe,I [functioning] -ed,i [functioning] ahau",
@@ -321,8 +321,6 @@ vocab = {
     "clothing,jandals,hanara",
     "clothing,bag,pēke",
     "clothing,shorts,tarau poto",
-
-
 
     "house,floor,papa",
     "house,ceiling,tuanui",
